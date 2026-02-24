@@ -1,38 +1,54 @@
 """Handlers for photo / video / audio / voice / document messages."""
 
 import logging
+from io import BytesIO
 
-from aiogram import Bot, F, Router
-from aiogram.types import Message
 import httpx
+from aiogram import Bot, F, Router
+from aiogram.types import ChatAction, Message
 
-from core.config import settings
-from bot.utils.formatters import format_result
 from api.schemas import AnalysisResult
+from bot.utils.formatters import format_result
+from core.config import settings
 
 router = Router()
 logger = logging.getLogger(__name__)
 
 MAX_FILE_SIZE_GENERAL = 20 * 1024 * 1024  # 20 MB
-MAX_FILE_SIZE_VIDEO = 50 * 1024 * 1024     # 50 MB
+MAX_FILE_SIZE_VIDEO = 50 * 1024 * 1024    # 50 MB
+
+RATE_LIMIT_MSG = (
+    "⛔ Вы исчерпали дневной лимит бесплатных проверок (3/день).\n\n"
+    "Лимит обновится завтра в 00:00 МСК.\n\n"
+    "💎 Premium-доступ: 100 проверок/месяц — 199₽\n"
+    "Написать: @your_support_username"
+)
+
+
+async def _download_file(bot: Bot, file_id: str) -> bytes:
+    """Download file from Telegram by file_id and return raw bytes (aiogram 3 API)."""
+    tg_file = await bot.get_file(file_id)
+    buf: BytesIO = await bot.download(tg_file)
+    return buf.read()
 
 
 async def _send_to_api(
     bot: Bot,
     message: Message,
     file_id: str,
-    content_type: str | None = None,
-    filename: str | None = None,
+    content_type: str,
+    filename: str,
     max_size: int = MAX_FILE_SIZE_GENERAL,
 ) -> None:
     """Download file from Telegram and forward to /analyze API."""
-    from aiogram.types import ChatAction
-
     await bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
 
-    tg_file = await bot.get_file(file_id)
-    file_bytes_io = await bot.download_file(tg_file.file_path)
-    file_bytes: bytes = file_bytes_io.read()
+    try:
+        file_bytes = await _download_file(bot, file_id)
+    except Exception as exc:
+        logger.exception("Failed to download file: %s", exc)
+        await message.reply("❌ Не удалось скачать файл. Попробуйте ещё раз.")
+        return
 
     if len(file_bytes) > max_size:
         await message.reply(
@@ -44,7 +60,7 @@ async def _send_to_api(
     progress_msg = await message.reply("🔍 Анализирую файл...")
 
     try:
-        async with httpx.AsyncClient(timeout=60.0) as client:
+        async with httpx.AsyncClient(timeout=90.0) as client:
             response = await client.post(
                 f"{settings.api_base_url}/analyze",
                 headers={"x-api-secret": settings.api_secret_key},
@@ -70,6 +86,10 @@ async def _send_to_api(
         if response.status_code == 400:
             error_detail = response.json().get("detail", "Неподдерживаемый формат файла")
             await progress_msg.edit_text(f"⚠️ {error_detail}")
+            return
+
+        if response.status_code == 503:
+            await progress_msg.edit_text("❌ Внешние сервисы временно недоступны. Попробуйте позже.")
             return
 
         if response.status_code != 200:
@@ -103,21 +123,23 @@ async def handle_video(message: Message, bot: Bot) -> None:
     )
 
 
-@router.message(F.audio | F.voice)
+@router.message(F.voice)
+async def handle_voice(message: Message, bot: Bot) -> None:
+    await _send_to_api(
+        bot, message, message.voice.file_id,
+        content_type="audio/ogg",
+        filename="voice.ogg",
+    )
+
+
+@router.message(F.audio)
 async def handle_audio(message: Message, bot: Bot) -> None:
-    if message.voice:
-        await _send_to_api(
-            bot, message, message.voice.file_id,
-            content_type="audio/ogg",
-            filename="voice.ogg",
-        )
-    else:
-        audio = message.audio
-        await _send_to_api(
-            bot, message, audio.file_id,
-            content_type=audio.mime_type or "audio/mpeg",
-            filename=audio.file_name or "audio.mp3",
-        )
+    audio = message.audio
+    await _send_to_api(
+        bot, message, audio.file_id,
+        content_type=audio.mime_type or "audio/mpeg",
+        filename=audio.file_name or "audio.mp3",
+    )
 
 
 @router.message(F.document)

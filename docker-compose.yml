@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   db:
-    image: postgres:15
+    image: postgres:15-alpine
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
@@ -26,6 +26,8 @@ services:
       db:
         condition: service_healthy
     restart: unless-stopped
+    command: >
+      sh -c "alembic upgrade head && uvicorn api.main:app --host 0.0.0.0 --port 8000"
 
   bot:
     build:

@@ -1,17 +1,17 @@
 """SQLAlchemy ORM models — users, checks, rate_limits."""
 
 import uuid
-from datetime import datetime, date
+from datetime import date, datetime
 
 from sqlalchemy import (
     BigInteger,
     Boolean,
     Date,
     Float,
+    ForeignKey,
     Integer,
     String,
     Text,
-    ForeignKey,
 )
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship

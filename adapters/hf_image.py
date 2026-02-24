@@ -49,7 +49,7 @@ class HFImageAdapter(BaseAdapter):
 
         if not isinstance(body, list):
             return self._build_uncertain(
-                f"HuggingFace Image: неожиданный формат ответа.",
+                "HuggingFace Image: неожиданный формат ответа.",
                 ModelUsed.HF_IMAGE,
                 MediaType.IMAGE,
             )

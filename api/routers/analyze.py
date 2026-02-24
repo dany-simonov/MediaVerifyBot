@@ -12,7 +12,6 @@ from core.config import settings
 from core.exceptions import (
     ExternalAPIError,
     FileTooLarge,
-    RateLimitExceeded,
     UnsupportedMediaType,
     VideoTooLong,
 )

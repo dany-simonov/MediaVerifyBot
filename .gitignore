@@ -2,6 +2,8 @@
 .env
 .env.*
 !.env.example
+.venv/
+venv/
 
 # Media samples (test files, not in git)
 media_samples/

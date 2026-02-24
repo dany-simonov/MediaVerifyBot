@@ -1,6 +1,6 @@
 """Repository layer — async CRUD operations for users, checks, rate_limits."""
 
-from datetime import date, datetime, timezone
+from datetime import date, datetime
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -25,7 +25,7 @@ async def get_or_create_user(
             user.username = username
         if first_name:
             user.first_name = first_name
-        user.updated_at = datetime.now(timezone.utc)
+        user.updated_at = datetime.now()
         return user
 
     user = User(
@@ -33,7 +33,7 @@ async def get_or_create_user(
         username=username or None,
         first_name=first_name or None,
         daily_checks_count=0,
-        daily_checks_reset=datetime.now(timezone.utc),
+        daily_checks_reset=datetime.now(),
         total_checks=0,
     )
     session.add(user)
@@ -50,7 +50,7 @@ async def increment_daily_check(session: AsyncSession, user_id: int) -> int:
 
     user.daily_checks_count += 1
     user.total_checks += 1
-    user.updated_at = datetime.now(timezone.utc)
+    user.updated_at = datetime.now()
 
     # Also update rate_limits table
     today = date.today()
@@ -80,7 +80,7 @@ async def reset_daily_check_if_needed(session: AsyncSession, user_id: int) -> No
 
     if reset_date is None or reset_date < today:
         user.daily_checks_count = 0
-        user.daily_checks_reset = datetime.now(timezone.utc)
+        user.daily_checks_reset = datetime.now()
         await session.flush()
 
 

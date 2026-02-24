@@ -5,7 +5,8 @@ from io import BytesIO
 
 import httpx
 from aiogram import Bot, F, Router
-from aiogram.types import ChatAction, Message
+from aiogram.enums import ChatAction
+from aiogram.types import Message
 
 from api.schemas import AnalysisResult
 from bot.utils.formatters import format_result

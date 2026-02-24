@@ -1,33 +1,204 @@
 """Unit tests for media router — type detection and routing."""
 
+from unittest.mock import AsyncMock, patch
+
 import pytest
 
-from core.enums import MediaType
-from core.exceptions import UnsupportedMediaType
+from api.schemas import AnalysisResult
+from core.enums import MediaType, ModelUsed, Verdict
+from core.exceptions import ExternalAPIError, UnsupportedMediaType
 from router.media_router import MediaRouter
 
+# ---------------------------------------------------------------------------
+# Shared fixtures
+# ---------------------------------------------------------------------------
 
-def test_detect_image_by_mime():
-    mr = MediaRouter()
-    assert mr.detect_type("image/jpeg", "photo.jpg") == MediaType.IMAGE
+FAKE_RESULT = AnalysisResult(
+    verdict=Verdict.FAKE,
+    confidence=0.95,
+    model_used=ModelUsed.SIGHTENGINE,
+    explanation="test",
+    media_type=MediaType.IMAGE,
+    processing_ms=100,
+)
+
+REAL_RESULT = AnalysisResult(
+    verdict=Verdict.REAL,
+    confidence=0.90,
+    model_used=ModelUsed.RESEMBLE,
+    explanation="test",
+    media_type=MediaType.AUDIO,
+    processing_ms=200,
+)
+
+UNCERTAIN_RESULT = AnalysisResult(
+    verdict=Verdict.UNCERTAIN,
+    confidence=0.50,
+    model_used=ModelUsed.FALLBACK_UNCERTAIN,
+    explanation="test",
+    media_type=MediaType.AUDIO,
+    processing_ms=50,
+)
 
 
-def test_detect_audio_by_mime():
-    mr = MediaRouter()
-    assert mr.detect_type("audio/ogg", "voice.ogg") == MediaType.AUDIO
+# ===========================================================================
+# detect_type — MIME / extension / text
+# ===========================================================================
 
 
-def test_detect_video_by_extension():
-    mr = MediaRouter()
-    assert mr.detect_type(None, "clip.mp4") == MediaType.VIDEO
+class TestDetectType:
+    def test_detect_image_by_jpeg_mime(self):
+        assert MediaRouter().detect_type("image/jpeg", "photo.jpg") == MediaType.IMAGE
+
+    def test_detect_image_by_png_mime(self):
+        assert MediaRouter().detect_type("image/png", None) == MediaType.IMAGE
+
+    def test_detect_audio_by_ogg_mime(self):
+        assert MediaRouter().detect_type("audio/ogg", "voice.ogg") == MediaType.AUDIO
+
+    def test_detect_audio_by_mpeg_mime(self):
+        assert MediaRouter().detect_type("audio/mpeg", "song.mp3") == MediaType.AUDIO
+
+    def test_detect_video_by_mp4_mime(self):
+        assert MediaRouter().detect_type("video/mp4", "clip.mp4") == MediaType.VIDEO
+
+    def test_detect_video_by_extension_fallback(self):
+        assert MediaRouter().detect_type(None, "clip.mp4") == MediaType.VIDEO
+
+    def test_detect_image_by_extension_fallback(self):
+        assert MediaRouter().detect_type(None, "photo.png") == MediaType.IMAGE
+
+    def test_detect_audio_by_wav_extension(self):
+        assert MediaRouter().detect_type(None, "audio.wav") == MediaType.AUDIO
+
+    def test_detect_text_when_text_content_provided(self):
+        assert MediaRouter().detect_type(None, None, text_content="some text here") == MediaType.TEXT
+
+    def test_text_takes_priority_over_mime(self):
+        # text_content always wins
+        assert MediaRouter().detect_type("image/jpeg", "photo.jpg", text_content="hello") == MediaType.TEXT
+
+    def test_unsupported_type_raises(self):
+        with pytest.raises(UnsupportedMediaType):
+            MediaRouter().detect_type("application/zip", "archive.zip")
+
+    def test_unknown_extension_raises(self):
+        with pytest.raises(UnsupportedMediaType):
+            MediaRouter().detect_type(None, "file.xyz")
+
+    def test_none_none_no_text_raises(self):
+        with pytest.raises(UnsupportedMediaType):
+            MediaRouter().detect_type(None, None)
 
 
-def test_detect_text_by_content():
-    mr = MediaRouter()
-    assert mr.detect_type(None, None, text_content="some text here") == MediaType.TEXT
+# ===========================================================================
+# route — adapter dispatch
+# ===========================================================================
 
 
-def test_unsupported_type_raises():
-    mr = MediaRouter()
-    with pytest.raises(UnsupportedMediaType):
-        mr.detect_type("application/zip", "archive.zip")
+class TestRoute:
+    @pytest.mark.asyncio
+    async def test_image_routes_to_sightengine(self):
+        mock_analyze = AsyncMock(return_value=FAKE_RESULT)
+        with patch("router.media_router.SightengineAdapter.analyze", mock_analyze):
+            result = await MediaRouter().route(MediaType.IMAGE, b"img_bytes")
+        mock_analyze.assert_awaited_once()
+        assert result.verdict == Verdict.FAKE
+
+    @pytest.mark.asyncio
+    async def test_image_falls_back_to_hf_image_on_api_error(self):
+        se_analyze = AsyncMock(side_effect=ExternalAPIError("sightengine", "rate_limit"))
+        hf_result = AnalysisResult(
+            verdict=Verdict.REAL,
+            confidence=0.88,
+            model_used=ModelUsed.HF_IMAGE,
+            explanation="HF fallback",
+            media_type=MediaType.IMAGE,
+            processing_ms=300,
+        )
+        hf_analyze = AsyncMock(return_value=hf_result)
+
+        with patch("router.media_router.SightengineAdapter.analyze", se_analyze), \
+             patch("router.media_router.HFImageAdapter.analyze", hf_analyze):
+            result = await MediaRouter().route(MediaType.IMAGE, b"img_bytes")
+
+        se_analyze.assert_awaited_once()
+        hf_analyze.assert_awaited_once()
+        assert result.model_used == ModelUsed.HF_IMAGE
+
+    @pytest.mark.asyncio
+    async def test_audio_routes_to_resemble(self):
+        mock_analyze = AsyncMock(return_value=REAL_RESULT)
+        with patch("router.media_router.ResembleAdapter.analyze", mock_analyze):
+            result = await MediaRouter().route(MediaType.AUDIO, b"audio_bytes")
+        mock_analyze.assert_awaited_once()
+        assert result.verdict == Verdict.REAL
+
+    @pytest.mark.asyncio
+    async def test_audio_calls_hf_fallback_when_resemble_uncertain(self):
+        """When Resemble returns UNCERTAIN, HFAudio must be invoked as fallback."""
+        hf_result = AnalysisResult(
+            verdict=Verdict.FAKE,
+            confidence=0.80,
+            model_used=ModelUsed.HF_AUDIO,
+            explanation="HF Audio fallback",
+            media_type=MediaType.AUDIO,
+            processing_ms=250,
+        )
+        resemble_analyze = AsyncMock(return_value=UNCERTAIN_RESULT)
+        hf_analyze = AsyncMock(return_value=hf_result)
+
+        with patch("router.media_router.ResembleAdapter.analyze", resemble_analyze), \
+             patch("router.media_router.HFAudioAdapter.analyze", hf_analyze):
+            result = await MediaRouter().route(MediaType.AUDIO, b"audio_bytes")
+
+        resemble_analyze.assert_awaited_once()
+        hf_analyze.assert_awaited_once()
+        # HF result must override since it's not UNCERTAIN
+        assert result.verdict == Verdict.FAKE
+
+    @pytest.mark.asyncio
+    async def test_audio_falls_back_to_hf_on_api_error(self):
+        se_error = AsyncMock(side_effect=ExternalAPIError("resemble", "rate_limit"))
+        hf_analyze = AsyncMock(return_value=REAL_RESULT)
+
+        with patch("router.media_router.ResembleAdapter.analyze", se_error), \
+             patch("router.media_router.HFAudioAdapter.analyze", hf_analyze):
+            result = await MediaRouter().route(MediaType.AUDIO, b"audio_bytes")
+
+        hf_analyze.assert_awaited_once()
+        assert result.verdict == Verdict.REAL
+
+    @pytest.mark.asyncio
+    async def test_video_routes_to_video_pipeline(self):
+        video_result = AnalysisResult(
+            verdict=Verdict.FAKE,
+            confidence=0.70,
+            model_used=ModelUsed.SIGHTENGINE_VIDEO,
+            explanation="3/5 fake frames",
+            media_type=MediaType.VIDEO,
+            processing_ms=8000,
+        )
+        mock_analyze = AsyncMock(return_value=video_result)
+        with patch("router.media_router.VideoPipeline.analyze", mock_analyze):
+            result = await MediaRouter().route(MediaType.VIDEO, b"video_bytes")
+        mock_analyze.assert_awaited_once()
+        assert result.model_used == ModelUsed.SIGHTENGINE_VIDEO
+
+    @pytest.mark.asyncio
+    async def test_text_routes_to_sapling(self):
+        text_result = AnalysisResult(
+            verdict=Verdict.FAKE,
+            confidence=0.92,
+            model_used=ModelUsed.SAPLING,
+            explanation="Sapling: 92% AI",
+            media_type=MediaType.TEXT,
+            processing_ms=400,
+        )
+        mock_analyze = AsyncMock(return_value=text_result)
+        with patch("router.media_router.SaplingAdapter.analyze", mock_analyze):
+            result = await MediaRouter().route(
+                MediaType.TEXT, b"some text for sapling", text_content="some text for sapling"
+            )
+        mock_analyze.assert_awaited_once()
+        assert result.model_used == ModelUsed.SAPLING

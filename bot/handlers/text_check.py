@@ -2,14 +2,14 @@
 
 import logging
 
+import httpx
 from aiogram import Bot, Router
 from aiogram.filters import Command
-from aiogram.types import Message
-import httpx
+from aiogram.types import ChatAction, Message
 
-from core.config import settings
-from bot.utils.formatters import format_result
 from api.schemas import AnalysisResult
+from bot.utils.formatters import format_result
+from core.config import settings
 
 router = Router()
 logger = logging.getLogger(__name__)
@@ -19,10 +19,12 @@ logger = logging.getLogger(__name__)
 async def handle_text_check(message: Message, bot: Bot) -> None:
     text = (message.text or "").replace("/check", "", 1).strip()
     if not text:
-        await message.reply("Использование: /check &lt;текст для проверки&gt;\n\nМинимум 50 символов.")
+        await message.reply(
+            "Использование: /check &lt;текст для проверки&gt;\n\nМинимум 50 символов.",
+            parse_mode="HTML",
+        )
         return
 
-    from aiogram.types import ChatAction
     await bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
     progress_msg = await message.reply("🔍 Анализирую текст...")
 
@@ -80,7 +82,8 @@ async def handle_start(message: Message) -> None:
         "🎬 Видео — покадровый анализ\n"
         "📝 Текст — детекция написан ли ChatGPT/ИИ\n\n"
         "Просто отправь файл или /check &lt;текст&gt;\n\n"
-        "Бесплатно: 3 проверки в день"
+        "Бесплатно: 3 проверки в день",
+        parse_mode="HTML",
     )
 
 
@@ -92,39 +95,20 @@ async def handle_help(message: Message) -> None:
         "2. /check &lt;текст&gt; — проверить текст на AI-генерацию (мин. 50 символов).\n"
         "3. /status — узнать количество оставшихся проверок.\n\n"
         "📊 Бот использует несколько моделей для повышения точности.\n"
-        "⏱ Среднее время анализа: 5-15 секунд."
+        "⏱ Среднее время анализа: 5-15 секунд.",
+        parse_mode="HTML",
     )
 
 
 @router.message(Command("status"))
 async def handle_status(message: Message) -> None:
-    try:
-        async with httpx.AsyncClient(timeout=10.0) as client:
-            response = await client.post(
-                f"{settings.api_base_url}/analyze",
-                headers={"x-api-secret": settings.api_secret_key},
-                data={
-                    "user_id": str(message.from_user.id),
-                    "username": message.from_user.username or "",
-                    "first_name": message.from_user.first_name or "",
-                    "text_content": "__status_check__",
-                },
-                files={
-                    "file": ("status.txt", b"status", "text/plain"),
-                },
-            )
-        # For now just report a generic message — a dedicated status endpoint can be added later
-        await message.reply(
-            f"📊 <b>Ваша статистика</b>\n\n"
-            f"Бесплатный лимит: {settings.free_daily_limit} проверок/день\n"
-            f"Отправьте любой файл, чтобы проверить его!"
-        )
-    except Exception:
-        await message.reply(
-            f"📊 <b>Лимит проверок</b>\n\n"
-            f"Бесплатно: {settings.free_daily_limit} проверок/день\n"
-            f"💎 Premium: {settings.premium_monthly_limit} проверок/месяц"
-        )
+    await message.reply(
+        "📊 <b>Лимит проверок</b>\n\n"
+        f"🆓 Бесплатно: {settings.free_daily_limit} проверок/день\n"
+        f"💎 Premium: {settings.premium_monthly_limit} проверок/месяц\n\n"
+        "Отправьте файл или /check &lt;текст&gt; для проверки!",
+        parse_mode="HTML",
+    )
 
 
 @router.message(Command("about"))
@@ -138,5 +122,6 @@ async def handle_about(message: Message) -> None:
         "• Sapling AI — детекция AI-сгенерированного текста\n"
         "• HuggingFace — fallback-модели для фото и аудио\n\n"
         "📊 Точность: от 81% до 99.5% в зависимости от типа контента.\n"
-        "⚠️ Финальное решение всегда за вами."
+        "⚠️ Финальное решение всегда за вами.",
+        parse_mode="HTML",
     )

@@ -57,7 +57,7 @@ class ResembleAdapter(BaseAdapter):
 
         body = response.json()
         if not body.get("success", False):
-            raise ExternalAPIError("resemble", f"API returned success=false")
+            raise ExternalAPIError("resemble", "API returned success=false")
 
         score = body.get("score", 0.5)
 

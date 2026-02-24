@@ -4,8 +4,9 @@ import logging
 
 import httpx
 from aiogram import Bot, Router
+from aiogram.enums import ChatAction
 from aiogram.filters import Command
-from aiogram.types import ChatAction, Message
+from aiogram.types import Message
 
 from api.schemas import AnalysisResult
 from bot.utils.formatters import format_result

@@ -12,6 +12,11 @@ from core.config import settings
 
 logger = logging.getLogger(__name__)
 
+# Special users with increased limits
+SPECIAL_USERS = {
+    "dany_simonov": 1000,  # 1000 checks per day
+}
+
 
 class RateLimitMiddleware(BaseMiddleware):
     """In-memory rate limiter per user_id. Resets daily."""
@@ -47,7 +52,12 @@ class RateLimitMiddleware(BaseMiddleware):
         if is_command and not has_media:
             return await handler(event, data)
 
-        if entry["count"] >= settings.free_daily_limit:
+        # Check for special users with higher limits
+        user_limit = settings.free_daily_limit
+        if event.from_user.username and event.from_user.username in SPECIAL_USERS:
+            user_limit = SPECIAL_USERS[event.from_user.username]
+
+        if entry["count"] >= user_limit:
             await event.reply(
                 "⛔ Вы исчерпали дневной лимит бесплатных проверок "
                 f"({settings.free_daily_limit}/день).\n\n"

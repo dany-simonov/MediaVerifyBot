@@ -1,6 +1,7 @@
-# MediaVerifyBot
+# Источник
 
-Telegram-бот для проверки медиафайлов на подлинность — детекция deepfake, AI-генерации и синтетической речи.
+Система верификации медиаконтента — детекция deepfake, AI-генерации и синтетической речи.
+Telegram-бот + веб-платформа.
 
 ---
 
@@ -30,7 +31,7 @@ Telegram-бот для проверки медиафайлов на подлин
 
 ```bash
 # 1. Клонировать репозиторий
-git clone https://github.com/<owner>/MediaVerifyBot.git
+git clone https://github.com/dany-simonov/MediaVerifyBot.git
 cd MediaVerifyBot
 
 # 2. Заполнить переменные окружения
@@ -55,7 +56,7 @@ docker-compose logs -f
 
 Успешный ответ `/health`:
 ```json
-{"status": "ok", "version": "0.1.0", "db": "ok"}
+{"status": "ok", "version": "0.2.0", "db": "ok"}
 ```
 
 ---
@@ -222,5 +223,5 @@ docker-compose logs -f
 
 ## Версия
 
-**0.1.0** — Sprint 1 MVP
+**0.2.0** — Источник: ребрендинг, веб-платформа, Big Check, UX-фиксы
 

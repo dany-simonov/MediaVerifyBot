@@ -104,7 +104,7 @@ async def _check_text(message: Message, bot: Bot, text: str) -> None:
 @router.message(Command("start"))
 async def handle_start(message: Message) -> None:
     await message.reply(
-        "<b>MediaVerify</b> — система верификации медиаконтента.\n\n"
+        "<b>Источник</b> — система верификации медиаконтента.\n\n"
         "Отправь файл для анализа:\n"
         "· Фото — детекция AI-генерации (точность 94.4%)\n"
         "· Аудио / голосовое — синтетическая речь (99.5%)\n"
@@ -118,14 +118,14 @@ async def handle_start(message: Message) -> None:
 @router.message(Command("help"))
 async def handle_help(message: Message) -> None:
     await message.reply(
-        "<b>Как пользоваться MediaVerify:</b>\n\n"
+        "<b>Как пользоваться Источник:</b>\n\n"
         "Для фото, видео, аудио — просто отправь файл в чат.\n"
         "Для текста — напиши сообщение (минимум 50 символов).\n\n"
         "<b>Поддерживаемые форматы:</b>\n"
         "Фото: JPG, PNG, WEBP\n"
         "Аудио: MP3, OGG, WAV, голосовые сообщения\n"
         "Видео: MP4, MOV, AVI (до 60 сек)\n\n"
-        "Результат содержит вердикт, уровень уверенности и объяснение.\n"
+        "Результат содержит вердикт, индекс подлинности и объяснение.\n"
         "Точность варьируется от 81% до 99.5% в зависимости от типа файла.",
         parse_mode="HTML",
     )
@@ -144,7 +144,7 @@ async def handle_status(message: Message) -> None:
 @router.message(Command("about"))
 async def handle_about(message: Message) -> None:
     await message.reply(
-        "<b>MediaVerify</b> использует специализированные модели:\n\n"
+        "<b>Источник</b> использует специализированные модели:\n\n"
         "Фото → Sightengine genai + HuggingFace (fallback)\n"
         "Аудио → Resemble Detect + wav2vec2-xlsr (fallback)\n"
         "Видео → FFmpeg extraction + Sightengine pipeline\n"
@@ -155,6 +155,6 @@ async def handle_about(message: Message) -> None:
         "· Видео: 81%\n"
         "· Текст: 98%\n\n"
         "Все файлы обрабатываются в оперативной памяти и не сохраняются.\n\n"
-        "<i>v0.1.0 · MediaVerify</i>",
+        "<i>v0.2.0 · Источник</i>",
         parse_mode="HTML",
     )

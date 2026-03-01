@@ -8,7 +8,7 @@ export function About() {
         <svg className="w-16 h-16 text-mv-accent mb-4" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
         </svg>
-        <h1 className="text-2xl font-bold text-mv-text">MediaVerify</h1>
+        <h1 className="text-2xl font-bold text-mv-text">Источник</h1>
         <p className="text-mv-text-secondary">Верификация медиаконтента</p>
       </div>
 
@@ -51,7 +51,7 @@ export function About() {
 
       {/* Version */}
       <p className="text-center text-mv-text-secondary text-xs">
-        v0.1.0 · MediaVerify
+        v0.2.0 · Источник
       </p>
     </div>
   )

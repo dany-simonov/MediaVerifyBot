@@ -37,7 +37,7 @@ export function Dashboard() {
           <svg className="w-8 h-8 text-mv-accent" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
           </svg>
-          <span className="text-lg font-semibold text-mv-text">MediaVerify</span>
+          <span className="text-lg font-semibold text-mv-text">Источник</span>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-mv-text-secondary text-sm">{firstName}</span>

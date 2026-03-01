@@ -6,9 +6,9 @@ interface ConfidenceGaugeProps {
 }
 
 const VERDICT_COLORS: Record<Verdict, string> = {
-  REAL: '#00C48C',
-  FAKE: '#FF4B4B',
-  UNCERTAIN: '#FFB800',
+  REAL: '#10B981',
+  FAKE: '#EF4444',
+  UNCERTAIN: '#F59E0B',
 }
 
 export function ConfidenceGauge({ value, verdict }: ConfidenceGaugeProps) {

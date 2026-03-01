@@ -10,8 +10,8 @@ from api.routers import analyze, health, user
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 
 app = FastAPI(
-    title="MediaVerifyBot API",
-    version="0.1.0",
+    title="Источник API",
+    version="0.2.0",
     docs_url="/docs",
     redoc_url=None,
 )

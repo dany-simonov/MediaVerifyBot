@@ -3,7 +3,7 @@
 import pytest
 
 from api.schemas import AnalysisResult
-from bot.utils.formatters import format_result, calculate_authenticity_index
+from bot.utils.formatters import calculate_authenticity_index, format_result
 from core.enums import MediaType, ModelUsed, Verdict
 
 

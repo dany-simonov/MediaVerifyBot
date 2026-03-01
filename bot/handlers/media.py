@@ -6,7 +6,7 @@ from io import BytesIO
 import httpx
 from aiogram import Bot, F, Router
 from aiogram.enums import ChatAction
-from aiogram.types import Message
+from aiogram.types import CallbackQuery, Message
 
 from api.schemas import AnalysisResult
 from bot.keyboards.inline import share_result_keyboard
@@ -62,7 +62,7 @@ async def _send_to_api(
 
     try:
         file_bytes = await _download_file(bot, file_id)
-    except ValueError as exc:
+    except ValueError:
         # File size validation error
         await progress_msg.edit_text("❌ Файл слишком большой. Максимум: фото/аудио 20 МБ, видео 50 МБ.")
         return
@@ -194,10 +194,6 @@ async def handle_document(message: Message, bot: Bot) -> None:
         return
 
     await _send_to_api(bot, message, doc.file_id, content_type=ct, filename=fname)
-
-
-# Callback handler for copy button
-from aiogram.types import CallbackQuery
 
 
 @router.callback_query(F.data.startswith("copy:"))

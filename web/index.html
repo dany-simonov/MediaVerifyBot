@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Источник — Проверяй подлинность медиа за секунды</title>
+  <meta name="description" content="Система верификации фото, видео, аудио и текста на основе специализированных моделей ИИ" />
+  <meta property="og:title" content="Источник" />
+  <meta property="og:description" content="Проверяй подлинность медиа за секунды" />
+  <meta property="og:image" content="assets/img/logo.png" />
+  <link rel="icon" href="assets/img/logo.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/reset.css" />
+  <link rel="stylesheet" href="assets/css/tokens.css" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <a href="index.html" class="header-logo">
+      <img src="assets/img/logo.png" alt="Источник" />
+      <span>Источник</span>
+    </a>
+    <nav class="header-nav">
+      <a href="#features">Возможности</a>
+      <a href="#pricing">Тарифы</a>
+      <a href="#bigcheck">Проверка</a>
+    </nav>
+    <a href="https://t.me/MediaVerifyBot" class="btn-tg-header" target="_blank" rel="noopener">
+      Открыть в Telegram
+    </a>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Проверяй подлинность медиа<br>за секунды</h1>
+    <p class="subtitle">
+      Система верификации фото, видео, аудио и текста<br>
+      на основе специализированных моделей ИИ
+    </p>
+    <div class="hero-buttons">
+      <a href="https://t.me/MediaVerifyBot" class="btn-primary" target="_blank" rel="noopener">Попробовать бесплатно</a>
+      <a href="#bigcheck" class="btn-secondary">Смотреть демо</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="value">94.4%</div>
+        <div class="label">Точность фото</div>
+      </div>
+      <div class="hero-stat">
+        <div class="value">99.5%</div>
+        <div class="label">Точность аудио</div>
+      </div>
+      <div class="hero-stat">
+        <div class="value">81%</div>
+        <div class="label">Точность видео</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features" class="section">
+    <h2 class="section-title">Возможности</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3>Фото</h3>
+        <p>Детекция AI-генерации<br>Sightengine genai, точность 94.4%</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎵</div>
+        <h3>Аудио</h3>
+        <p>Синтетическая речь и voice cloning<br>Resemble Detect, точность 99.5%</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎬</div>
+        <h3>Видео</h3>
+        <p>Покадровый анализ<br>FFmpeg + Sightengine pipeline, 81%</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📝</div>
+        <h3>Текст</h3>
+        <p>Написан ли ChatGPT<br>Sapling AI, точность 98%</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BIG CHECK -->
+  <section id="bigcheck" class="section">
+    <h2 class="section-title">Попробуй прямо сейчас</h2>
+    <div id="bigcheck-container"></div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" class="section">
+    <h2 class="section-title">Тарифы</h2>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <h3>FREE</h3>
+        <div class="pricing-price">0 ₽</div>
+        <ul class="pricing-features">
+          <li><span class="check">✓</span> 3 проверки/день</li>
+          <li><span class="check">✓</span> Все форматы</li>
+          <li><span class="check">✓</span> Базовый вердикт</li>
+        </ul>
+        <a href="https://t.me/MediaVerifyBot" class="pricing-btn active" target="_blank" rel="noopener">Открыть в Telegram</a>
+      </div>
+      <div class="pricing-card premium">
+        <span class="pricing-badge">СКОРО</span>
+        <h3>PREMIUM</h3>
+        <div class="pricing-price">199 ₽/мес</div>
+        <ul class="pricing-features">
+          <li><span class="check">✓</span> 100 проверок/мес</li>
+          <li><span class="check">✓</span> Приоритетная обработка</li>
+          <li><span class="check">✓</span> История 30 дней</li>
+          <li><span class="check">✓</span> Экспорт отчётов PDF</li>
+          <li><span class="check">✓</span> Поделиться результатом</li>
+        </ul>
+        <span class="pricing-btn disabled">Скоро</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <img src="assets/img/logo.png" alt="" />
+        <span>Источник</span>
+      </div>
+      <a href="https://t.me/MediaVerifyBot" target="_blank" rel="noopener">Telegram-бот</a>
+      <span>© 2026</span>
+    </div>
+  </footer>
+
+  <!-- FLOATING TELEGRAM BUTTON -->
+  <a href="https://t.me/MediaVerifyBot" class="tg-float-btn" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+    </svg>
+    <span>Открыть бот</span>
+  </a>
+
+  <script src="assets/js/bigcheck.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

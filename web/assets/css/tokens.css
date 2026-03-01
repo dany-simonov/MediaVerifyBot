@@ -1,0 +1,29 @@
+/* tokens.css — Design system tokens for Источник */
+:root {
+  /* Colors */
+  --color-bg:           #0A0A0B;
+  --color-surface:      #111113;
+  --color-surface-2:    #1A1A1E;
+  --color-border:       #2A2A30;
+  --color-accent:       #0D9488;
+  --color-accent-hover: #0F766E;
+  --color-text-primary: #F1F5F9;
+  --color-text-secondary:#94A3B8;
+  --color-text-muted:   #475569;
+  --color-fake:         #EF4444;
+  --color-real:         #10B981;
+  --color-uncertain:    #F59E0B;
+
+  /* Typography */
+  --font-family: 'Inter', 'Manrope', system-ui, sans-serif;
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 300ms ease;
+}

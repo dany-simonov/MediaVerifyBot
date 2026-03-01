@@ -2,7 +2,6 @@
 
 import logging
 import time
-from typing import Optional
 
 from fastapi import APIRouter, Depends, File, Form, Header, HTTPException, UploadFile
 from pydantic import BaseModel

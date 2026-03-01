@@ -5,7 +5,7 @@ interface VerdictBadgeProps {
 }
 
 const VERDICT_CONFIG: Record<Verdict, { text: string; bgColor: string }> = {
-  REAL: { text: 'Подлинное', bgColor: 'bg-mv-real' },
+  REAL: { text: 'Человеческий контент', bgColor: 'bg-mv-real' },
   FAKE: { text: 'Сгенерировано ИИ', bgColor: 'bg-mv-fake' },
   UNCERTAIN: { text: 'Не определено', bgColor: 'bg-mv-uncertain' },
 }

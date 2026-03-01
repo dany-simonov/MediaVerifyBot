@@ -7,6 +7,8 @@ venv/
 
 # Media samples (test files, not in git)
 media_samples/
+node_modules/
+.ruff_cache/
 
 # Python
 __pycache__/

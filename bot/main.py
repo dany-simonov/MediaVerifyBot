@@ -18,7 +18,6 @@ logger = logging.getLogger(__name__)
 BOT_COMMANDS = [
     BotCommand(command="start", description="Приветствие и инструкция"),
     BotCommand(command="help", description="Как пользоваться ботом"),
-    BotCommand(command="check", description="Проверить текст на AI-генерацию"),
     BotCommand(command="status", description="Сколько проверок осталось сегодня"),
     BotCommand(command="about", description="О боте и точности моделей"),
 ]
@@ -41,9 +40,9 @@ async def main() -> None:
     # Middlewares
     dp.message.middleware(RateLimitMiddleware())
 
-    # Routers
-    dp.include_router(media.router)
+    # Routers (order matters: text_check before media to catch text first)
     dp.include_router(text_check.router)
+    dp.include_router(media.router)
 
     # Startup hook
     dp.startup.register(on_startup)

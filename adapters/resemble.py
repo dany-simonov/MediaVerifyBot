@@ -16,11 +16,15 @@ logger = logging.getLogger(__name__)
 
 def _convert_ogg_to_wav(ogg_bytes: bytes) -> bytes:
     """Convert OGG bytes to WAV bytes using ffmpeg (in-memory, no disk I/O)."""
-    proc = subprocess.run(
-        ["ffmpeg", "-i", "pipe:0", "-f", "wav", "-acodec", "pcm_s16le", "pipe:1"],
-        input=ogg_bytes,
-        capture_output=True,
-    )
+    try:
+        proc = subprocess.run(
+            ["ffmpeg", "-i", "pipe:0", "-f", "wav", "-acodec", "pcm_s16le", "pipe:1"],
+            input=ogg_bytes,
+            capture_output=True,
+        )
+    except FileNotFoundError:
+        raise ExternalAPIError("ffmpeg", "FFmpeg не установлен. Установите с https://ffmpeg.org/download.html")
+    
     if proc.returncode != 0:
         logger.error("ffmpeg OGG->WAV conversion failed: %s", proc.stderr.decode(errors="replace"))
         raise ExternalAPIError("resemble", "audio_conversion_failed")

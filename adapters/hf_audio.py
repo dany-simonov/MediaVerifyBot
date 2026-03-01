@@ -10,6 +10,7 @@ from adapters.base import BaseAdapter
 from api.schemas import AnalysisResult
 from core.config import settings
 from core.enums import MediaType, ModelUsed, Verdict
+from core.exceptions import ExternalAPIError
 
 logger = logging.getLogger(__name__)
 
@@ -23,15 +24,18 @@ class HFAudioAdapter(BaseAdapter):
         # Ensure WAV format (convert OGG if needed)
         wav_data = data
         if data[:4] == b"OggS":
-            proc = subprocess.run(
-                ["ffmpeg", "-i", "pipe:0", "-f", "wav", "-acodec", "pcm_s16le", "pipe:1"],
-                input=data,
-                capture_output=True,
-            )
-            if proc.returncode == 0:
-                wav_data = proc.stdout
-            else:
-                logger.warning("ffmpeg conversion failed, sending raw data")
+            try:
+                proc = subprocess.run(
+                    ["ffmpeg", "-i", "pipe:0", "-f", "wav", "-acodec", "pcm_s16le", "pipe:1"],
+                    input=data,
+                    capture_output=True,
+                )
+                if proc.returncode == 0:
+                    wav_data = proc.stdout
+                else:
+                    logger.warning("ffmpeg conversion failed, sending raw data")
+            except FileNotFoundError:
+                raise ExternalAPIError("ffmpeg", "FFmpeg не установлен")
 
         headers = {"Authorization": f"Bearer {settings.hf_api_token}"}
 

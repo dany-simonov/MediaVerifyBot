@@ -3,7 +3,7 @@
 import logging
 
 import httpx
-from aiogram import Bot, Router
+from aiogram import Bot, F, Router
 from aiogram.enums import ChatAction
 from aiogram.filters import Command
 from aiogram.types import Message
@@ -26,8 +26,37 @@ async def handle_text_check(message: Message, bot: Bot) -> None:
         )
         return
 
+    if len(text) < 50:
+        await message.reply(
+            "Текст слишком короткий. Минимум 50 символов для анализа.",
+            parse_mode="HTML",
+        )
+        return
+
+    await _check_text(message, bot, text)
+
+
+@router.message(F.text & ~F.text.startswith("/"))
+async def handle_text_message(message: Message, bot: Bot) -> None:
+    """Автоматическая проверка всех текстовых сообщений."""
+    text = (message.text or "").strip()
+    
+    # Если текст короткий, просто сообщаем об этом
+    if len(text) < 50:
+        await message.reply(
+            f"Текст слишком короткий. Минимум 50 символов для анализа.\n"
+            f"Сейчас: {len(text)} симв.",
+            parse_mode="HTML",
+        )
+        return
+    
+    await _check_text(message, bot, text)
+
+
+async def _check_text(message: Message, bot: Bot, text: str) -> None:
+    """Common text checking logic."""
     await bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
-    progress_msg = await message.reply("🔍 Анализирую текст...")
+    progress_msg = await message.reply("Анализирую текст...")
 
     try:
         async with httpx.AsyncClient(timeout=60.0) as client:
@@ -47,42 +76,40 @@ async def handle_text_check(message: Message, bot: Bot) -> None:
 
         if response.status_code == 429:
             await progress_msg.edit_text(
-                "⛔ Вы исчерпали дневной лимит бесплатных проверок (3/день).\n\n"
-                "Лимит обновится завтра в 00:00 МСК.\n\n"
-                "💎 Premium-доступ: 100 проверок/месяц — 199₽\n"
-                "Написать: @your_support_username"
+                "⛔ Дневной лимит исчерпан (3/день)\n\n"
+                "Обновится завтра в 00:00 МСК.\n\n"
+                "Premium: 100 проверок в месяц — 199₽"
             )
             return
 
         if response.status_code == 400:
             error_detail = response.json().get("detail", "Ошибка обработки текста")
-            await progress_msg.edit_text(f"⚠️ {error_detail}")
+            await progress_msg.edit_text(f"{error_detail}")
             return
 
         if response.status_code != 200:
-            await progress_msg.edit_text("❌ Ошибка сервера. Попробуйте позже.")
+            await progress_msg.edit_text("Ошибка сервера. Попробуйте позже.")
             return
 
         result = AnalysisResult(**response.json())
         await progress_msg.edit_text(format_result(result))
 
     except httpx.TimeoutException:
-        await progress_msg.edit_text("⏱ Превышено время ожидания. Попробуйте ещё раз.")
+        await progress_msg.edit_text("Превышено время ожидания. Попробуйте ещё раз.")
     except Exception as exc:
         logger.exception("Error in text check: %s", exc)
-        await progress_msg.edit_text("❌ Произошла ошибка при обработке. Попробуйте позже.")
+        await progress_msg.edit_text("Ошибка при обработке. Попробуйте позже.")
 
 
 @router.message(Command("start"))
 async def handle_start(message: Message) -> None:
     await message.reply(
-        "👋 Привет! Я <b>MediaVerifyBot</b> — проверяю медиафайлы на подлинность.\n\n"
-        "Что умею:\n"
-        "🖼 Фото — детекция AI-генерации\n"
-        "🎵 Аудио и голосовые — детекция синтетической речи\n"
-        "🎬 Видео — покадровый анализ\n"
-        "📝 Текст — детекция написан ли ChatGPT/ИИ\n\n"
-        "Просто отправь файл или /check &lt;текст&gt;\n\n"
+        "<b>MediaVerify</b> — система верификации медиаконтента.\n\n"
+        "Отправь файл для анализа:\n"
+        "· Фото — детекция AI-генерации (точность 94.4%)\n"
+        "· Аудио / голосовое — синтетическая речь (99.5%)\n"
+        "· Видео — покадровый анализ (81%)\n"
+        "· Текст — просто напиши (мин. 50 символов)\n\n"
         "Бесплатно: 3 проверки в день",
         parse_mode="HTML",
     )
@@ -91,12 +118,15 @@ async def handle_start(message: Message) -> None:
 @router.message(Command("help"))
 async def handle_help(message: Message) -> None:
     await message.reply(
-        "📖 <b>Как пользоваться:</b>\n\n"
-        "1. Отправьте фото, аудио, голосовое или видео — бот проверит подлинность.\n"
-        "2. /check &lt;текст&gt; — проверить текст на AI-генерацию (мин. 50 символов).\n"
-        "3. /status — узнать количество оставшихся проверок.\n\n"
-        "📊 Бот использует несколько моделей для повышения точности.\n"
-        "⏱ Среднее время анализа: 5-15 секунд.",
+        "<b>Как пользоваться MediaVerify:</b>\n\n"
+        "Для фото, видео, аудио — просто отправь файл в чат.\n"
+        "Для текста — напиши сообщение (минимум 50 символов).\n\n"
+        "<b>Поддерживаемые форматы:</b>\n"
+        "Фото: JPG, PNG, WEBP\n"
+        "Аудио: MP3, OGG, WAV, голосовые сообщения\n"
+        "Видео: MP4, MOV, AVI (до 60 сек)\n\n"
+        "Результат содержит вердикт, уровень уверенности и объяснение.\n"
+        "Точность варьируется от 81% до 99.5% в зависимости от типа файла.",
         parse_mode="HTML",
     )
 
@@ -104,10 +134,9 @@ async def handle_help(message: Message) -> None:
 @router.message(Command("status"))
 async def handle_status(message: Message) -> None:
     await message.reply(
-        "📊 <b>Лимит проверок</b>\n\n"
-        f"🆓 Бесплатно: {settings.free_daily_limit} проверок/день\n"
-        f"💎 Premium: {settings.premium_monthly_limit} проверок/месяц\n\n"
-        "Отправьте файл или /check &lt;текст&gt; для проверки!",
+        "<b>Ваш статус:</b> Free\n\n"
+        f"Лимит: {settings.free_daily_limit} проверок в день\n\n"
+        "Лимит обновляется ежедневно в 00:00 МСК.",
         parse_mode="HTML",
     )
 
@@ -115,14 +144,17 @@ async def handle_status(message: Message) -> None:
 @router.message(Command("about"))
 async def handle_about(message: Message) -> None:
     await message.reply(
-        "ℹ️ <b>О MediaVerifyBot</b>\n\n"
-        "Версия: 0.1.0 (MVP)\n\n"
-        "Используемые модели:\n"
-        "• SightEngine — детекция AI-генерированных изображений\n"
-        "• Resemble Detect — детекция синтетической речи\n"
-        "• Sapling AI — детекция AI-сгенерированного текста\n"
-        "• HuggingFace — fallback-модели для фото и аудио\n\n"
-        "📊 Точность: от 81% до 99.5% в зависимости от типа контента.\n"
-        "⚠️ Финальное решение всегда за вами.",
+        "<b>MediaVerify</b> использует специализированные модели:\n\n"
+        "Фото → Sightengine genai + HuggingFace (fallback)\n"
+        "Аудио → Resemble Detect + wav2vec2-xlsr (fallback)\n"
+        "Видео → FFmpeg extraction + Sightengine pipeline\n"
+        "Текст → Sapling AI Detector\n\n"
+        "<b>Точность на тестовых датасетах:</b>\n"
+        "· Изображения: 94.4%\n"
+        "· Аудио: 99.5%\n"
+        "· Видео: 81%\n"
+        "· Текст: 98%\n\n"
+        "Все файлы обрабатываются в оперативной памяти и не сохраняются.\n\n"
+        "<i>v0.1.0 · MediaVerify</i>",
         parse_mode="HTML",
     )

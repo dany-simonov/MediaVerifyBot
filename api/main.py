@@ -5,7 +5,7 @@ import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from api.routers import analyze, health
+from api.routers import analyze, health, user
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 
@@ -20,3 +20,4 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], all
 
 app.include_router(analyze.router, prefix="/analyze", tags=["analyze"])
 app.include_router(health.router, tags=["health"])
+app.include_router(user.router)

@@ -19,16 +19,21 @@ MAX_FILE_SIZE_GENERAL = 20 * 1024 * 1024  # 20 MB
 MAX_FILE_SIZE_VIDEO = 50 * 1024 * 1024    # 50 MB
 
 RATE_LIMIT_MSG = (
-    "⛔ Вы исчерпали дневной лимит бесплатных проверок (3/день).\n\n"
-    "Лимит обновится завтра в 00:00 МСК.\n\n"
-    "💎 Premium-доступ: 100 проверок/месяц — 199₽\n"
-    "Написать: @your_support_username"
+    "⛔ Дневной лимит исчерпан (3/день)\n\n"
+    "Обновится завтра в 00:00 МСК.\n\n"
+    "Premium: 100 проверок в месяц — 199₽\n"
+    "Подробнее: /premium"
 )
 
 
 async def _download_file(bot: Bot, file_id: str) -> bytes:
     """Download file from Telegram by file_id and return raw bytes (aiogram 3 API)."""
     tg_file = await bot.get_file(file_id)
+    
+    # Check file size before downloading (Telegram Bot API limit is 20MB)
+    if tg_file.file_size and tg_file.file_size > 20 * 1024 * 1024:
+        raise ValueError(f"Файл слишком большой ({tg_file.file_size // 1024 // 1024}MB). Максимум: 20MB")
+    
     buf: BytesIO = await bot.download(tg_file)
     return buf.read()
 
@@ -46,19 +51,23 @@ async def _send_to_api(
 
     try:
         file_bytes = await _download_file(bot, file_id)
+    except ValueError as exc:
+        # File size validation error
+        await message.reply(f"Файл слишком большой. Максимум: фото/аудио 20 МБ, видео 50 МБ.")
+        return
     except Exception as exc:
         logger.exception("Failed to download file: %s", exc)
-        await message.reply("❌ Не удалось скачать файл. Попробуйте ещё раз.")
+        await message.reply("Не удалось скачать файл. Попробуйте ещё раз.")
         return
 
     if len(file_bytes) > max_size:
         await message.reply(
-            f"⚠️ Файл слишком большой ({len(file_bytes) // (1024*1024)} МБ). "
+            f"Файл слишком большой ({len(file_bytes) // (1024*1024)} МБ). "
             f"Максимум — {max_size // (1024*1024)} МБ."
         )
         return
 
-    progress_msg = await message.reply("🔍 Анализирую файл...")
+    progress_msg = await message.reply("Анализирую...")
 
     try:
         async with httpx.AsyncClient(timeout=90.0) as client:
@@ -77,34 +86,33 @@ async def _send_to_api(
 
         if response.status_code == 429:
             await progress_msg.edit_text(
-                "⛔ Вы исчерпали дневной лимит бесплатных проверок (3/день).\n\n"
-                "Лимит обновится завтра в 00:00 МСК.\n\n"
-                "💎 Premium-доступ: 100 проверок/месяц — 199₽\n"
-                "Написать: @your_support_username"
+                "⛔ Дневной лимит исчерпан (3/день)\n\n"
+                "Обновится завтра в 00:00 МСК.\n\n"
+                "Premium: 100 проверок в месяц — 199₽"
             )
             return
 
         if response.status_code == 400:
             error_detail = response.json().get("detail", "Неподдерживаемый формат файла")
-            await progress_msg.edit_text(f"⚠️ {error_detail}")
+            await progress_msg.edit_text(f"{error_detail}")
             return
 
         if response.status_code == 503:
-            await progress_msg.edit_text("❌ Внешние сервисы временно недоступны. Попробуйте позже.")
+            await progress_msg.edit_text("Сервис анализа временно недоступен. Попробуйте позже.")
             return
 
         if response.status_code != 200:
-            await progress_msg.edit_text("❌ Ошибка сервера. Попробуйте позже.")
+            await progress_msg.edit_text("Ошибка сервера. Попробуйте позже.")
             return
 
         result = AnalysisResult(**response.json())
         await progress_msg.edit_text(format_result(result))
 
     except httpx.TimeoutException:
-        await progress_msg.edit_text("⏱ Превышено время ожидания. Попробуйте ещё раз или отправьте файл поменьше.")
+        await progress_msg.edit_text("Превышено время ожидания. Попробуйте файл поменьше.")
     except Exception as exc:
         logger.exception("Error forwarding to API: %s", exc)
-        await progress_msg.edit_text("❌ Произошла ошибка при обработке. Попробуйте позже.")
+        await progress_msg.edit_text("Ошибка при обработке. Попробуйте позже.")
 
 
 @router.message(F.photo)
@@ -158,7 +166,7 @@ async def handle_document(message: Message, bot: Bot) -> None:
         await _send_to_api(bot, message, doc.file_id, content_type=ct, filename=fname, max_size=MAX_FILE_SIZE_VIDEO)
         return
     else:
-        await message.reply("⚠️ Неподдерживаемый тип файла. Отправьте фото, аудио, видео или текст (/check).")
+        await message.reply("Неподдерживаемый формат файла.")
         return
 
     await _send_to_api(bot, message, doc.file_id, content_type=ct, filename=fname)

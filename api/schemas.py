@@ -1,11 +1,13 @@
 """Pydantic schemas for API requests/responses."""
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from core.enums import MediaType, ModelUsed, Verdict
 
 
 class AnalysisResult(BaseModel):
+    model_config = ConfigDict(protected_namespaces=())
+    
     verdict: Verdict
     confidence: float  # 0.0 – 1.0
     model_used: ModelUsed

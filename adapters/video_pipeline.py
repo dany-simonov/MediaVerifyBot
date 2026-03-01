@@ -20,19 +20,21 @@ CONCURRENT_LIMIT = 5  # max concurrent SightEngine requests
 
 def _get_duration(video_bytes: bytes) -> float:
     """Get video duration in seconds using ffprobe via stdin."""
-    proc = subprocess.run(
-        [
-            "ffprobe",
-            "-v", "error",
-            "-show_entries", "format=duration",
-            "-of", "default=noprint_wrappers=1:nokey=1",
-            "-i", "pipe:0",
-        ],
-        input=video_bytes,
-        capture_output=True,
-    )
     try:
+        proc = subprocess.run(
+            [
+                "ffprobe",
+                "-v", "error",
+                "-show_entries", "format=duration",
+                "-of", "default=noprint_wrappers=1:nokey=1",
+                "-i", "pipe:0",
+            ],
+            input=video_bytes,
+            capture_output=True,
+        )
         return float(proc.stdout.decode().strip())
+    except FileNotFoundError:
+        raise ExternalAPIError("ffmpeg", "FFmpeg не установлен. Установите с https://ffmpeg.org/download.html")
     except (ValueError, AttributeError):
         logger.warning("Could not determine video duration, assuming 0")
         return 0.0
@@ -48,6 +50,8 @@ def _extract_frames(video_bytes: bytes) -> list[bytes]:
             .output("pipe:1", format="image2", vcodec="mjpeg")
             .run(input=video_bytes, capture_stdout=True, capture_stderr=True)
         )
+    except FileNotFoundError:
+        raise ExternalAPIError("ffmpeg", "FFmpeg не установлен. Установите с https://ffmpeg.org/download.html")
     except ffmpeg.Error as exc:
         logger.error("ffmpeg frame extraction error: %s", exc.stderr.decode(errors="replace") if exc.stderr else exc)
         return []

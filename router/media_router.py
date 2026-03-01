@@ -27,6 +27,10 @@ MIME_TYPE_MAP: dict[str, MediaType] = {
     "audio/mp3": MediaType.AUDIO,
     "audio/wav": MediaType.AUDIO,
     "audio/x-wav": MediaType.AUDIO,
+    "audio/mp4": MediaType.AUDIO,
+    "audio/m4a": MediaType.AUDIO,
+    "audio/x-m4a": MediaType.AUDIO,
+    "audio/aac": MediaType.AUDIO,
     # Video
     "video/mp4": MediaType.VIDEO,
     "video/avi": MediaType.VIDEO,
@@ -75,9 +79,11 @@ class MediaRouter:
         if text_content and text_content.strip():
             return MediaType.TEXT
 
-        # MIME type
-        if content_type and content_type in MIME_TYPE_MAP:
-            return MIME_TYPE_MAP[content_type]
+        # MIME type - handle parameters like "audio/ogg; codecs=opus"
+        if content_type:
+            base_mime = content_type.split(";")[0].strip().lower()
+            if base_mime in MIME_TYPE_MAP:
+                return MIME_TYPE_MAP[base_mime]
 
         # Extension fallback
         if filename:

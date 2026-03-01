@@ -84,6 +84,12 @@ async def reset_daily_check_if_needed(session: AsyncSession, user_id: int) -> No
         await session.flush()
 
 
+# Special users with increased limits (same as bot middleware)
+SPECIAL_USERS = {
+    "dany_simonov": 1000,  # 1000 checks per day
+}
+
+
 async def check_rate_limit(session: AsyncSession, user_id: int, limit: int) -> bool:
     """Return True if the user is allowed to perform another check (under the daily limit)."""
     result = await session.execute(select(User).where(User.id == user_id))
@@ -93,6 +99,11 @@ async def check_rate_limit(session: AsyncSession, user_id: int, limit: int) -> b
 
     if user.is_premium:
         return True  # premium users have a much higher limit (handled elsewhere)
+
+    # Check if user is in special users list
+    if user.username and user.username in SPECIAL_USERS:
+        special_limit = SPECIAL_USERS[user.username]
+        return user.daily_checks_count < special_limit
 
     return user.daily_checks_count < limit
 

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Источник — Личный кабинет</title>
+  <link rel="icon" href="assets/img/logo.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/reset.css" />
+  <link rel="stylesheet" href="assets/css/tokens.css" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <a href="index.html" class="header-logo">
+      <img src="assets/img/logo.png" alt="Источник" />
+      <span>Источник</span>
+    </a>
+    <div id="user-info" style="display:flex;align-items:center;gap:8px;">
+      <span id="user-name" style="color:var(--color-text-secondary);font-size:14px;"></span>
+    </div>
+  </header>
+
+  <div class="dashboard-layout">
+    <!-- SIDEBAR -->
+    <aside class="dashboard-sidebar">
+      <nav class="sidebar-nav" id="sidebar-nav">
+        <a href="#dashboard" class="active" data-page="dashboard">🏠 Главная</a>
+        <a href="#history" data-page="history">📋 История</a>
+        <a href="#pricing" data-page="pricing">💎 Тарифы</a>
+        <a href="#about" data-page="about">ℹ️ О проекте</a>
+      </nav>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="dashboard-content" id="dashboard-content">
+      <!-- Content rendered by JS -->
+    </main>
+  </div>
+
+  <!-- MOBILE BOTTOM NAV -->
+  <nav class="dashboard-bottom-nav" id="bottom-nav">
+    <a href="#dashboard" data-page="dashboard" class="active">🏠<span>Главная</span></a>
+    <a href="#history" data-page="history">📋<span>История</span></a>
+    <a href="#pricing" data-page="pricing">💎<span>Тарифы</span></a>
+    <a href="#about" data-page="about">ℹ️<span>О нас</span></a>
+  </nav>
+
+  <script src="config.js"></script>
+  <script src="assets/js/api.js"></script>
+  <script src="assets/js/dashboard.js"></script>
+</body>
+</html>

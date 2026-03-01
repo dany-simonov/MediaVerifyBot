@@ -9,6 +9,7 @@ from aiogram.enums import ChatAction
 from aiogram.types import Message
 
 from api.schemas import AnalysisResult
+from bot.keyboards.inline import share_result_keyboard
 from bot.utils.formatters import format_result
 from core.config import settings
 
@@ -24,6 +25,13 @@ RATE_LIMIT_MSG = (
     "Premium: 100 проверок в месяц — 199₽\n"
     "Подробнее: /premium"
 )
+
+# Progress messages for different stages
+PROGRESS_STAGES = [
+    "⏳ Загружаю файл...",
+    "🔍 Анализирую...",
+    "📊 Формирую результат...",
+]
 
 
 async def _download_file(bot: Bot, file_id: str) -> bytes:
@@ -49,25 +57,32 @@ async def _send_to_api(
     """Download file from Telegram and forward to /analyze API."""
     await bot.send_chat_action(chat_id=message.chat.id, action=ChatAction.TYPING)
 
+    # Initial progress message
+    progress_msg = await message.reply(PROGRESS_STAGES[0])
+
     try:
         file_bytes = await _download_file(bot, file_id)
     except ValueError as exc:
         # File size validation error
-        await message.reply(f"Файл слишком большой. Максимум: фото/аудио 20 МБ, видео 50 МБ.")
+        await progress_msg.edit_text("❌ Файл слишком большой. Максимум: фото/аудио 20 МБ, видео 50 МБ.")
         return
     except Exception as exc:
         logger.exception("Failed to download file: %s", exc)
-        await message.reply("Не удалось скачать файл. Попробуйте ещё раз.")
+        await progress_msg.edit_text("❌ Не удалось скачать файл. Попробуйте ещё раз.")
         return
 
     if len(file_bytes) > max_size:
-        await message.reply(
-            f"Файл слишком большой ({len(file_bytes) // (1024*1024)} МБ). "
+        await progress_msg.edit_text(
+            f"❌ Файл слишком большой ({len(file_bytes) // (1024*1024)} МБ). "
             f"Максимум — {max_size // (1024*1024)} МБ."
         )
         return
 
-    progress_msg = await message.reply("Анализирую...")
+    # Update progress
+    try:
+        await progress_msg.edit_text(PROGRESS_STAGES[1])
+    except Exception:
+        pass  # Ignore if edit fails
 
     try:
         async with httpx.AsyncClient(timeout=90.0) as client:
@@ -94,25 +109,34 @@ async def _send_to_api(
 
         if response.status_code == 400:
             error_detail = response.json().get("detail", "Неподдерживаемый формат файла")
-            await progress_msg.edit_text(f"{error_detail}")
+            await progress_msg.edit_text(f"❌ {error_detail}")
             return
 
         if response.status_code == 503:
-            await progress_msg.edit_text("Сервис анализа временно недоступен. Попробуйте позже.")
+            await progress_msg.edit_text("⚠️ Сервис анализа временно недоступен. Попробуйте позже.")
             return
 
         if response.status_code != 200:
-            await progress_msg.edit_text("Ошибка сервера. Попробуйте позже.")
+            await progress_msg.edit_text("❌ Ошибка сервера. Попробуйте позже.")
             return
 
+        # Update progress to final stage
+        try:
+            await progress_msg.edit_text(PROGRESS_STAGES[2])
+        except Exception:
+            pass
+
         result = AnalysisResult(**response.json())
-        await progress_msg.edit_text(format_result(result))
+        formatted = format_result(result)
+        keyboard = share_result_keyboard(result.verdict.value)
+
+        await progress_msg.edit_text(formatted, reply_markup=keyboard)
 
     except httpx.TimeoutException:
-        await progress_msg.edit_text("Превышено время ожидания. Попробуйте файл поменьше.")
+        await progress_msg.edit_text("⏱️ Превышено время ожидания. Попробуйте файл поменьше.")
     except Exception as exc:
         logger.exception("Error forwarding to API: %s", exc)
-        await progress_msg.edit_text("Ошибка при обработке. Попробуйте позже.")
+        await progress_msg.edit_text("❌ Ошибка при обработке. Попробуйте позже.")
 
 
 @router.message(F.photo)
@@ -170,3 +194,16 @@ async def handle_document(message: Message, bot: Bot) -> None:
         return
 
     await _send_to_api(bot, message, doc.file_id, content_type=ct, filename=fname)
+
+
+# Callback handler for copy button
+from aiogram.types import CallbackQuery
+
+
+@router.callback_query(F.data.startswith("copy:"))
+async def handle_copy_callback(callback: CallbackQuery) -> None:
+    """Handle copy button click — notify user to copy text manually."""
+    await callback.answer(
+        "📋 Скопируйте результат из сообщения выше",
+        show_alert=False,
+    )

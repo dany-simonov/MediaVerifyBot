@@ -54,16 +54,21 @@ class RateLimitMiddleware(BaseMiddleware):
 
         # Check for special users with higher limits
         user_limit = settings.free_daily_limit
-        if event.from_user.username and event.from_user.username in SPECIAL_USERS:
-            user_limit = SPECIAL_USERS[event.from_user.username]
+        username = event.from_user.username or ""
+        
+        # Log username for debugging
+        logger.info(f"User {user_id} (@{username}) - current count: {entry['count']}")
+        
+        if username and username in SPECIAL_USERS:
+            user_limit = SPECIAL_USERS[username]
+            logger.info(f"Special user @{username} detected, limit: {user_limit}")
 
         if entry["count"] >= user_limit:
             await event.reply(
                 "⛔ Вы исчерпали дневной лимит бесплатных проверок "
                 f"({settings.free_daily_limit}/день).\n\n"
                 "Лимит обновится завтра в 00:00 МСК.\n\n"
-                "💎 Premium-доступ: 100 проверок/месяц — 199₽\n"
-                "Написать: @your_support_username"
+                "💎 Premium-доступ: 100 проверок/месяц — 199₽"
             )
             return None
 

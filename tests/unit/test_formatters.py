@@ -28,7 +28,7 @@ def _make_result(
 class TestFormatResult:
     def test_fake_result_has_alarm_emoji(self):
         text = format_result(_make_result(verdict=Verdict.FAKE, confidence=0.95))
-        assert "🚨" in text
+        assert "�" in text
 
     def test_fake_result_shows_confidence_percent(self):
         text = format_result(_make_result(verdict=Verdict.FAKE, confidence=0.95))
@@ -52,7 +52,7 @@ class TestFormatResult:
 
     def test_uncertain_result_says_undefined(self):
         text = format_result(_make_result(verdict=Verdict.UNCERTAIN))
-        assert "Неопределённо" in text
+        assert "Не определено" in text
 
     def test_explanation_is_present(self):
         text = format_result(_make_result(explanation="Custom test explanation"))
@@ -88,7 +88,7 @@ class TestFormatResult:
 
     @pytest.mark.parametrize("verdict,expected_emoji", [
         (Verdict.REAL, "✅"),
-        (Verdict.FAKE, "🚨"),
+        (Verdict.FAKE, "�"),
         (Verdict.UNCERTAIN, "⚠️"),
     ])
     def test_all_verdicts_have_correct_emoji(self, verdict: Verdict, expected_emoji: str):

@@ -40,5 +40,13 @@ services:
       - api
     restart: unless-stopped
 
+  web:
+    image: nginx:alpine
+    ports:
+      - "3000:80"
+    volumes:
+      - ./web:/usr/share/nginx/html:ro
+    restart: unless-stopped
+
 volumes:
   postgres_data:

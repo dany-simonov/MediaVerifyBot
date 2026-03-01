@@ -16,6 +16,7 @@ dependencies = [
     "ffmpeg-python==0.2.0",
     "python-multipart==0.0.9",
     "aiofiles==23.2.1",
+    "reportlab==4.2.0",
 ]
 
 [project.optional-dependencies]

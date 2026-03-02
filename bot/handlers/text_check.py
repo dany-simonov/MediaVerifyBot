@@ -103,13 +103,55 @@ async def _check_text(message: Message, bot: Bot, text: str) -> None:
 
 @router.message(Command("start"))
 async def handle_start(message: Message) -> None:
+    # Handle deep link parameters
+    args = (message.text or "").split(maxsplit=1)
+    deep_link = args[1].strip() if len(args) > 1 else ""
+
+    if deep_link == "waitlist_premium":
+        await message.reply(
+            "🔔 <b>Ты в листе ожидания Premium!</b>\n\n"
+            "Мы сохранили твой запрос. Как только тариф Premium станет доступен, "
+            "ты получишь уведомление первым.\n\n"
+            "<b>Premium включает:</b>\n"
+            "· 100 проверок в месяц\n"
+            "· Приоритетная обработка\n"
+            "· История 30 дней\n"
+            "· Экспорт PDF-отчётов\n\n"
+            "Спасибо за интерес! 💚",
+            parse_mode="HTML",
+        )
+        logger.info("Waitlist premium: user_id=%s, username=%s", message.from_user.id, message.from_user.username)
+        return
+
+    if deep_link == "enterprise_inquiry":
+        await message.reply(
+            "💼 <b>Enterprise / B2B API</b>\n\n"
+            "Спасибо за интерес к корпоративному тарифу!\n\n"
+            "<b>Enterprise включает:</b>\n"
+            "· REST API доступ\n"
+            "· Безлимитные проверки\n"
+            "· SLA и техподдержка\n"
+            "· Кастомные модели детекции\n\n"
+            "Напиши нам что-нибудь о вашем кейсе использования, "
+            "и мы свяжемся с вами в ближайшее время.\n\n"
+            "Или: @dany_simonov",
+            parse_mode="HTML",
+        )
+        logger.info("Enterprise inquiry: user_id=%s, username=%s", message.from_user.id, message.from_user.username)
+        return
+
     await message.reply(
-        "<b>Источник</b> — система верификации медиаконтента.\n\n"
+        "🛡 <b>Источник</b> — система верификации медиаконтента.\n\n"
         "Отправь файл для анализа:\n"
-        "· Фото — детекция AI-генерации (точность 94.4%)\n"
-        "· Аудио / голосовое — синтетическая речь (99.5%)\n"
-        "· Видео — покадровый анализ (81%)\n"
-        "· Текст — просто напиши (мин. 50 символов)\n\n"
+        "· 📷 Фото — детекция AI-генерации (точность 94.4%)\n"
+        "· 🎵 Аудио / голосовое — синтетическая речь (99.5%)\n"
+        "· 🎬 Видео — покадровый анализ (81%)\n"
+        "· 📝 Текст — просто напиши (мин. 50 символов)\n\n"
+        "<b>Команды:</b>\n"
+        "/check — проверка текста\n"
+        "/bigcheck — режим большой проверки\n"
+        "/status — сколько проверок осталось\n"
+        "/about — о боте и точности\n\n"
         "Бесплатно: 3 проверки в день",
         parse_mode="HTML",
     )
@@ -119,8 +161,14 @@ async def handle_start(message: Message) -> None:
 async def handle_help(message: Message) -> None:
     await message.reply(
         "<b>Как пользоваться Источник:</b>\n\n"
-        "Для фото, видео, аудио — просто отправь файл в чат.\n"
-        "Для текста — напиши сообщение (минимум 50 символов).\n\n"
+        "<b>Одиночная проверка:</b>\n"
+        "Отправь файл (фото, аудио, видео) или текст в чат.\n\n"
+        "<b>Большая проверка (Big Check):</b>\n"
+        "Команда /bigcheck — отправляй несколько файлов подряд, "
+        "бот соберёт их и выполнит кросс-анализ.\n\n"
+        "<b>Проверка текста:</b>\n"
+        "/check &lt;текст&gt; — проверить текст на ИИ-генерацию.\n"
+        "Или просто напиши текст (минимум 50 символов).\n\n"
         "<b>Поддерживаемые форматы:</b>\n"
         "Фото: JPG, PNG, WEBP\n"
         "Аудио: MP3, OGG, WAV, голосовые сообщения\n"

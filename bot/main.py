@@ -8,7 +8,7 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.types import BotCommand
 
-from bot.handlers import media, text_check
+from bot.handlers import bigcheck, media, text_check
 from bot.middlewares.rate_limit import RateLimitMiddleware
 from core.config import settings
 
@@ -18,6 +18,8 @@ logger = logging.getLogger(__name__)
 BOT_COMMANDS = [
     BotCommand(command="start", description="Приветствие и инструкция"),
     BotCommand(command="help", description="Как пользоваться ботом"),
+    BotCommand(command="bigcheck", description="Большая проверка (несколько файлов)"),
+    BotCommand(command="check", description="Проверка текста на ИИ-генерацию"),
     BotCommand(command="status", description="Сколько проверок осталось сегодня"),
     BotCommand(command="about", description="О боте и точности моделей"),
 ]
@@ -40,7 +42,8 @@ async def main() -> None:
     # Middlewares
     dp.message.middleware(RateLimitMiddleware())
 
-    # Routers (order matters: text_check before media to catch text first)
+    # Routers (order matters: bigcheck first for FSM, then text_check, then media)
+    dp.include_router(bigcheck.router)
     dp.include_router(text_check.router)
     dp.include_router(media.router)
 

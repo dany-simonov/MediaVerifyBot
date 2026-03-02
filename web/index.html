@@ -18,119 +18,248 @@
 
   <!-- HEADER -->
   <header class="site-header">
-    <a href="index.html" class="header-logo">
-      <img src="assets/img/logo.png" alt="Источник" />
-      <span>Источник</span>
-    </a>
-    <nav class="header-nav">
-      <a href="#features">Возможности</a>
-      <a href="#pricing">Тарифы</a>
-      <a href="#bigcheck">Проверка</a>
-    </nav>
-    <a href="https://t.me/MediaVerifyBot" class="btn-tg-header" target="_blank" rel="noopener">
-      Открыть в Telegram
-    </a>
+    <div class="header-inner container">
+      <a href="index.html" class="header-logo">
+        <img src="assets/img/logo.png" alt="Источник" />
+        <span>Источник</span>
+      </a>
+      <nav class="header-nav">
+        <a href="#features">Возможности</a>
+        <a href="#bigcheck">Проверка</a>
+        <a href="#pricing">Тарифы</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="#team">Команда</a>
+      </nav>
+      <a href="https://t.me/MediaVerifyBot" class="btn-tg-header" target="_blank" rel="noopener">
+        Открыть в Telegram
+      </a>
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </header>
+
+  <!-- Mobile nav overlay -->
+  <nav class="mobile-nav" id="mobile-nav">
+    <a href="#features">Возможности</a>
+    <a href="#bigcheck">Проверка</a>
+    <a href="#pricing">Тарифы</a>
+    <a href="#roadmap">Roadmap</a>
+    <a href="#team">Команда</a>
+    <a href="https://t.me/MediaVerifyBot" class="btn-primary" target="_blank" rel="noopener">Открыть в Telegram</a>
+  </nav>
 
   <!-- HERO -->
   <section class="hero">
-    <h1>Проверяй подлинность медиа<br>за секунды</h1>
-    <p class="subtitle">
-      Система верификации фото, видео, аудио и текста<br>
-      на основе специализированных моделей ИИ
-    </p>
-    <div class="hero-buttons">
-      <a href="https://t.me/MediaVerifyBot" class="btn-primary" target="_blank" rel="noopener">Попробовать бесплатно</a>
-      <a href="#bigcheck" class="btn-secondary">Смотреть демо</a>
-    </div>
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <div class="value">94.4%</div>
-        <div class="label">Точность фото</div>
+    <div class="container">
+      <h1>Проверяй подлинность медиа<br>за секунды</h1>
+      <p class="subtitle">
+        Система верификации фото, видео, аудио и текста<br>
+        на основе специализированных моделей ИИ
+      </p>
+      <div class="hero-buttons">
+        <a href="https://t.me/MediaVerifyBot" class="btn-primary" target="_blank" rel="noopener">Попробовать бесплатно</a>
+        <a href="#bigcheck" class="btn-secondary">Смотреть демо</a>
       </div>
-      <div class="hero-stat">
-        <div class="value">99.5%</div>
-        <div class="label">Точность аудио</div>
-      </div>
-      <div class="hero-stat">
-        <div class="value">81%</div>
-        <div class="label">Точность видео</div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="value">94.4%</div>
+          <div class="label">Точность фото</div>
+        </div>
+        <div class="hero-stat">
+          <div class="value">99.5%</div>
+          <div class="label">Точность аудио</div>
+        </div>
+        <div class="hero-stat">
+          <div class="value">81%</div>
+          <div class="label">Точность видео</div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- FEATURES -->
   <section id="features" class="section">
-    <h2 class="section-title">Возможности</h2>
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">🔍</div>
-        <h3>Фото</h3>
-        <p>Детекция AI-генерации<br>Sightengine genai, точность 94.4%</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🎵</div>
-        <h3>Аудио</h3>
-        <p>Синтетическая речь и voice cloning<br>Resemble Detect, точность 99.5%</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🎬</div>
-        <h3>Видео</h3>
-        <p>Покадровый анализ<br>FFmpeg + Sightengine pipeline, 81%</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">📝</div>
-        <h3>Текст</h3>
-        <p>Написан ли ChatGPT<br>Sapling AI, точность 98%</p>
+    <div class="container">
+      <h2 class="section-title">Возможности</h2>
+      <div class="features-grid">
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">🔍</div>
+          <h3>Фото</h3>
+          <p>Детекция AI-генерации<br>Sightengine genai, точность 94.4%</p>
+        </div>
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">🎵</div>
+          <h3>Аудио</h3>
+          <p>Синтетическая речь и voice cloning<br>Resemble Detect, точность 99.5%</p>
+        </div>
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">🎬</div>
+          <h3>Видео</h3>
+          <p>Покадровый анализ<br>FFmpeg + Sightengine pipeline, 81%</p>
+        </div>
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">📝</div>
+          <h3>Текст</h3>
+          <p>Написан ли ChatGPT<br>Sapling AI, точность 98%</p>
+        </div>
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">🔗</div>
+          <h3>Проверка по ссылке</h3>
+          <p>Вставь ссылку на пост в Telegram, видео YouTube или картинку — бот скачает и проверит</p>
+        </div>
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">🗺️</div>
+          <h3>Тепловые карты</h3>
+          <p>Explainable AI — визуализация зон, где ИИ «спалился» на сгенерированном фото</p>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- BIG CHECK -->
   <section id="bigcheck" class="section">
-    <h2 class="section-title">Попробуй прямо сейчас</h2>
-    <div id="bigcheck-container"></div>
+    <div class="container">
+      <h2 class="section-title">Попробуй прямо сейчас</h2>
+      <div id="bigcheck-container"></div>
+    </div>
   </section>
 
   <!-- PRICING -->
   <section id="pricing" class="section">
-    <h2 class="section-title">Тарифы</h2>
-    <div class="pricing-grid">
-      <div class="pricing-card">
-        <h3>FREE</h3>
-        <div class="pricing-price">0 ₽</div>
-        <ul class="pricing-features">
-          <li><span class="check">✓</span> 3 проверки/день</li>
-          <li><span class="check">✓</span> Все форматы</li>
-          <li><span class="check">✓</span> Базовый вердикт</li>
-        </ul>
-        <a href="https://t.me/MediaVerifyBot" class="pricing-btn active" target="_blank" rel="noopener">Открыть в Telegram</a>
+    <div class="container">
+      <h2 class="section-title">Тарифы</h2>
+      <div class="pricing-grid">
+        <!-- FREE -->
+        <div class="pricing-card" data-animate>
+          <h3>FREE</h3>
+          <div class="pricing-price">0 ₽</div>
+          <ul class="pricing-features">
+            <li><span class="check">✓</span> 3 проверки/день</li>
+            <li><span class="check">✓</span> Все форматы</li>
+            <li><span class="check">✓</span> Базовый вердикт</li>
+          </ul>
+          <a href="https://t.me/MediaVerifyBot" class="pricing-btn active" target="_blank" rel="noopener">Открыть в Telegram</a>
+        </div>
+        <!-- PREMIUM -->
+        <div class="pricing-card premium" data-animate>
+          <span class="pricing-badge">СКОРО</span>
+          <h3>PREMIUM</h3>
+          <div class="pricing-price">199 ₽/мес</div>
+          <ul class="pricing-features">
+            <li><span class="check">✓</span> 100 проверок/мес</li>
+            <li><span class="check">✓</span> Приоритетная обработка</li>
+            <li><span class="check">✓</span> История 30 дней</li>
+            <li><span class="check">✓</span> Экспорт отчётов PDF</li>
+            <li><span class="check">✓</span> Поделиться результатом</li>
+          </ul>
+          <a href="https://t.me/MediaVerifyBot?start=waitlist_premium" class="pricing-btn waitlist" target="_blank" rel="noopener">
+            🔔 Встать в лист ожидания
+          </a>
+        </div>
+        <!-- ENTERPRISE -->
+        <div class="pricing-card enterprise" data-animate>
+          <span class="pricing-badge enterprise-badge">B2B</span>
+          <h3>ENTERPRISE</h3>
+          <div class="pricing-price">По запросу</div>
+          <ul class="pricing-features">
+            <li><span class="check">✓</span> REST API доступ</li>
+            <li><span class="check">✓</span> Безлимитные проверки</li>
+            <li><span class="check">✓</span> SLA и поддержка</li>
+            <li><span class="check">✓</span> Для СМИ, пабликов и форумов</li>
+            <li><span class="check">✓</span> Кастомные модели</li>
+          </ul>
+          <a href="https://t.me/MediaVerifyBot?start=enterprise_inquiry" class="pricing-btn waitlist" target="_blank" rel="noopener">
+            💼 Связаться
+          </a>
+        </div>
       </div>
-      <div class="pricing-card premium">
-        <span class="pricing-badge">СКОРО</span>
-        <h3>PREMIUM</h3>
-        <div class="pricing-price">199 ₽/мес</div>
-        <ul class="pricing-features">
-          <li><span class="check">✓</span> 100 проверок/мес</li>
-          <li><span class="check">✓</span> Приоритетная обработка</li>
-          <li><span class="check">✓</span> История 30 дней</li>
-          <li><span class="check">✓</span> Экспорт отчётов PDF</li>
-          <li><span class="check">✓</span> Поделиться результатом</li>
-        </ul>
-        <span class="pricing-btn disabled">Скоро</span>
+    </div>
+  </section>
+
+  <!-- ROADMAP / CHANGELOG -->
+  <section id="roadmap" class="section">
+    <div class="container">
+      <h2 class="section-title">История версий</h2>
+      <div class="timeline">
+        <div class="timeline-item" data-animate>
+          <div class="timeline-marker done"></div>
+          <div class="timeline-content">
+            <span class="timeline-tag released">Выпущено</span>
+            <h3>v0.1.0 — Альфа-версия</h3>
+            <p>Базовый Telegram-бот, интеграция первых моделей детекции для фото и текста.</p>
+          </div>
+        </div>
+        <div class="timeline-item" data-animate>
+          <div class="timeline-marker current"></div>
+          <div class="timeline-content">
+            <span class="timeline-tag current-tag">Текущая</span>
+            <h3>v0.2.0 — «Источник»</h3>
+            <p>Полный ребрендинг проекта и запуск функциональной веб-платформы. Внедрён интуитивный «Индекс подлинности», добавлена генерация детализированных PDF-отчётов. Существенно улучшен UX бота и создана единая дизайн-система (Dark Theme + Teal).</p>
+          </div>
+        </div>
+        <div class="timeline-item" data-animate>
+          <div class="timeline-marker upcoming"></div>
+          <div class="timeline-content">
+            <span class="timeline-tag upcoming-tag">Скоро</span>
+            <h3>v0.3.0 — Масштабирование</h3>
+            <p>Big Check (пакетный кросс-анализ), Drag&amp;Drop загрузчик, авторизация через Telegram для личного кабинета, тариф Enterprise (B2B API) и тепловые карты (Explainable AI) для визуализации ИИ-артефактов.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM & VALUES -->
+  <section id="team" class="section">
+    <div class="container">
+      <h2 class="section-title">Команда и ценности</h2>
+
+      <div class="values-grid">
+        <div class="value-card" data-animate>
+          <div class="value-icon">🛡️</div>
+          <h3>Борьба с фейками</h3>
+          <p>Мы создаём инструменты, которые помогают людям отличать настоящий контент от сгенерированного ИИ.</p>
+        </div>
+        <div class="value-card" data-animate>
+          <div class="value-icon">🔒</div>
+          <h3>Защита от манипуляций</h3>
+          <p>Противодействие социальной инженерии и дипфейкам — наш вклад в безопасность цифровой среды.</p>
+        </div>
+        <div class="value-card" data-animate>
+          <div class="value-icon">🤖</div>
+          <h3>ИИ на страже правды</h3>
+          <p>Используем передовые модели машинного обучения для анализа медиа с точностью свыше 94%.</p>
+        </div>
+      </div>
+
+      <h3 class="subsection-title">Наша команда</h3>
+      <div class="team-grid">
+        <div class="team-card" data-animate>
+          <div class="team-avatar">ДС</div>
+          <h4>Даниил Симонов</h4>
+          <span class="team-role">Основатель &amp; Разработчик</span>
+          <p class="team-bio">Архитектура проекта, бэкенд, ML-пайплайны, бот и веб-платформа.</p>
+        </div>
+        <div class="team-card" data-animate>
+          <div class="team-avatar placeholder-avatar">+</div>
+          <h4>Присоединяйся</h4>
+          <span class="team-role">Открытые позиции</span>
+          <p class="team-bio">Мы ищем единомышленников — ML-инженеров, фронтенд-разработчиков и дизайнеров.</p>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer class="site-footer">
-    <div class="footer-inner">
+    <div class="footer-inner container">
       <div class="footer-logo">
         <img src="assets/img/logo.png" alt="" />
         <span>Источник</span>
       </div>
       <a href="https://t.me/MediaVerifyBot" target="_blank" rel="noopener">Telegram-бот</a>
-      <span>© 2026</span>
+      <span>© 2026 Источник. Все права защищены.</span>
     </div>
   </footer>
 

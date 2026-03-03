@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>О проекте — Источник</title>
+  <meta name="description" content="Миссия, ценности и команда платформы Источник — системы верификации медиа на основе ИИ" />
+  <link rel="icon" href="assets/img/logo.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/reset.css" />
+  <link rel="stylesheet" href="assets/css/tokens.css" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    .page-hero { text-align: center; padding: 80px 0 40px; }
+    .page-hero h1 { font-size: 40px; font-weight: 700; margin-bottom: 16px; }
+    .page-hero p { font-size: 18px; color: var(--color-text-secondary); max-width: 600px; margin: 0 auto; line-height: 1.6; }
+    .about-section { padding: 40px 0; }
+    .about-section h2 { font-size: 28px; font-weight: 600; margin-bottom: 20px; color: var(--color-accent); }
+    .about-section p, .about-section li { font-size: 15px; color: var(--color-text-secondary); line-height: 1.8; margin-bottom: 12px; }
+    .about-section ul { list-style: none; padding: 0; }
+    .about-section ul li::before { content: '→ '; color: var(--color-accent); font-weight: 600; }
+    .about-mission { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 40px; margin: 32px 0; }
+    .about-mission blockquote { font-size: 20px; font-weight: 500; color: var(--color-text-primary); line-height: 1.6; border-left: 3px solid var(--color-accent); padding-left: 20px; margin: 0; font-style: italic; }
+    .about-values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 24px 0; }
+    .about-value-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 28px; text-align: center; transition: all 0.3s ease; }
+    .about-value-card:hover { transform: translateY(-4px); border-color: var(--color-accent); box-shadow: 0 8px 32px rgba(13, 148, 136, 0.12); }
+    .about-value-card .icon { font-size: 32px; margin-bottom: 12px; display: block; }
+    .about-value-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; color: var(--color-text-primary); }
+    .about-value-card p { font-size: 13px; color: var(--color-text-secondary); margin: 0; }
+    .about-badges { display: flex; gap: 12px; flex-wrap: wrap; margin: 20px 0; }
+    .about-badge { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: var(--radius-xl); background: var(--color-surface); border: 1px solid var(--color-border); font-size: 13px; color: var(--color-text-secondary); }
+    .about-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-accent); }
+    .team-section { margin-top: 20px; }
+    .about-team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; max-width: 600px; margin: 0 auto; }
+    .about-team-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 32px 24px; text-align: center; transition: all 0.3s ease; }
+    .about-team-card:hover { transform: translateY(-4px); border-color: var(--color-accent); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3); }
+    .team-avatar-about { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, var(--color-accent), #14b8a6); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; margin: 0 auto 16px; }
+    .team-avatar-about.placeholder { background: var(--color-surface-2); border: 2px dashed var(--color-border); color: var(--color-text-muted); font-size: 28px; font-weight: 400; }
+    .about-team-card h4 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+    .about-team-card .role { display: block; font-size: 13px; color: var(--color-accent); margin-bottom: 10px; }
+    .about-team-card .bio { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; margin: 0; }
+    @media (max-width: 768px) {
+      .about-values-grid { grid-template-columns: 1fr; }
+      .about-team-grid { grid-template-columns: 1fr; max-width: 320px; }
+      .page-hero h1 { font-size: 28px; }
+      .about-mission { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner container">
+      <a href="index.html" class="header-logo">
+        <img src="assets/img/logo.png" alt="Источник" />
+        <span>Источник</span>
+      </a>
+      <nav class="header-nav">
+        <a href="index.html#features">Возможности</a>
+        <a href="index.html#pricing">Тарифы</a>
+        <a href="index.html#roadmap">Roadmap</a>
+      </nav>
+      <div class="header-actions">
+        <div class="lang-switcher">
+          <button class="lang-btn active" data-lang="ru" title="Русский">🇷🇺</button>
+          <button class="lang-btn" data-lang="en" title="English">🇬🇧</button>
+        </div>
+        <a href="index.html" class="btn-login" style="text-decoration:none">← Главная</a>
+      </div>
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="page-hero">
+    <div class="container">
+      <h1>О проекте «Источник»</h1>
+      <p>Мы строим инфраструктуру доверия к цифровому контенту — так, чтобы каждый мог отличить подлинное от поддельного</p>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- Mission -->
+    <section class="about-section">
+      <div class="about-mission">
+        <blockquote>
+          «В мире, где ИИ генерирует неотличимый от реальности контент за секунды, возможность верифицировать подлинность медиа — это не роскошь, а необходимость. Мы создаём Источник, чтобы вернуть людям контроль над информацией.»
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- What we do -->
+    <section class="about-section">
+      <h2>Что мы делаем</h2>
+      <p>
+        <strong>Источник</strong> — это платформа верификации медиаконтента, которая использует специализированные модели машинного обучения для детекции AI-генерации в фотографиях, аудиозаписях, видео и текстах. Мы предоставляем не просто бинарный ответ «реально/фейк», а развёрнутый анализ с Индексом подлинности, детализацией по моделям и экспортируемыми отчётами.
+      </p>
+      <p>
+        Проект доступен как Telegram-бот (@MediaVerifyBot), веб-платформа и REST API для интеграции. Наша архитектура построена на FastAPI + PostgreSQL с асинхронной обработкой, что обеспечивает обработку запросов за 1-3 секунды.
+      </p>
+    </section>
+
+    <!-- Status -->
+    <section class="about-section">
+      <h2>Статус проекта</h2>
+      <p>
+        Источник активно развивается. Проект поддерживается грантами, участвует в крупных хакатонах и акселераторах. Мы регулярно обновляем модели детекции и расширяем поддерживаемые форматы.
+      </p>
+      <div class="about-badges">
+        <div class="about-badge"><span class="dot"></span> Версия v0.4.0</div>
+        <div class="about-badge"><span class="dot"></span> Грантовая поддержка</div>
+        <div class="about-badge"><span class="dot"></span> Хакатоны</div>
+        <div class="about-badge"><span class="dot"></span> Акселераторы</div>
+        <div class="about-badge"><span class="dot"></span> Open Source</div>
+      </div>
+    </section>
+
+    <!-- Values -->
+    <section class="about-section">
+      <h2>Наши ценности</h2>
+      <div class="about-values-grid">
+        <div class="about-value-card">
+          <span class="icon">🛡️</span>
+          <h3>Борьба с фейками</h3>
+          <p>Мы создаём инструменты, которые помогают людям отличать настоящий контент от сгенерированного ИИ.</p>
+        </div>
+        <div class="about-value-card">
+          <span class="icon">🔒</span>
+          <h3>Защита от манипуляций</h3>
+          <p>Противодействие социальной инженерии и дипфейкам — наш вклад в безопасность цифровой среды.</p>
+        </div>
+        <div class="about-value-card">
+          <span class="icon">🤖</span>
+          <h3>ИИ на страже правды</h3>
+          <p>Используем передовые модели машинного обучения для анализа медиа с точностью свыше 94%.</p>
+        </div>
+        <div class="about-value-card">
+          <span class="icon">🔓</span>
+          <h3>Открытость</h3>
+          <p>Прозрачность методов анализа и открытая архитектура — фундамент доверия к нашим результатам.</p>
+        </div>
+        <div class="about-value-card">
+          <span class="icon">🚀</span>
+          <h3>Инновации</h3>
+          <p>Постоянное обновление моделей и технологий для опережения генеративных инструментов.</p>
+        </div>
+        <div class="about-value-card">
+          <span class="icon">🤝</span>
+          <h3>Доступность</h3>
+          <p>Бесплатный доступ к базовым проверкам — каждый человек заслуживает инструмент верификации.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team -->
+    <section class="about-section team-section">
+      <h2>Команда</h2>
+      <div class="about-team-grid">
+        <div class="about-team-card">
+          <div class="team-avatar-about">ДС</div>
+          <h4>Даниил Симонов</h4>
+          <span class="role">Основатель & Разработчик</span>
+          <p class="bio">Архитектура проекта, бэкенд, ML-пайплайны, бот и веб-платформа.</p>
+        </div>
+        <div class="about-team-card">
+          <div class="team-avatar-about placeholder">+</div>
+          <h4>Присоединяйся</h4>
+          <span class="role">Открытые позиции</span>
+          <p class="bio">Мы ищем единомышленников — ML-инженеров, фронтенд-разработчиков и дизайнеров.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer" style="margin-top: 60px;">
+    <div class="footer-inner container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-logo">
+            <img src="assets/img/logo.png" alt="" />
+            <span>Источник</span>
+          </div>
+          <p class="footer-desc">Система верификации медиа на основе ИИ</p>
+        </div>
+        <div class="footer-col">
+          <h4>Навигация</h4>
+          <a href="index.html#features">Возможности</a>
+          <a href="index.html#pricing">Тарифы</a>
+          <a href="https://t.me/MediaVerifyBot" target="_blank" rel="noopener">Telegram-бот</a>
+        </div>
+        <div class="footer-col">
+          <h4>Документы</h4>
+          <a href="about.html">О проекте</a>
+          <a href="privacy.html">Политика конфиденциальности</a>
+          <a href="terms.html">Условия использования</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Источник. Все права защищены.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/i18n.js"></script>
+</body>
+</html>

@@ -79,3 +79,23 @@ class RateLimit(Base):
 
     def __repr__(self) -> str:
         return f"<RateLimit user_id={self.user_id} date={self.date} count={self.count}>"
+
+
+class WebUser(Base):
+    """Web platform users (email/password or Telegram login)."""
+    __tablename__ = "web_users"
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    email: Mapped[str] = mapped_column(String(255), unique=True, nullable=False)
+    password_hash: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    telegram_id: Mapped[int | None] = mapped_column(BigInteger, nullable=True, unique=True)
+    username: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    first_name: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True, server_default="true")
+    created_at: Mapped[datetime] = mapped_column(default=func.now(), server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(
+        default=func.now(), server_default=func.now(), onupdate=func.now()
+    )
+
+    def __repr__(self) -> str:
+        return f"<WebUser id={self.id} email={self.email}>"

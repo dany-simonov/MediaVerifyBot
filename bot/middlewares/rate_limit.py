@@ -10,6 +10,7 @@ from aiogram.types import Message
 
 from core.config import settings
 
+# Cache-friendly design
 # Reduced complexity
 logger = logging.getLogger(__name__)
 

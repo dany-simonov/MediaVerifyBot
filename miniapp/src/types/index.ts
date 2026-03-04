@@ -20,3 +20,14 @@ export interface UserStats {
   total_checks: number
   created_at: string
 }
+
+export type HybridTokenType = 'normal' | 'fake' | 'manipulation'
+
+export interface HybridToken {
+  text: string
+  type: HybridTokenType
+  details?: {
+    truth?: string
+    source_url?: string
+  }
+}

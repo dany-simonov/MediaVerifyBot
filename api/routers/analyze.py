@@ -3,11 +3,12 @@
 import logging
 import time
 
-from fastapi import APIRouter, Depends, File, Form, Header, HTTPException, UploadFile
+from fastapi import APIRouter, Body, Depends, File, Form, Header, HTTPException, UploadFile
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.dependencies import get_db_session
-from api.schemas import AnalysisResult
+from api.schemas import AnalysisResult, HybridAnalysisResponse
+from core.analyzer import HybridTextAnalyzer
 from core.config import settings
 from core.exceptions import (
     ExternalAPIError,
@@ -27,6 +28,29 @@ from router.media_router import MediaRouter
 router = APIRouter()
 logger = logging.getLogger(__name__)
 media_router = MediaRouter()
+hybrid_analyzer = HybridTextAnalyzer()
+
+
+@router.post("/text/hybrid", response_model=HybridAnalysisResponse)
+async def analyze_text_hybrid(
+    payload: dict = Body(..., example={"text": "Введите текст для проверки"}),
+    x_api_secret: str = Header(..., alias="x-api-secret"),
+):
+    if x_api_secret != settings.api_secret_key:
+        raise HTTPException(status_code=403, detail="Invalid API secret")
+
+    text = (payload.get("text") or "").strip()
+    if not text:
+        raise HTTPException(status_code=400, detail="Text is required")
+    if len(text) < 50:
+        raise HTTPException(status_code=400, detail="Минимум 50 символов для анализа")
+
+    try:
+        result = await hybrid_analyzer.analyze(text)
+        return HybridAnalysisResponse(**result)
+    except Exception as exc:  # noqa: BLE001
+        logger.exception("Hybrid analyze failed: %s", exc)
+        raise HTTPException(status_code=503, detail="Hybrid analyzer unavailable")
 
 
 @router.post("", response_model=AnalysisResult)

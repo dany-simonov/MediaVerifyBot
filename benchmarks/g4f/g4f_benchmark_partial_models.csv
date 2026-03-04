@@ -1,0 +1,233 @@
+target_type,name,provider_label,model_name,score,latency_seconds,simple_response,json_valid,factcheck_valid,needs_auth,success,error_message
+model,gpt-4.1-nano,,gpt-4.1-nano,103.4,0.73,True,True,True,False,True,
+model,gpt-oss-120b,,gpt-oss-120b,103.2,0.9,True,True,True,False,True,
+model,command-r,,command-r,101.6,1.94,True,True,True,False,True,
+model,command-a,,command-a,100.3,2.82,True,True,True,False,True,
+provider,Yqcloud,Yqcloud,,97.9,4.42,True,True,True,False,True,
+model,gpt-4,,gpt-4,97.5,4.65,True,True,True,False,True,
+model,aria,,aria,92.4,8.04,True,True,True,False,True,
+provider,OperaAria,OperaAria,,92.2,8.22,True,True,True,False,True,
+model,gpt-4o-mini-tts,,gpt-4o-mini-tts,33.1,10.9,True,False,False,False,True,
+provider,AIBadgr,AIBadgr,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,Anthropic,Anthropic,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,Antigravity,Antigravity,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,ApiAirforce,ApiAirforce,,0.0,4.28,False,False,False,False,False,TypeError: Object of type ABCMeta is not JSON serializable
+provider,AsyncGeneratorProvider,AsyncGeneratorProvider,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: AsyncGeneratorProvider is not working
+provider,AsyncProvider,AsyncProvider,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: AsyncProvider is not working
+provider,Azure,Azure,,0.0,0.82,False,False,False,False,False,TypeError: unsupported operand type(s) for +: 'ABCMeta' and 'NoneType'
+provider,BAAI_Ling,BAAI_Ling,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: BAAI_Ling is not working
+provider,BackendApi,BackendApi,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: BackendApi is not working
+provider,BaseProvider,BaseProvider,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: BaseProvider is not working
+provider,BingCreateImages,BingCreateImages,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,BlackForestLabs_Flux1Dev,BlackForestLabs_Flux1Dev,,0.0,1.3,False,False,False,False,False,ResponseError: You have exceeded your GPU quota (75s requested vs. 0s left). Try again in 0:00:00
+provider,BlackForestLabs_Flux1KontextDev,BlackForestLabs_Flux1KontextDev,,0.0,0.0,False,False,False,False,False,ValueError: No media files provided for image generation.
+provider,BlackboxPro,BlackboxPro,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,CablyAI,CablyAI,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,CachedSearch,CachedSearch,,0.0,0.0,False,False,False,False,False,TypeError: Object of type ABCMeta is not JSON serializable
+provider,Cerebras,Cerebras,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,Chatai,Chatai,,0.0,0.53,False,False,False,False,False,"ClientResponseError: 401, message='Unauthorized', url=URL('https://chatai.aritek.app/stream')"
+provider,Claude,Claude,,0.0,0.0,False,False,False,False,False,MissingAuthError: Claude cookie not found. Please set the 'CLAUDE_COOKIE' environment variable.
+provider,Cloudflare,Cloudflare,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: Cloudflare is not working
+provider,Cohere,Cohere,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,CohereForAI_C4AI_Command,CohereForAI_C4AI_Command,,0.0,0.0,False,False,False,False,False,ModelNotFoundError: Model <class 'g4f.Provider.hf_space.CohereForAI_C4AI_Command.CohereForAI_C4AI_Command'> not found
+provider,Copilot,Copilot,,0.0,0.0,False,False,False,False,False,NoValidHarFileError: No .har file found
+provider,CopilotAccount,CopilotAccount,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,CopilotSession,CopilotSession,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: CopilotSession is not working
+provider,CreateImagesProvider,CreateImagesProvider,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: CreateImagesProvider is not working
+provider,Custom,Custom,,0.0,0.0,False,False,False,False,False,TypeError: Object of type ABCMeta is not JSON serializable
+provider,DeepInfra,DeepInfra,,0.0,0.0,False,False,False,False,False,TypeError: Object of type ABCMeta is not JSON serializable
+provider,DeepSeek,DeepSeek,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,DeepSeekAPI,DeepSeekAPI,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,DeepseekAI_JanusPro7b,DeepseekAI_JanusPro7b,,0.0,0.0,False,False,False,False,False,TypeError: argument of type 'ABCMeta' is not iterable
+provider,EasyChat,EasyChat,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: EasyChat is not working
+provider,EdgeTTS,EdgeTTS,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: EdgeTTS is not working
+provider,Feature,Feature,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: Feature is not working
+provider,FenayAI,FenayAI,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,GLM,GLM,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: GLM is not working
+provider,Gemini,Gemini,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,GeminiCLI,GeminiCLI,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,GeminiPro,GeminiPro,,0.0,0.0,False,False,False,False,False,TypeError: Object of type ABCMeta is not JSON serializable
+provider,GigaChat,GigaChat,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,GithubCopilot,GithubCopilot,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,GithubCopilotAPI,GithubCopilotAPI,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,GlhfChat,GlhfChat,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,GoogleSearch,GoogleSearch,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: GoogleSearch is not working
+provider,GradientNetwork,GradientNetwork,,0.0,0.0,False,False,False,False,False,TypeError: argument of type 'ABCMeta' is not iterable
+provider,Grok,Grok,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,Groq,Groq,,0.0,0.0,False,False,False,False,False,TypeError: Object of type ABCMeta is not JSON serializable
+provider,HailuoAI,HailuoAI,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,HuggingChat,HuggingChat,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,HuggingFace,HuggingFace,,0.0,6.64,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+provider,HuggingFaceAPI,HuggingFaceAPI,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,HuggingFaceInference,HuggingFaceInference,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: HuggingFaceInference is not working
+provider,HuggingFaceMedia,HuggingFaceMedia,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,HuggingSpace,HuggingSpace,,0.0,0.0,False,False,False,False,True,
+provider,ItalyGPT,ItalyGPT,,0.0,0.41,False,False,False,False,False,"ClientResponseError: 405, message='Method Not Allowed', url=URL('https://italygpt.it/api/chat')"
+provider,IterListProvider,IterListProvider,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: IterListProvider is not working
+provider,LMArena,LMArena,,0.0,0.0,False,False,False,False,False,"MissingRequirementsError: Install ""zendriver"" and ""platformdirs"" package | pip install -U zendriver platformdirs"
+provider,LambdaChat,LambdaChat,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: LambdaChat is not working
+provider,Local,Local,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: Local is not working
+provider,MarkItDown,MarkItDown,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: MarkItDown is not working
+provider,MetaAI,MetaAI,,0.0,0.46,False,False,False,False,False,ResponseStatusError: Response 403: Fetch home failed
+provider,MetaAIAccount,MetaAIAccount,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,MicrosoftDesigner,MicrosoftDesigner,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,Microsoft_Phi_4_Multimodal,Microsoft_Phi_4_Multimodal,,0.0,1.85,False,False,False,False,False,ResponseStatusError: Response 503: HTML content
+provider,MiniMax,MiniMax,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,Mintlify,Mintlify,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: Mintlify is not working
+provider,Nvidia,Nvidia,,0.0,0.0,False,False,False,False,False,TypeError: Object of type ABCMeta is not JSON serializable
+provider,OIVSCodeSer0501,OIVSCodeSer0501,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: OIVSCodeSer0501 is not working
+provider,OIVSCodeSer2,OIVSCodeSer2,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: OIVSCodeSer2 is not working
+provider,Ollama,Ollama,,0.0,5.07,False,False,False,False,False,TypeError: Object of type ABCMeta is not JSON serializable
+provider,OpenAIFM,OpenAIFM,,0.0,0.0,False,False,False,False,False,"TypeError: attribute name must be string, not 'ABCMeta'"
+provider,OpenRouter,OpenRouter,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,OpenRouterFree,OpenRouterFree,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,OpenaiAPI,OpenaiAPI,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,OpenaiAccount,OpenaiAccount,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,OpenaiChat,OpenaiChat,,0.0,0.0,False,False,False,False,False,NoValidHarFileError: No .har file found
+provider,OpenaiTemplate,OpenaiTemplate,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: OpenaiTemplate is not working
+provider,Perplexity,Perplexity,,0.0,0.37,False,False,False,False,False,TypeError: Object of type ABCMeta is not JSON serializable
+provider,PerplexityApi,PerplexityApi,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,Pi,Pi,,0.0,0.0,False,False,False,False,False,"MissingRequirementsError: Install ""zendriver"" and ""platformdirs"" package | pip install -U zendriver platformdirs"
+provider,PollinationsAI,PollinationsAI,,0.0,0.85,False,False,False,False,False,TypeError: Object of type ABCMeta is not JSON serializable
+provider,PollinationsImage,PollinationsImage,,0.0,1.01,False,False,False,False,False,Exception: Unexpected content type: text/plain; charset=UTF-8
+provider,PuterJS,PuterJS,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,Qwen,Qwen,,0.0,4.22,False,False,False,False,False,TypeError: Object of type ABCMeta is not JSON serializable
+provider,QwenCode,QwenCode,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,Qwen_Qwen_2_5,Qwen_Qwen_2_5,,0.0,1.09,False,False,False,False,False,"ContentTypeError: 0, message='Attempt to decode JSON with unexpected mimetype: text/html; charset=utf-8', url=URL('https://qwen-qwen2-5.hf.space/queue/join')"
+provider,Qwen_Qwen_2_5M,Qwen_Qwen_2_5M,,0.0,0.95,False,False,False,False,False,KeyError: 'data'
+provider,Qwen_Qwen_2_5_Max,Qwen_Qwen_2_5_Max,,0.0,1.1,False,False,False,False,False,"ContentTypeError: 0, message='Attempt to decode JSON with unexpected mimetype: text/html; charset=utf-8', url=URL('https://qwen-qwen2-5-max-demo.hf.space/gradio_api/queue/join')"
+provider,Qwen_Qwen_2_72B,Qwen_Qwen_2_72B,,0.0,1.08,False,False,False,False,False,"ContentTypeError: 0, message='Attempt to decode JSON with unexpected mimetype: text/html; charset=utf-8', url=URL('https://qwen-qwen2-72b-instruct.hf.space/queue/join')"
+provider,Qwen_Qwen_3,Qwen_Qwen_3,,0.0,0.0,False,False,False,False,False,TypeError: Object of type ABCMeta is not JSON serializable
+provider,Reka,Reka,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,Replicate,Replicate,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,RetryProvider,RetryProvider,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: RetryProvider is not working
+provider,RotatedProvider,RotatedProvider,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: RotatedProvider is not working
+provider,SearXNG,SearXNG,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: SearXNG is not working
+provider,StabilityAI_SD35Large,StabilityAI_SD35Large,,0.0,0.73,False,False,False,False,False,"ClientResponseError: 503, message='Service Unavailable', url=URL('https://stabilityai-stable-diffusion-3-5-large.hf.space/gradio_api/call/infer')"
+provider,TeachAnything,TeachAnything,,0.0,0.3,False,False,False,False,False,"ClientResponseError: 403, message='Forbidden', url=URL('https://www.teach-anything.com/api/generate')"
+provider,ThebApi,ThebApi,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,Together,Together,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,Video,Video,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,WeWordle,WeWordle,,0.0,0.0,False,False,False,False,False,TypeError: Object of type ABCMeta is not JSON serializable
+provider,WhiteRabbitNeo,WhiteRabbitNeo,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,You,You,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,YouTube,YouTube,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: YouTube is not working
+provider,Yupp,Yupp,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: Yupp is not working
+provider,gTTS,gTTS,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: gTTS is not working
+provider,xAI,xAI,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,AnyProvider,AnyProvider,,0.0,0.0,False,False,False,False,False,TypeError: argument of type 'ABCMeta' is not iterable
+model,gpt-4o,,gpt-4o,0.0,0.0,False,False,False,False,False,NoValidHarFileError: No .har file found
+model,gpt-4o-mini,,gpt-4o-mini,0.0,0.54,False,False,False,False,False,NoValidHarFileError: No .har file found
+model,o1,,o1,0.0,0.0,False,False,False,False,False,NoValidHarFileError: No .har file found
+model,o1-mini,,o1-mini,0.0,0.02,False,False,False,False,False,NoValidHarFileError: No .har file found
+model,o3-mini,,o3-mini,0.0,0.0,False,False,False,False,False,NoValidHarFileError: No .har file found
+model,o3-mini-high,,o3-mini-high,0.0,0.0,False,False,False,False,False,NoValidHarFileError: No .har file found
+model,o4-mini,,o4-mini,0.0,0.0,False,False,False,False,False,NoValidHarFileError: No .har file found
+model,o4-mini-high,,o4-mini-high,0.0,0.0,False,False,False,False,False,NoValidHarFileError: No .har file found
+model,gpt-4.1,,gpt-4.1,0.0,0.0,False,False,False,False,False,NoValidHarFileError: No .har file found
+model,gpt-4.1-mini,,gpt-4.1-mini,0.0,0.0,False,False,False,False,False,NoValidHarFileError: No .har file found
+model,gpt-4.5,,gpt-4.5,0.0,0.0,False,False,False,False,False,NoValidHarFileError: No .har file found
+model,dall-e-3,,dall-e-3,0.0,0.0,False,False,False,False,False,NoValidHarFileError: No .har file found
+model,gpt-image,,gpt-image,0.0,1.01,False,False,False,False,False,Exception: Unexpected content type: text/plain; charset=UTF-8
+model,meta-ai,,meta-ai,0.0,0.82,False,False,False,False,False,ResponseStatusError: Response 403: Fetch home failed
+model,llama-2-7b,,llama-2-7b,0.0,0.0,False,False,False,False,False,RetryNoProviderError: No content response from any provider. 
+model,llama-2-70b,,llama-2-70b,0.0,0.0,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,llama-3-8b,,llama-3-8b,0.0,0.0,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,llama-3-70b,,llama-3-70b,0.0,0.0,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,llama-3.1-8b,,llama-3.1-8b,0.0,0.0,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,llama-3.1-70b,,llama-3.1-70b,0.0,0.0,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,llama-3.1-405b,,llama-3.1-405b,0.0,0.0,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,llama-3.2-1b,,llama-3.2-1b,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: Cloudflare is not working
+model,llama-3.2-3b,,llama-3.2-3b,0.0,0.0,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,llama-3.2-11b,,llama-3.2-11b,0.0,0.03,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,llama-3.2-90b,,llama-3.2-90b,0.0,0.0,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,llama-3.3-70b,,llama-3.3-70b,0.0,0.0,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,llama-4-scout,,llama-4-scout,0.0,18.98,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,llama-4-maverick,,llama-4-maverick,0.0,0.0,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,mistral-7b,,mistral-7b,0.0,0.0,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,mixtral-8x7b,,mixtral-8x7b,0.0,0.0,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,mistral-nemo,,mistral-nemo,0.0,0.02,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,mistral-small-24b,,mistral-small-24b,0.0,0.02,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,mistral-small-3.1-24b,,mistral-small-3.1-24b,0.0,29.96,False,False,False,False,False,"ResponseError: Error 404: Model not found: mistral. This is our legacy API - for the full model list and new features, visit https://enter.pollinations.ai"
+model,hermes-2-dpo,,hermes-2-dpo,0.0,0.0,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,phi-3.5-mini,,phi-3.5-mini,0.0,0.0,False,False,False,False,False,"MissingRequirementsError: Install ""curl_cffi"" package | pip install -U curl_cffi"
+model,phi-4,,phi-4,0.0,1.96,False,False,False,False,False,ResponseStatusError: Response 503: HTML content
+model,phi-4-multimodal,,phi-4-multimodal,0.0,1.94,False,False,False,False,False,ResponseStatusError: Response 503: HTML content
+model,phi-4-reasoning-plus,,phi-4-reasoning-plus,0.0,0.0,False,False,False,False,False,"ProviderNotFoundError: No provider found for model: Model(name='phi-4-reasoning-plus', base_provider='Microsoft', best_provider=None, long_name=None)"
+model,wizardlm-2-7b,,wizardlm-2-7b,0.0,0.0,False,False,False,False,False,"ProviderNotFoundError: No provider found for model: Model(name='wizardlm-2-7b', base_provider='Microsoft', best_provider=None, long_name=None)"
+model,wizardlm-2-8x22b,,wizardlm-2-8x22b,0.0,0.0,False,False,False,False,False,"ProviderNotFoundError: No provider found for model: Model(name='wizardlm-2-8x22b', base_provider='Microsoft', best_provider=None, long_name=None)"
+model,gemini-2.0,,gemini-2.0,0.0,0.0,False,False,False,False,False,"MissingAuthError: Missing ""__Secure-1PSID"" cookie"
+model,gemini-2.0-flash,,gemini-2.0-flash,0.0,0.37,False,False,False,False,False,"MissingAuthError: Missing ""__Secure-1PSID"" cookie"
+model,gemini-2.0-flash-thinking,,gemini-2.0-flash-thinking,0.0,0.32,False,False,False,False,False,"MissingAuthError: Missing ""__Secure-1PSID"" cookie"
+model,gemini-2.0-flash-thinking-with-apps,,gemini-2.0-flash-thinking-with-apps,0.0,0.0,False,False,False,False,False,"MissingAuthError: Missing ""__Secure-1PSID"" cookie"
+model,gemini-2.5-flash,,gemini-2.5-flash,0.0,45.31,False,False,False,False,False,"MissingAuthError: Missing ""__Secure-1PSID"" cookie"
+model,gemini-2.5-pro,,gemini-2.5-pro,0.0,45.73,False,False,False,False,False,"MissingAuthError: Missing ""__Secure-1PSID"" cookie"
+model,gemini-3-pro-preview,,gemini-3-pro-preview,0.0,45.0,False,False,False,False,False,TimeoutError: The operation timed out after 45 seconds
+model,codegemma-7b,,codegemma-7b,0.0,0.0,False,False,False,False,False,"ProviderNotFoundError: No provider found for model: Model(name='codegemma-7b', base_provider='Google', best_provider=None, long_name=None)"
+model,gemma-2b,,gemma-2b,0.0,0.0,False,False,False,False,False,"ProviderNotFoundError: No provider found for model: Model(name='gemma-2b', base_provider='Google', best_provider=None, long_name=None)"
+model,gemma-1.1-7b,,gemma-1.1-7b,0.0,0.0,False,False,False,False,False,"ProviderNotFoundError: No provider found for model: Model(name='gemma-1.1-7b', base_provider='Google', best_provider=None, long_name=None)"
+model,gemma-2-9b,,gemma-2-9b,0.0,0.0,False,False,False,False,False,"ProviderNotFoundError: No provider found for model: Model(name='gemma-2-9b', base_provider='Google', best_provider=None, long_name=None)"
+model,gemma-2-27b,,gemma-2-27b,0.0,0.0,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,gemma-3-4b,,gemma-3-4b,0.0,0.0,False,False,False,False,False,"ProviderNotFoundError: No provider found for model: Model(name='gemma-3-4b', base_provider='Google', best_provider=None, long_name=None)"
+model,gemma-3-12b,,gemma-3-12b,0.0,0.0,False,False,False,False,False,"ProviderNotFoundError: No provider found for model: Model(name='gemma-3-12b', base_provider='Google', best_provider=None, long_name=None)"
+model,gemma-3-27b,,gemma-3-27b,0.0,0.0,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,gemma-3n-e4b,,gemma-3n-e4b,0.0,0.0,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,command-r-plus,,command-r-plus,0.0,0.0,False,False,False,False,False,"RetryProviderError: RetryProvider failed:
+HuggingSpace: TypeError: unhashable type: 'list'
+HuggingChat: MissingRequirementsError: Install ""curl_cffi"" package | pip install -U curl_cffi"
+model,command-r7b,,command-r7b,0.0,0.0,False,False,False,False,False,TypeError: unhashable type: 'list'
+model,qwen-1.5-7b,,qwen-1.5-7b,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: Cloudflare is not working
+model,qwen-2-72b,,qwen-2-72b,0.0,0.96,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,qwen-2-vl-7b,,qwen-2-vl-7b,0.0,0.83,False,False,False,False,False,ModelNotFoundError: Model is not supported: Qwen/Qwen2-VL-7B-Instruct in: HuggingFaceAPI
+model,qwen-2-vl-72b,,qwen-2-vl-72b,0.0,0.0,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,qwen-2.5,,qwen-2.5,0.0,0.99,False,False,False,False,False,"ContentTypeError: 0, message='Attempt to decode JSON with unexpected mimetype: text/html; charset=utf-8', url=URL('https://qwen-qwen2-5.hf.space/queue/join')"
+model,qwen-2.5-7b,,qwen-2.5-7b,0.0,0.0,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,qwen-2.5-72b,,qwen-2.5-72b,0.0,0.0,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,qwen-2.5-coder-32b,,qwen-2.5-coder-32b,0.0,0.02,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,qwen-2.5-1m,,qwen-2.5-1m,0.0,0.93,False,False,False,False,False,KeyError: 'data'
+model,qwen-2.5-max,,qwen-2.5-max,0.0,0.99,False,False,False,False,False,"ContentTypeError: 0, message='Attempt to decode JSON with unexpected mimetype: text/html; charset=utf-8', url=URL('https://qwen-qwen2-5-max-demo.hf.space/gradio_api/queue/join')"
+model,qwen-2.5-vl-72b,,qwen-2.5-vl-72b,0.0,0.0,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,qwen-3-235b,,qwen-3-235b,0.0,1.06,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,qwen-3-32b,,qwen-3-32b,0.0,0.82,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,qwen-3-30b,,qwen-3-30b,0.0,0.92,False,False,False,False,False,ResponseStatusError: Response 503: {'detail': 'Queue is stopped.'}
+model,qwen-3-14b,,qwen-3-14b,0.0,0.81,False,False,False,False,False,ResponseStatusError: Response 503: {'detail': 'Queue is stopped.'}
+model,qwen-3-4b,,qwen-3-4b,0.0,0.93,False,False,False,False,False,ResponseStatusError: Response 503: {'detail': 'Queue is stopped.'}
+model,qwen-3-1.7b,,qwen-3-1.7b,0.0,0.86,False,False,False,False,False,ResponseStatusError: Response 503: {'detail': 'Queue is stopped.'}
+model,qwen-3-0.6b,,qwen-3-0.6b,0.0,0.9,False,False,False,False,False,ResponseStatusError: Response 503: {'detail': 'Queue is stopped.'}
+model,qwq-32b,,qwq-32b,0.0,0.01,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,deepseek-v3,,deepseek-v3,0.0,0.0,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,deepseek-r1,,deepseek-r1,0.0,0.7,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,deepseek-r1-turbo,,deepseek-r1-turbo,0.0,0.0,False,False,False,False,False,"ProviderNotFoundError: No provider found for model: Model(name='deepseek-r1-turbo', base_provider='DeepSeek', best_provider=None, long_name=None)"
+model,deepseek-r1-distill-llama-70b,,deepseek-r1-distill-llama-70b,0.0,0.0,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,deepseek-r1-distill-qwen-1.5b,,deepseek-r1-distill-qwen-1.5b,0.0,0.0,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,deepseek-r1-distill-qwen-14b,,deepseek-r1-distill-qwen-14b,0.0,0.0,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,deepseek-r1-distill-qwen-32b,,deepseek-r1-distill-qwen-32b,0.0,0.0,False,False,False,False,False,"ProviderNotFoundError: No provider found for model: Model(name='deepseek-r1-distill-qwen-32b', base_provider='DeepSeek', best_provider=None, long_name=None)"
+model,deepseek-prover-v2,,deepseek-prover-v2,0.0,0.0,False,False,False,False,False,"ProviderNotFoundError: No provider found for model: Model(name='deepseek-prover-v2', base_provider='DeepSeek', best_provider=None, long_name=None)"
+model,deepseek-prover-v2-671b,,deepseek-prover-v2-671b,0.0,0.0,False,False,False,False,False,"ProviderNotFoundError: No provider found for model: Model(name='deepseek-prover-v2-671b', base_provider='DeepSeek', best_provider=None, long_name=None)"
+model,deepseek-v3-0324,,deepseek-v3-0324,0.0,0.0,False,False,False,False,False,"ProviderNotFoundError: No provider found for model: Model(name='deepseek-v3-0324', base_provider='DeepSeek', best_provider=None, long_name=None)"
+model,deepseek-v3-0324-turbo,,deepseek-v3-0324-turbo,0.0,0.0,False,False,False,False,False,"ProviderNotFoundError: No provider found for model: Model(name='deepseek-v3-0324-turbo', base_provider='DeepSeek', best_provider=None, long_name=None)"
+model,deepseek-r1-0528,,deepseek-r1-0528,0.0,0.0,False,False,False,False,False,"ProviderNotFoundError: No provider found for model: Model(name='deepseek-r1-0528', base_provider='DeepSeek', best_provider=None, long_name=None)"
+model,deepseek-r1-0528-turbo,,deepseek-r1-0528-turbo,0.0,0.0,False,False,False,False,False,"ProviderNotFoundError: No provider found for model: Model(name='deepseek-r1-0528-turbo', base_provider='DeepSeek', best_provider=None, long_name=None)"
+model,janus-pro-7b,,janus-pro-7b,0.0,1.95,False,False,False,False,False,ResponseStatusError: Response 503: HTML content
+model,grok-2,,grok-2,0.0,0.0,False,False,False,False,False,"MissingRequirementsError: Install ""zendriver"" and ""platformdirs"" package | pip install -U zendriver platformdirs"
+model,grok-3,,grok-3,0.0,0.0,False,False,False,False,False,"MissingRequirementsError: Install ""zendriver"" and ""platformdirs"" package | pip install -U zendriver platformdirs"
+model,grok-3-r1,,grok-3-r1,0.0,0.0,False,False,False,False,False,"MissingRequirementsError: Install ""zendriver"" and ""platformdirs"" package | pip install -U zendriver platformdirs"
+model,kimi-k2,,kimi-k2,0.0,5.71,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,sonar,,sonar,0.0,0.0,False,False,False,False,False,MissingAuthError: API key is required for Puter.js API
+model,sonar-pro,,sonar-pro,0.0,0.0,False,False,False,False,False,MissingAuthError: API key is required for Puter.js API
+model,sonar-reasoning,,sonar-reasoning,0.0,0.0,False,False,False,False,False,MissingAuthError: API key is required for Puter.js API
+model,sonar-reasoning-pro,,sonar-reasoning-pro,0.0,0.0,False,False,False,False,False,MissingAuthError: API key is required for Puter.js API
+model,r1-1776,,r1-1776,0.0,0.84,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,nemotron-70b,,nemotron-70b,0.0,0.0,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,dolphin-2.6,,dolphin-2.6,0.0,0.0,False,False,False,False,False,"ProviderNotFoundError: No provider found for model: Model(name='dolphin-2.6', base_provider='Cognitive Computations', best_provider=None, long_name=None)"
+model,dolphin-2.9,,dolphin-2.9,0.0,0.0,False,False,False,False,False,"ProviderNotFoundError: No provider found for model: Model(name='dolphin-2.9', base_provider='Cognitive Computations', best_provider=None, long_name=None)"
+model,airoboros-70b,,airoboros-70b,0.0,0.0,False,False,False,False,False,"ProviderNotFoundError: No provider found for model: Model(name='airoboros-70b', base_provider='DeepInfra', best_provider=None, long_name=None)"
+model,lzlv-70b,,lzlv-70b,0.0,0.0,False,False,False,False,False,"ProviderNotFoundError: No provider found for model: Model(name='lzlv-70b', base_provider='Lizpreciatior', best_provider=None, long_name=None)"
+model,sdxl-turbo,,sdxl-turbo,0.0,1.01,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,sd-3.5-large,,sd-3.5-large,0.0,0.89,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,flux,,flux,0.0,2.19,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,flux-pro,,flux-pro,0.0,1.02,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,flux-dev,,flux-dev,0.0,2.2,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,flux-schnell,,flux-schnell,0.0,1.02,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,flux-redux,,flux-redux,0.0,0.0,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+model,flux-depth,,flux-depth,0.0,0.02,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""

@@ -10,6 +10,7 @@ from api.schemas import AnalysisResult
 from core.config import settings
 from core.enums import MediaType, ModelUsed, Verdict
 
+# Logging improved
 # Better exception handling
 logger = logging.getLogger(__name__)
 

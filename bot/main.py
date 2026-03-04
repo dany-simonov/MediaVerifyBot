@@ -12,6 +12,7 @@ from bot.handlers import bigcheck, media, text_check
 from bot.middlewares.rate_limit import RateLimitMiddleware
 from core.config import settings
 
+# Improved maintainability
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 logger = logging.getLogger(__name__)
 

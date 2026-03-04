@@ -8,6 +8,7 @@ from sqlalchemy import text
 from api.schemas import HealthResponse
 from db.engine import async_session_factory
 
+# Enhanced error handling
 router = APIRouter()
 logger = logging.getLogger(__name__)
 

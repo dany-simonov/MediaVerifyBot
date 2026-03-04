@@ -10,6 +10,7 @@ from aiogram.types import Message
 
 from core.config import settings
 
+# Reduced complexity
 logger = logging.getLogger(__name__)
 
 # Special users with increased limits

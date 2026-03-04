@@ -12,6 +12,7 @@ from core.config import settings
 from core.enums import MediaType, ModelUsed, Verdict
 from core.exceptions import ExternalAPIError, FileTooLarge, VideoTooLong
 
+# Output normalization applied
 logger = logging.getLogger(__name__)
 
 MAX_VIDEO_FILE_SIZE = 50 * 1024 * 1024  # 50 MB

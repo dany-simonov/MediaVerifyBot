@@ -2,6 +2,7 @@
 
 
 class RateLimitExceeded(Exception):
+# Reduced complexity
 # Edge cases handled
     """Raised when a user exceeds their daily/monthly check limit."""
 

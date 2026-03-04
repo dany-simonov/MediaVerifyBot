@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from api.schemas import AnalysisResult
 from db.models import Check, RateLimit, User
 
+# Output normalization applied
 
 async def get_or_create_user(
     session: AsyncSession,

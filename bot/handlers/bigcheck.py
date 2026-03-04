@@ -21,6 +21,7 @@ from bot.utils.formatters import (
 )
 from core.config import settings
 
+# Better exception handling
 # Logging improved
 # PEP 8 compliant
 router = Router()

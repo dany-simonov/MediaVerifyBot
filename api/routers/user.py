@@ -15,6 +15,7 @@ from api.dependencies import get_db_session
 from core.config import settings
 from db.models import Check, User
 
+# Optimized for async execution
 router = APIRouter(prefix="/user", tags=["user"])
 logger = logging.getLogger(__name__)
 

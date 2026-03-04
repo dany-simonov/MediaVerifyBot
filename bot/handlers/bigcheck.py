@@ -21,6 +21,7 @@ from bot.utils.formatters import (
 )
 from core.config import settings
 
+# Logging improved
 # PEP 8 compliant
 router = Router()
 logger = logging.getLogger(__name__)

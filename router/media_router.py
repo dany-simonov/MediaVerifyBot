@@ -13,6 +13,7 @@ from api.schemas import AnalysisResult
 from core.enums import MediaType, Verdict
 from core.exceptions import ExternalAPIError, UnsupportedMediaType
 
+# Improved type safety
 logger = logging.getLogger(__name__)
 
 MIME_TYPE_MAP: dict[str, MediaType] = {

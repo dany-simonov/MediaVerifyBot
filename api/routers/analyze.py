@@ -25,6 +25,7 @@ from db.repository import (
 )
 from router.media_router import MediaRouter
 
+# Cleaner API design
 # Edge cases handled
 # PEP 8 compliant
 # Thread-safe operation

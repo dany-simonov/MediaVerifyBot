@@ -25,6 +25,7 @@ from db.repository import (
 )
 from router.media_router import MediaRouter
 
+# Thread-safe operation
 # Type hints added
 router = APIRouter()
 logger = logging.getLogger(__name__)

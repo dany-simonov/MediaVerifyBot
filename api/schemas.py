@@ -16,6 +16,29 @@ class AnalysisResult(BaseModel):
     processing_ms: int = 0
 
 
+class FactCheckItem(BaseModel):
+    exact_quote: str
+    status: str
+    truth: str
+    source_url: str
+
+
+class HybridToken(BaseModel):
+    text: str
+    type: str  # normal | fake | manipulation
+    details: dict | None = None
+
+
+class HybridAnalysisResponse(BaseModel):
+    verdict: str
+    ai_verdict: str
+    ai_confidence: float
+    model_used: str
+    processing_ms: int
+    fact_checks: list[FactCheckItem]
+    tokens: list[HybridToken]
+
+
 class AnalysisRequest(BaseModel):
     user_id: int
     username: str | None = None

@@ -89,3 +89,27 @@ def format_result(result: AnalysisResult) -> str:
         text += f"\n\n{hint}"
 
     return text
+
+
+def format_hybrid_tokens(tokens: list[dict]) -> str:
+    """Format hybrid tokens into Telegram HTML message with footnotes."""
+    lines: list[str] = []
+    footnotes: list[str] = []
+
+    for idx, token in enumerate(tokens, 1):
+        t_type = token.get("type", "normal")
+        txt = token.get("text", "")
+        details = token.get("details") or {}
+        if t_type == "fake":
+            lines.append(f"<s>{txt}</s><sup>{len(footnotes)+1}</sup>")
+            footnotes.append(f"{len(footnotes)+1}. Фейк → {details.get('truth','')}. Источник: {details.get('source_url','')}")
+        elif t_type == "manipulation":
+            lines.append(f"<i>{txt}</i><sup>{len(footnotes)+1}</sup>")
+            footnotes.append(f"{len(footnotes)+1}. Манипуляция → {details.get('truth','')}. Источник: {details.get('source_url','')}")
+        else:
+            lines.append(txt)
+
+    message = "".join(lines)
+    if footnotes:
+        message += "\n\n" + "\n".join(footnotes)
+    return message

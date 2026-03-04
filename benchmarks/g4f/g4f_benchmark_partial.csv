@@ -1,0 +1,106 @@
+target_type,name,provider_label,model_name,score,latency_seconds,simple_response,json_valid,factcheck_valid,needs_auth,success,error_message
+provider,OperaAria,OperaAria,,92.2,8.22,True,True,True,False,True,
+provider,AIBadgr,AIBadgr,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,Anthropic,Anthropic,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,Antigravity,Antigravity,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,ApiAirforce,ApiAirforce,,0.0,4.28,False,False,False,False,False,TypeError: Object of type ABCMeta is not JSON serializable
+provider,AsyncGeneratorProvider,AsyncGeneratorProvider,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: AsyncGeneratorProvider is not working
+provider,AsyncProvider,AsyncProvider,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: AsyncProvider is not working
+provider,Azure,Azure,,0.0,0.82,False,False,False,False,False,TypeError: unsupported operand type(s) for +: 'ABCMeta' and 'NoneType'
+provider,BAAI_Ling,BAAI_Ling,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: BAAI_Ling is not working
+provider,BackendApi,BackendApi,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: BackendApi is not working
+provider,BaseProvider,BaseProvider,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: BaseProvider is not working
+provider,BingCreateImages,BingCreateImages,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,BlackForestLabs_Flux1Dev,BlackForestLabs_Flux1Dev,,0.0,1.3,False,False,False,False,False,ResponseError: You have exceeded your GPU quota (75s requested vs. 0s left). Try again in 0:00:00
+provider,BlackForestLabs_Flux1KontextDev,BlackForestLabs_Flux1KontextDev,,0.0,0.0,False,False,False,False,False,ValueError: No media files provided for image generation.
+provider,BlackboxPro,BlackboxPro,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,CablyAI,CablyAI,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,CachedSearch,CachedSearch,,0.0,0.0,False,False,False,False,False,TypeError: Object of type ABCMeta is not JSON serializable
+provider,Cerebras,Cerebras,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,Chatai,Chatai,,0.0,0.53,False,False,False,False,False,"ClientResponseError: 401, message='Unauthorized', url=URL('https://chatai.aritek.app/stream')"
+provider,Claude,Claude,,0.0,0.0,False,False,False,False,False,MissingAuthError: Claude cookie not found. Please set the 'CLAUDE_COOKIE' environment variable.
+provider,Cloudflare,Cloudflare,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: Cloudflare is not working
+provider,Cohere,Cohere,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,CohereForAI_C4AI_Command,CohereForAI_C4AI_Command,,0.0,0.0,False,False,False,False,False,ModelNotFoundError: Model <class 'g4f.Provider.hf_space.CohereForAI_C4AI_Command.CohereForAI_C4AI_Command'> not found
+provider,Copilot,Copilot,,0.0,0.0,False,False,False,False,False,NoValidHarFileError: No .har file found
+provider,CopilotAccount,CopilotAccount,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,CopilotSession,CopilotSession,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: CopilotSession is not working
+provider,CreateImagesProvider,CreateImagesProvider,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: CreateImagesProvider is not working
+provider,Custom,Custom,,0.0,0.0,False,False,False,False,False,TypeError: Object of type ABCMeta is not JSON serializable
+provider,DeepInfra,DeepInfra,,0.0,0.0,False,False,False,False,False,TypeError: Object of type ABCMeta is not JSON serializable
+provider,DeepSeek,DeepSeek,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,DeepSeekAPI,DeepSeekAPI,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,DeepseekAI_JanusPro7b,DeepseekAI_JanusPro7b,,0.0,0.0,False,False,False,False,False,TypeError: argument of type 'ABCMeta' is not iterable
+provider,EasyChat,EasyChat,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: EasyChat is not working
+provider,EdgeTTS,EdgeTTS,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: EdgeTTS is not working
+provider,Feature,Feature,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: Feature is not working
+provider,FenayAI,FenayAI,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,GLM,GLM,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: GLM is not working
+provider,Gemini,Gemini,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,GeminiCLI,GeminiCLI,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,GeminiPro,GeminiPro,,0.0,0.0,False,False,False,False,False,TypeError: Object of type ABCMeta is not JSON serializable
+provider,GigaChat,GigaChat,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,GithubCopilot,GithubCopilot,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,GithubCopilotAPI,GithubCopilotAPI,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,GlhfChat,GlhfChat,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,GoogleSearch,GoogleSearch,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: GoogleSearch is not working
+provider,GradientNetwork,GradientNetwork,,0.0,0.0,False,False,False,False,False,TypeError: argument of type 'ABCMeta' is not iterable
+provider,Grok,Grok,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,Groq,Groq,,0.0,0.0,False,False,False,False,False,TypeError: Object of type ABCMeta is not JSON serializable
+provider,HailuoAI,HailuoAI,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,HuggingChat,HuggingChat,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,HuggingFace,HuggingFace,,0.0,6.64,False,False,False,False,False,"MissingAuthError: Add a ""api_key"""
+provider,HuggingFaceAPI,HuggingFaceAPI,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,HuggingFaceInference,HuggingFaceInference,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: HuggingFaceInference is not working
+provider,HuggingFaceMedia,HuggingFaceMedia,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,HuggingSpace,HuggingSpace,,0.0,0.0,False,False,False,False,True,
+provider,ItalyGPT,ItalyGPT,,0.0,0.41,False,False,False,False,False,"ClientResponseError: 405, message='Method Not Allowed', url=URL('https://italygpt.it/api/chat')"
+provider,IterListProvider,IterListProvider,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: IterListProvider is not working
+provider,LMArena,LMArena,,0.0,0.0,False,False,False,False,False,"MissingRequirementsError: Install ""zendriver"" and ""platformdirs"" package | pip install -U zendriver platformdirs"
+provider,LambdaChat,LambdaChat,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: LambdaChat is not working
+provider,Local,Local,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: Local is not working
+provider,MarkItDown,MarkItDown,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: MarkItDown is not working
+provider,MetaAI,MetaAI,,0.0,0.46,False,False,False,False,False,ResponseStatusError: Response 403: Fetch home failed
+provider,MetaAIAccount,MetaAIAccount,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,MicrosoftDesigner,MicrosoftDesigner,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,Microsoft_Phi_4_Multimodal,Microsoft_Phi_4_Multimodal,,0.0,1.85,False,False,False,False,False,ResponseStatusError: Response 503: HTML content
+provider,MiniMax,MiniMax,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,Mintlify,Mintlify,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: Mintlify is not working
+provider,Nvidia,Nvidia,,0.0,0.0,False,False,False,False,False,TypeError: Object of type ABCMeta is not JSON serializable
+provider,OIVSCodeSer0501,OIVSCodeSer0501,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: OIVSCodeSer0501 is not working
+provider,OIVSCodeSer2,OIVSCodeSer2,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: OIVSCodeSer2 is not working
+provider,Ollama,Ollama,,0.0,5.07,False,False,False,False,False,TypeError: Object of type ABCMeta is not JSON serializable
+provider,OpenAIFM,OpenAIFM,,0.0,0.0,False,False,False,False,False,"TypeError: attribute name must be string, not 'ABCMeta'"
+provider,OpenRouter,OpenRouter,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,OpenRouterFree,OpenRouterFree,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,OpenaiAPI,OpenaiAPI,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,OpenaiAccount,OpenaiAccount,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,OpenaiChat,OpenaiChat,,0.0,0.0,False,False,False,False,False,NoValidHarFileError: No .har file found
+provider,OpenaiTemplate,OpenaiTemplate,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: OpenaiTemplate is not working
+provider,Perplexity,Perplexity,,0.0,0.37,False,False,False,False,False,TypeError: Object of type ABCMeta is not JSON serializable
+provider,PerplexityApi,PerplexityApi,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,Pi,Pi,,0.0,0.0,False,False,False,False,False,"MissingRequirementsError: Install ""zendriver"" and ""platformdirs"" package | pip install -U zendriver platformdirs"
+provider,PollinationsAI,PollinationsAI,,0.0,0.85,False,False,False,False,False,TypeError: Object of type ABCMeta is not JSON serializable
+provider,PollinationsImage,PollinationsImage,,0.0,1.01,False,False,False,False,False,Exception: Unexpected content type: text/plain; charset=UTF-8
+provider,PuterJS,PuterJS,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,Qwen,Qwen,,0.0,4.22,False,False,False,False,False,TypeError: Object of type ABCMeta is not JSON serializable
+provider,QwenCode,QwenCode,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,Qwen_Qwen_2_5,Qwen_Qwen_2_5,,0.0,1.09,False,False,False,False,False,"ContentTypeError: 0, message='Attempt to decode JSON with unexpected mimetype: text/html; charset=utf-8', url=URL('https://qwen-qwen2-5.hf.space/queue/join')"
+provider,Qwen_Qwen_2_5M,Qwen_Qwen_2_5M,,0.0,0.95,False,False,False,False,False,KeyError: 'data'
+provider,Qwen_Qwen_2_5_Max,Qwen_Qwen_2_5_Max,,0.0,1.1,False,False,False,False,False,"ContentTypeError: 0, message='Attempt to decode JSON with unexpected mimetype: text/html; charset=utf-8', url=URL('https://qwen-qwen2-5-max-demo.hf.space/gradio_api/queue/join')"
+provider,Qwen_Qwen_2_72B,Qwen_Qwen_2_72B,,0.0,1.08,False,False,False,False,False,"ContentTypeError: 0, message='Attempt to decode JSON with unexpected mimetype: text/html; charset=utf-8', url=URL('https://qwen-qwen2-72b-instruct.hf.space/queue/join')"
+provider,Qwen_Qwen_3,Qwen_Qwen_3,,0.0,0.0,False,False,False,False,False,TypeError: Object of type ABCMeta is not JSON serializable
+provider,Reka,Reka,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,Replicate,Replicate,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,RetryProvider,RetryProvider,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: RetryProvider is not working
+provider,RotatedProvider,RotatedProvider,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: RotatedProvider is not working
+provider,SearXNG,SearXNG,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: SearXNG is not working
+provider,StabilityAI_SD35Large,StabilityAI_SD35Large,,0.0,0.73,False,False,False,False,False,"ClientResponseError: 503, message='Service Unavailable', url=URL('https://stabilityai-stable-diffusion-3-5-large.hf.space/gradio_api/call/infer')"
+provider,TeachAnything,TeachAnything,,0.0,0.3,False,False,False,False,False,"ClientResponseError: 403, message='Forbidden', url=URL('https://www.teach-anything.com/api/generate')"
+provider,ThebApi,ThebApi,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,Together,Together,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,Video,Video,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,WeWordle,WeWordle,,0.0,0.0,False,False,False,False,False,TypeError: Object of type ABCMeta is not JSON serializable
+provider,WhiteRabbitNeo,WhiteRabbitNeo,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,You,You,,0.0,0.0,False,False,False,True,False,requires_auth
+provider,YouTube,YouTube,,0.0,0.0,False,False,False,False,False,ProviderNotWorkingError: YouTube is not working

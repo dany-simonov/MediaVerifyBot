@@ -65,19 +65,29 @@
     }
   }
 
+  /* ─── SVG Icons ─── */
+  var SVG_ICONS = {
+    folder: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>',
+    photo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
+    audio: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="4" y1="9" x2="4" y2="15"/><line x1="8" y1="5" x2="8" y2="19"/><line x1="12" y1="2" x2="12" y2="22"/><line x1="16" y1="6" x2="16" y2="18"/><line x1="20" y1="9" x2="20" y2="15"/></svg>',
+    video: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polygon points="10,8.5 10,15.5 16,12"/></svg>',
+    clip: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>',
+    text: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>'
+  };
+
   /* ─── Dropzone (empty state) ─── */
   function renderDropzone(container) {
     var zone = document.createElement('div');
     zone.className = 'bigcheck-dropzone';
     zone.id = 'bc-dropzone';
     zone.innerHTML =
-      '<div class="upload-icon">📁</div>' +
+      '<div class="upload-icon">' + SVG_ICONS.folder + '</div>' +
       '<p>Перетащи файлы сюда или нажми для выбора</p>' +
-      '<button class="bigcheck-upload-btn" id="bc-upload-btn" type="button">📎 Выбрать файл</button>' +
+      '<button class="bigcheck-upload-btn" id="bc-upload-btn" type="button"><span class="btn-icon">' + SVG_ICONS.clip + '</span> Выбрать файл</button>' +
       '<div class="bigcheck-type-btns">' +
-        '<button class="bigcheck-type-btn" data-accept="image/*" type="button">📷 Фото</button>' +
-        '<button class="bigcheck-type-btn" data-accept="audio/*" type="button">🎵 Аудио</button>' +
-        '<button class="bigcheck-type-btn" data-accept="video/*" type="button">🎬 Видео</button>' +
+        '<button class="bigcheck-type-btn" data-accept="image/*" type="button"><span class="btn-icon">' + SVG_ICONS.photo + '</span> Фото</button>' +
+        '<button class="bigcheck-type-btn" data-accept="audio/*" type="button"><span class="btn-icon">' + SVG_ICONS.audio + '</span> Аудио</button>' +
+        '<button class="bigcheck-type-btn" data-accept="video/*" type="button"><span class="btn-icon">' + SVG_ICONS.video + '</span> Видео</button>' +
       '</div>' +
       '<div class="bigcheck-hint">Поддерживаемые форматы: JPG, PNG, MP4, MOV, WAV, MP3, OGG · Макс. размер: 20 МБ</div>';
 
@@ -218,7 +228,7 @@
     textBtn.type = 'button';
     textBtn.style.margin = '16px auto 0';
     textBtn.style.display = 'block';
-    textBtn.textContent = '📝 Добавить текст';
+    textBtn.innerHTML = '<span class="btn-icon">' + SVG_ICONS.text + '</span> Добавить текст';
     textBtn.id = 'bc-text-toggle';
 
     var textarea = document.createElement('textarea');

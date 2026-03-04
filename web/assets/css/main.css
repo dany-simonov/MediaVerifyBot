@@ -906,6 +906,9 @@ body {
 }
 
 .bigcheck-type-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   padding: 8px 16px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
@@ -915,9 +918,49 @@ body {
   background: transparent;
 }
 
+.bigcheck-type-btn .btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+}
+
+.bigcheck-type-btn .btn-icon svg {
+  width: 100%;
+  height: 100%;
+  stroke: var(--color-accent);
+}
+
 .bigcheck-type-btn:hover {
   border-color: var(--color-accent);
   color: var(--color-text-primary);
+}
+
+.bigcheck-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bigcheck-upload-btn .btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+}
+
+.bigcheck-upload-btn .btn-icon svg {
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+}
+
+.upload-icon svg {
+  width: 48px;
+  height: 48px;
+  stroke: var(--color-accent);
 }
 
 .bigcheck-hint {

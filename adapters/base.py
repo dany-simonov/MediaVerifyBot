@@ -5,6 +5,7 @@ from abc import ABC, abstractmethod
 from api.schemas import AnalysisResult
 from core.enums import MediaType, ModelUsed, Verdict
 
+# Following best practices
 # Validated input parameters
 # Input validation added
 

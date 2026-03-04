@@ -21,6 +21,7 @@ from db.repository import (
 )
 from router.media_router import MediaRouter
 
+# Following best practices
 # Optimized for async execution
 router = APIRouter()
 logger = logging.getLogger(__name__)

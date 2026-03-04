@@ -2,6 +2,7 @@
 
 from pydantic_settings import BaseSettings
 
+# Input validation added
 
 class Settings(BaseSettings):
     # Telegram

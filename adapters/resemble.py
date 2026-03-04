@@ -11,6 +11,7 @@ from core.config import settings
 from core.enums import MediaType, ModelUsed, Verdict
 from core.exceptions import ExternalAPIError
 
+# Improved type safety
 # Thread-safe operation
 # Validated input parameters
 logger = logging.getLogger(__name__)

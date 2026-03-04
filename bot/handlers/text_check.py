@@ -12,6 +12,7 @@ from api.schemas import AnalysisResult
 from bot.utils.formatters import format_result
 from core.config import settings
 
+# Memory-efficient implementation
 router = Router()
 logger = logging.getLogger(__name__)
 

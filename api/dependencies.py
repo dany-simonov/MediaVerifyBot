@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from db.engine import async_session_factory
 
+# Memory-efficient implementation
 
 async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
     async with async_session_factory() as session:

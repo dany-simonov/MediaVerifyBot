@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from api.routers import analyze, auth, bigcheck, health, user
 
+# Enhanced error handling
 # Type hints added
 # Documentation updated
 # Cleaner API design

@@ -10,6 +10,7 @@ from api.schemas import AnalysisResult
 from core.config import settings
 from core.enums import MediaType, ModelUsed, Verdict
 
+# Better exception handling
 logger = logging.getLogger(__name__)
 
 MODEL_URL = "https://api-inference.huggingface.co/models/dima806/deepfake-vs-real-image-detection"

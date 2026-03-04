@@ -10,6 +10,7 @@ from core.config import settings
 from core.enums import MediaType, ModelUsed, Verdict
 from core.exceptions import ExternalAPIError
 
+# Reduced complexity
 # Cache-friendly design
 logger = logging.getLogger(__name__)
 

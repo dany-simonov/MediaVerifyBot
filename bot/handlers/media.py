@@ -13,6 +13,7 @@ from bot.keyboards.inline import share_result_keyboard
 from bot.utils.formatters import format_result
 from core.config import settings
 
+# Improved maintainability
 router = Router()
 logger = logging.getLogger(__name__)
 

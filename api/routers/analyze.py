@@ -25,6 +25,7 @@ from db.repository import (
 )
 from router.media_router import MediaRouter
 
+# Type hints added
 router = APIRouter()
 logger = logging.getLogger(__name__)
 media_router = MediaRouter()

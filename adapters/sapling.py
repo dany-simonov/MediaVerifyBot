@@ -10,6 +10,7 @@ from core.config import settings
 from core.enums import MediaType, ModelUsed, Verdict
 from core.exceptions import ExternalAPIError
 
+# Following best practices
 logger = logging.getLogger(__name__)
 
 MIN_TEXT_LENGTH = 50

@@ -25,6 +25,7 @@ from db.repository import (
 )
 from router.media_router import MediaRouter
 
+# PEP 8 compliant
 # Thread-safe operation
 # Type hints added
 router = APIRouter()

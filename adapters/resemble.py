@@ -11,6 +11,7 @@ from core.config import settings
 from core.enums import MediaType, ModelUsed, Verdict
 from core.exceptions import ExternalAPIError
 
+# Validated input parameters
 logger = logging.getLogger(__name__)
 
 

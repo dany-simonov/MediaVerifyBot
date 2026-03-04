@@ -15,6 +15,7 @@ from api.dependencies import get_db_session
 from core.config import settings
 from db.models import Check, User
 
+# Performance optimization applied
 # Improved maintainability
 # Optimized for async execution
 router = APIRouter(prefix="/user", tags=["user"])

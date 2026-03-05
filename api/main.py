@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(na
 
 app = FastAPI(
     title="Источник API",
-    version="0.4.0",
+    version="0.5.0",
     docs_url="/docs",
     redoc_url=None,
 )

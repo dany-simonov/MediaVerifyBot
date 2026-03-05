@@ -2,10 +2,22 @@
 (function () {
   'use strict';
 
-  var MEDIA_ICONS = { image: '📷', audio: '🎵', video: '🎬', text: '📝' };
+  // SVG Icons via IstochnikIcons (icons.js)
+  function getMediaIcon(type) {
+    if (!window.IstochnikIcons) return '';
+    var iconMap = { image: 'image', audio: 'audio', video: 'video', text: 'text' };
+    return window.IstochnikIcons.iconHTML(iconMap[type] || 'document', { className: 'accent', size: 24 });
+  }
+
+  function getVerdictIcon(verdict) {
+    if (!window.IstochnikIcons) return '';
+    var iconMap = { REAL: 'real', FAKE: 'fake', UNCERTAIN: 'uncertain' };
+    var colorMap = { REAL: 'real', FAKE: 'fake', UNCERTAIN: 'uncertain' };
+    return window.IstochnikIcons.iconHTML(iconMap[verdict] || 'uncertain', { className: colorMap[verdict], size: 18 });
+  }
+
   var MEDIA_LABELS_RU = { image: 'Изображение', audio: 'Аудио', video: 'Видео', text: 'Текст' };
   var VERDICT_TEXT = { REAL: 'Человеческий контент', FAKE: 'Сгенерировано ИИ', UNCERTAIN: 'Не определено' };
-  var VERDICT_EMOJI = { REAL: '✅', FAKE: '🚫', UNCERTAIN: '⚠️' };
   var MODEL_NAMES = {
     sightengine: 'Sightengine (фото)',
     sightengine_video_pipeline: 'Sightengine (видео)',
@@ -125,10 +137,10 @@
       '<div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-md);padding:20px;">' +
         '<h3 style="font-weight:500;margin-bottom:16px;">Как использовать</h3>' +
         '<div style="display:flex;flex-direction:column;gap:12px;">' +
-          '<div style="display:flex;align-items:center;gap:12px;"><span style="font-size:20px">📷</span><span style="color:var(--color-text-secondary);font-size:14px">Фото — детекция AI-генерации (94.4%)</span></div>' +
-          '<div style="display:flex;align-items:center;gap:12px;"><span style="font-size:20px">🎵</span><span style="color:var(--color-text-secondary);font-size:14px">Аудио — синтетическая речь (99.5%)</span></div>' +
-          '<div style="display:flex;align-items:center;gap:12px;"><span style="font-size:20px">🎬</span><span style="color:var(--color-text-secondary);font-size:14px">Видео — покадровый анализ (81%)</span></div>' +
-          '<div style="display:flex;align-items:center;gap:12px;"><span style="font-size:20px">📝</span><span style="color:var(--color-text-secondary);font-size:14px">Текст — написан ИИ (98%)</span></div>' +
+          '<div style="display:flex;align-items:center;gap:12px;">' + (window.IstochnikIcons ? window.IstochnikIcons.iconHTML('image', { className: 'accent', size: 20 }) : '') + '<span style="color:var(--color-text-secondary);font-size:14px">Фото — детекция AI-генерации (94.4%)</span></div>' +
+          '<div style="display:flex;align-items:center;gap:12px;">' + (window.IstochnikIcons ? window.IstochnikIcons.iconHTML('audio', { className: 'accent', size: 20 }) : '') + '<span style="color:var(--color-text-secondary);font-size:14px">Аудио — синтетическая речь (99.5%)</span></div>' +
+          '<div style="display:flex;align-items:center;gap:12px;">' + (window.IstochnikIcons ? window.IstochnikIcons.iconHTML('video', { className: 'accent', size: 20 }) : '') + '<span style="color:var(--color-text-secondary);font-size:14px">Видео — покадровый анализ (81%)</span></div>' +
+          '<div style="display:flex;align-items:center;gap:12px;">' + (window.IstochnikIcons ? window.IstochnikIcons.iconHTML('text', { className: 'accent', size: 20 }) : '') + '<span style="color:var(--color-text-secondary);font-size:14px">Текст — написан ИИ (98%)</span></div>' +
         '</div>' +
       '</div>';
   }
@@ -252,7 +264,7 @@
     if (filtered.length === 0) {
       content.innerHTML +=
         '<div style="text-align:center;padding:80px 0;">' +
-          '<div style="font-size:48px;margin-bottom:16px;">📭</div>' +
+          '<div style="margin-bottom:16px;display:flex;justify-content:center;">' + (window.IstochnikIcons ? window.IstochnikIcons.iconHTML('empty', { className: 'muted', size: 48 }) : '') + '</div>' +
           '<h3 style="font-weight:500;margin-bottom:8px;">Проверок пока нет</h3>' +
           '<p style="color:var(--color-text-secondary);font-size:14px;">Отправьте файл боту для анализа</p>' +
         '</div>';
@@ -270,7 +282,7 @@
     var card = document.createElement('div');
     card.className = 'check-card';
 
-    var icon = MEDIA_ICONS[check.media_type] || '📄';
+    var icon = getMediaIcon(check.media_type);
     var label = MEDIA_LABELS_RU[check.media_type] || check.media_type;
     var verdClass = check.verdict === 'REAL' ? 'real' : check.verdict === 'FAKE' ? 'fake' : 'uncertain';
     var verdText = VERDICT_TEXT[check.verdict] || check.verdict;
@@ -298,8 +310,8 @@
           '<span style="font-size:13px;color:var(--color-text-secondary);">' + modelName + ' · ' + check.processing_ms + ' мс</span>' +
         '</div>' +
         '<div class="check-card-actions">' +
-          '<button onclick="window._copyCheck(\'' + check.id + '\')">📋 Копировать результат</button>' +
-          '<button onclick="window._downloadPDF(\'' + check.id + '\')">📄 Скачать PDF</button>' +
+          '<button onclick="window._copyCheck(\'' + check.id + '\')">' + (window.IstochnikIcons ? window.IstochnikIcons.iconHTML('history', { size: 14 }) : '') + ' Копировать результат</button>' +
+          '<button onclick="window._downloadPDF(\'' + check.id + '\')">' + (window.IstochnikIcons ? window.IstochnikIcons.iconHTML('document', { size: 14 }) : '') + ' Скачать PDF</button>' +
         '</div>' +
       '</div>';
 
@@ -340,9 +352,9 @@
       var btns = document.querySelectorAll('.check-card-actions button');
       btns.forEach(function (btn) {
         if (btn.textContent.indexOf('Копировать') > -1 && btn.closest('.check-card-expand.open')) {
-          var orig = btn.textContent;
-          btn.textContent = '✓ Скопировано';
-          setTimeout(function () { btn.textContent = orig; }, 2000);
+          var orig = btn.innerHTML;
+          btn.innerHTML = (window.IstochnikIcons ? window.IstochnikIcons.iconHTML('check', { className: 'real', size: 14 }) : '✓') + ' Скопировано';
+          setTimeout(function () { btn.innerHTML = orig; }, 2000);
         }
       });
     });
@@ -370,9 +382,9 @@
           '<h3>FREE</h3>' +
           '<div class="pricing-price">0 ₽</div>' +
           '<ul class="pricing-features">' +
-            '<li><span class="check">✓</span> 3 проверки/день</li>' +
-            '<li><span class="check">✓</span> Все форматы</li>' +
-            '<li><span class="check">✓</span> Базовый вердикт</li>' +
+            '<li>' + (window.IstochnikIcons ? window.IstochnikIcons.iconHTML('check', { className: 'real', size: 16 }) : '<span class="check">✓</span>') + ' 3 проверки/день</li>' +
+            '<li>' + (window.IstochnikIcons ? window.IstochnikIcons.iconHTML('check', { className: 'real', size: 16 }) : '<span class="check">✓</span>') + ' Все форматы</li>' +
+            '<li>' + (window.IstochnikIcons ? window.IstochnikIcons.iconHTML('check', { className: 'real', size: 16 }) : '<span class="check">✓</span>') + ' Базовый вердикт</li>' +
           '</ul>' +
           '<span class="pricing-btn disabled">Текущий тариф</span>' +
         '</div>' +
@@ -381,11 +393,11 @@
           '<h3>PREMIUM</h3>' +
           '<div class="pricing-price">199 ₽/мес</div>' +
           '<ul class="pricing-features">' +
-            '<li><span class="check">✓</span> 100 проверок/мес</li>' +
-            '<li><span class="check">✓</span> Приоритетная обработка</li>' +
-            '<li><span class="check">✓</span> История 30 дней</li>' +
-            '<li><span class="check">✓</span> Экспорт отчётов PDF</li>' +
-            '<li><span class="check">✓</span> Поделиться результатом</li>' +
+            '<li>' + (window.IstochnikIcons ? window.IstochnikIcons.iconHTML('check', { className: 'real', size: 16 }) : '<span class="check">✓</span>') + ' 100 проверок/мес</li>' +
+            '<li>' + (window.IstochnikIcons ? window.IstochnikIcons.iconHTML('check', { className: 'real', size: 16 }) : '<span class="check">✓</span>') + ' Приоритетная обработка</li>' +
+            '<li>' + (window.IstochnikIcons ? window.IstochnikIcons.iconHTML('check', { className: 'real', size: 16 }) : '<span class="check">✓</span>') + ' История 30 дней</li>' +
+            '<li>' + (window.IstochnikIcons ? window.IstochnikIcons.iconHTML('check', { className: 'real', size: 16 }) : '<span class="check">✓</span>') + ' Экспорт отчётов PDF</li>' +
+            '<li>' + (window.IstochnikIcons ? window.IstochnikIcons.iconHTML('check', { className: 'real', size: 16 }) : '<span class="check">✓</span>') + ' Поделиться результатом</li>' +
           '</ul>' +
           '<span class="pricing-btn disabled">Скоро</span>' +
         '</div>' +
@@ -414,7 +426,7 @@
         '<h3 style="font-weight:500;margin-bottom:12px;">Приватность</h3>' +
         '<p style="color:var(--color-text-secondary);font-size:14px;line-height:1.6;">Файлы обрабатываются исключительно в оперативной памяти сервера и не сохраняются на диске. Персональные данные не передаются третьим лицам.</p>' +
       '</div>' +
-      '<p style="text-align:center;color:var(--color-text-muted);font-size:12px;margin-top:24px;">v0.2.0 · Источник</p>';
+      '<p style="text-align:center;color:var(--color-text-muted);font-size:12px;margin-top:24px;">v0.5.0 · Источник</p>';
   }
 
   function makeStatBar(label, value) {

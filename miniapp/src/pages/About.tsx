@@ -51,7 +51,7 @@ export function About() {
 
       {/* Version */}
       <p className="text-center text-mv-text-secondary text-xs">
-        v0.2.0 · Источник
+        v0.5.0 · Источник
       </p>
     </div>
   )

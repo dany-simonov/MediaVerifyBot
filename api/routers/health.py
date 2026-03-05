@@ -25,4 +25,4 @@ async def health() -> HealthResponse:
         logger.error("Health check DB failure: %s", exc)
         db_status = "unavailable"
 
-    return HealthResponse(status="ok", version="0.1.0", db=db_status)
+    return HealthResponse(status="ok", version="0.5.0", db=db_status)

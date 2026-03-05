@@ -1,4 +1,4 @@
-/* auth.js — Authentication modal for Источник platform (v0.4.0) */
+/* auth.js — Authentication modal for Источник platform (v0.5.0) */
 (function () {
   'use strict';
 

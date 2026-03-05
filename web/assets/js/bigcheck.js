@@ -18,6 +18,8 @@
 
   /* ─── Constants ─── */
   var MEDIA_LABELS = { image: 'Фото', audio: 'Аудио', video: 'Видео', text: 'Текст' };
+  var MEDIA_ICONS = { image: '🖼️', audio: '🎵', video: '🎬', text: '📝' };
+  var VERDICT_EMOJI = { REAL: '✅', FAKE: '❌', UNCERTAIN: '⚠️' };
   var VERDICT_TEXT = { REAL: 'Подлинный контент', FAKE: 'Сгенерировано ИИ', UNCERTAIN: 'Неопределённо' };
   var VERDICT_TEXT_SHORT = { REAL: 'Подлинное', FAKE: 'Сгенерировано', UNCERTAIN: 'Неопред.' };
   var MODEL_NAMES = {

@@ -2,10 +2,22 @@
 (function () {
   'use strict';
 
+  // SVG Icons via IstochnikIcons (icons.js)
+  function getMediaIconSVG(type) {
+    if (!window.IstochnikIcons) return '';
+    var iconMap = { image: 'image', audio: 'audio', video: 'video', text: 'text' };
+    return window.IstochnikIcons.iconHTML(iconMap[type] || 'document', { className: 'accent', size: 24 });
+  }
+
+  function getVerdictIconSVG(verdict) {
+    if (!window.IstochnikIcons) return '';
+    var iconMap = { REAL: 'real', FAKE: 'fake', UNCERTAIN: 'uncertain' };
+    var classMap = { REAL: 'real', FAKE: 'fake', UNCERTAIN: 'uncertain' };
+    return window.IstochnikIcons.iconHTML(iconMap[verdict] || 'warning', { className: classMap[verdict], size: 18 });
+  }
+
   /* ─── Constants ─── */
-  var MEDIA_ICONS = { image: '📷', audio: '🎵', video: '🎬', text: '📝' };
   var MEDIA_LABELS = { image: 'Фото', audio: 'Аудио', video: 'Видео', text: 'Текст' };
-  var VERDICT_EMOJI = { REAL: '✅', FAKE: '🚫', UNCERTAIN: '⚠️' };
   var VERDICT_TEXT = { REAL: 'Подлинный контент', FAKE: 'Сгенерировано ИИ', UNCERTAIN: 'Неопределённо' };
   var VERDICT_TEXT_SHORT = { REAL: 'Подлинное', FAKE: 'Сгенерировано', UNCERTAIN: 'Неопред.' };
   var MODEL_NAMES = {
@@ -85,7 +97,8 @@
 
     var toast = document.createElement('div');
     toast.className = 'toast toast-' + type;
-    var icon = type === 'error' ? '❌' : type === 'success' ? '✅' : type === 'warning' ? '⚠️' : 'ℹ️';
+    var iconName = type === 'error' ? 'fake' : type === 'success' ? 'real' : type === 'warning' ? 'uncertain' : 'info';
+    var icon = window.IstochnikIcons ? window.IstochnikIcons.iconHTML(iconName, { size: 18 }) : '';
     toast.innerHTML = '<span class="toast-icon">' + icon + '</span><span class="toast-message">' + message + '</span>';
     container.appendChild(toast);
 
@@ -774,7 +787,7 @@
     if (animate) {
       var arcLen = computeArcLength(r, angle);
       valPath.style.strokeDasharray = arcLen + ' 999';
-      valPath.style.strokeDashoffset = arcLen;
+      valPath.style.strokeDashoffset = -arcLen;
     }
 
     svg.appendChild(valPath);

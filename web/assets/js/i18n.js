@@ -1,4 +1,4 @@
-/* i18n.js — Internationalization for Источник platform (v0.4.0) */
+/* i18n.js — Internationalization for Источник platform (v0.5.0) */
 (function () {
   'use strict';
 
@@ -58,12 +58,15 @@
       'roadmap.v03.tag': 'Выпущено',
       'roadmap.v03.title': 'v0.3.0 — Масштабирование',
       'roadmap.v03.desc': 'Big Check (пакетный кросс-анализ), Drag&Drop загрузчик, тариф Enterprise (B2B API) и тепловые карты (Explainable AI).',
-      'roadmap.v04.tag': 'Текущая',
+      'roadmap.v04.tag': 'Выпущено',
       'roadmap.v04.title': 'v0.4.0 — Глобальное обновление',
-      'roadmap.v04.desc': 'Внедрение системы авторизации (Telegram + Email), редизайн системы карточек с кастомными SVG-иконками и переработка архитектуры страниц.',
-      'roadmap.v05.tag': 'Скоро',
-      'roadmap.v05.title': 'v0.5.0 — B2B & API',
-      'roadmap.v05.desc': 'Полноценный релиз личного кабинета, запуск публичного REST API для интеграции с медиа-платформами и релиз расширения для браузера.',
+      'roadmap.v04.desc': 'Внедрение системы авторизации (Telegram + Email), редизайн системы карточек.',
+      'roadmap.v05.tag': 'Текущая',
+      'roadmap.v05.title': 'v0.5.0 — Фирменный стиль',
+      'roadmap.v05.desc': 'Фирменные SVG-иконки, исправление анимаций, улучшение UI/UX.',
+      'roadmap.v06.tag': 'Скоро',
+      'roadmap.v06.title': 'v0.6.0 — B2B & API',
+      'roadmap.v06.desc': 'Публичный REST API, личный кабинет с историей, браузерное расширение.',
 
       /* ── Auth ── */
       'auth.title': 'Вход в Источник',

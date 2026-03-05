@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Документация — Источник</title>
+  <meta name="description" content="Документация REST API для интеграции системы верификации медиа Источник" />
+  <link rel="icon" href="assets/img/logo.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/reset.css" />
+  <link rel="stylesheet" href="assets/css/tokens.css" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <style>
+    :root {
+      --code-bg: #0f1117;
+      --code-border: #2d2d3a;
+    }
+    
+    .docs-layout {
+      display: flex;
+      min-height: calc(100vh - 64px);
+    }
+    
+    /* Sidebar */
+    .docs-sidebar {
+      width: 260px;
+      background: var(--color-surface);
+      border-right: 1px solid var(--color-border);
+      padding: 24px 0;
+      position: sticky;
+      top: 64px;
+      height: calc(100vh - 64px);
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+    .docs-sidebar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .docs-sidebar::-webkit-scrollbar-thumb {
+      background: var(--color-border);
+      border-radius: 2px;
+    }
+    
+    .sidebar-section {
+      margin-bottom: 24px;
+    }
+    .sidebar-section-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-text-muted);
+      padding: 0 20px;
+      margin-bottom: 8px;
+    }
+    .sidebar-nav a {
+      display: block;
+      padding: 8px 20px;
+      font-size: 14px;
+      color: var(--color-text-secondary);
+      transition: all var(--transition-fast);
+      border-left: 2px solid transparent;
+    }
+    .sidebar-nav a:hover {
+      color: var(--color-text-primary);
+      background: var(--color-surface-2);
+    }
+    .sidebar-nav a.active {
+      color: var(--color-accent);
+      border-left-color: var(--color-accent);
+      background: rgba(13, 148, 136, 0.08);
+    }
+    
+    /* Main content */
+    .docs-content {
+      flex: 1;
+      padding: 40px 48px;
+      max-width: 900px;
+    }
+    
+    .docs-header {
+      margin-bottom: 40px;
+    }
+    .docs-header h1 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .docs-header p {
+      font-size: 16px;
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+    }
+    
+    .docs-section {
+      margin-bottom: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .docs-section:last-child {
+      border-bottom: none;
+    }
+    
+    .docs-section h2 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      scroll-margin-top: 80px;
+    }
+    .docs-section h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 24px 0 12px;
+    }
+    .docs-section p {
+      font-size: 15px;
+      color: var(--color-text-secondary);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .docs-section ul, .docs-section ol {
+      margin: 16px 0;
+      padding-left: 24px;
+    }
+    .docs-section li {
+      font-size: 15px;
+      color: var(--color-text-secondary);
+      line-height: 1.7;
+      margin-bottom: 8px;
+    }
+    
+    /* Code blocks */
+    .code-block {
+      background: var(--code-bg);
+      border: 1px solid var(--code-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      margin: 16px 0;
+    }
+    .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid var(--code-border);
+    }
+    .code-lang {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+    }
+    .code-copy {
+      padding: 4px 10px;
+      font-size: 12px;
+      border-radius: var(--radius-sm);
+      background: var(--color-surface-2);
+      color: var(--color-text-secondary);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .code-copy:hover {
+      background: var(--color-accent);
+      color: #fff;
+    }
+    .code-content {
+      padding: 16px;
+      overflow-x: auto;
+    }
+    .code-content pre {
+      margin: 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #e5e7eb;
+    }
+    .code-content .comment { color: #6b7280; }
+    .code-content .string { color: #a5d6ff; }
+    .code-content .keyword { color: #ff7b72; }
+    .code-content .number { color: #79c0ff; }
+    .code-content .function { color: #d2a8ff; }
+    
+    /* Inline code */
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      background: rgba(255,255,255,0.06);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #e5e7eb;
+    }
+    
+    /* Tables */
+    .docs-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+    .docs-table th, .docs-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--color-border);
+      font-size: 14px;
+    }
+    .docs-table th {
+      font-weight: 600;
+      color: var(--color-text-primary);
+      background: var(--color-surface);
+    }
+    .docs-table td {
+      color: var(--color-text-secondary);
+    }
+    .docs-table code {
+      font-size: 12px;
+    }
+    
+    /* Method badges */
+    .method-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .method-badge.post {
+      background: rgba(34, 197, 94, 0.15);
+      color: #22c55e;
+    }
+    .method-badge.get {
+      background: rgba(59, 130, 246, 0.15);
+      color: #3b82f6;
+    }
+    
+    /* Endpoint card */
+    .endpoint-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .endpoint-url {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      color: var(--color-text-primary);
+    }
+    
+    /* Alert boxes */
+    .alert {
+      padding: 16px 20px;
+      border-radius: var(--radius-md);
+      margin: 20px 0;
+      display: flex;
+      gap: 12px;
+    }
+    .alert-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+    .alert-content {
+      flex: 1;
+    }
+    .alert-content strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--color-text-primary);
+    }
+    .alert-content p {
+      margin: 0;
+      font-size: 14px;
+    }
+    .alert-warning {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+    .alert-warning .alert-content p { color: var(--color-uncertain); }
+    .alert-info {
+      background: rgba(13, 148, 136, 0.1);
+      border: 1px solid rgba(13, 148, 136, 0.3);
+    }
+    .alert-info .alert-content p { color: var(--color-accent); }
+    
+    /* Try it form */
+    .tryit-form {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .tryit-form h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tryit-input {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      color: var(--color-text-primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+    .tryit-input:focus {
+      outline: none;
+      border-color: var(--color-accent);
+    }
+    .tryit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--color-accent);
+      color: #fff;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+    .tryit-btn:hover {
+      background: var(--color-accent-hover);
+    }
+    .tryit-result {
+      margin-top: 16px;
+      padding: 16px;
+      background: var(--code-bg);
+      border-radius: var(--radius-sm);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: #e5e7eb;
+      white-space: pre-wrap;
+      display: none;
+    }
+    
+    @media (max-width: 1024px) {
+      .docs-sidebar {
+        display: none;
+      }
+      .docs-content {
+        padding: 24px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner container">
+      <a href="index.html" class="header-logo">
+        <img src="assets/img/logo.png" alt="Источник" />
+        <span>Источник</span>
+      </a>
+      <nav class="header-nav">
+        <a href="index.html#features">Возможности</a>
+        <a href="index.html#bigcheck">Проверка</a>
+        <a href="faq.html">FAQ</a>
+        <a href="docs.html" style="color:var(--color-accent);">API Docs</a>
+      </nav>
+      <div class="header-actions">
+        <a href="https://t.me/MediaVerifyBot" class="btn-tg-header" target="_blank" rel="noopener">
+          Получить API ключ
+        </a>
+      </div>
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="docs-layout">
+    <!-- Sidebar -->
+    <aside class="docs-sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Начало работы</div>
+        <nav class="sidebar-nav">
+          <a href="#introduction" class="active">Введение</a>
+          <a href="#authentication">Аутентификация</a>
+          <a href="#quickstart">Быстрый старт</a>
+        </nav>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">API Reference</div>
+        <nav class="sidebar-nav">
+          <a href="#analyze">POST /analyze</a>
+          <a href="#analyze-text">POST /analyze/text/hybrid</a>
+          <a href="#health">GET /health</a>
+        </nav>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Дополнительно</div>
+        <nav class="sidebar-nav">
+          <a href="#rate-limits">Rate Limits</a>
+          <a href="#errors">Обработка ошибок</a>
+          <a href="#examples">Примеры интеграции</a>
+          <a href="#changelog">Changelog</a>
+        </nav>
+      </div>
+    </aside>
+
+    <!-- Content -->
+    <main class="docs-content">
+      <!-- Dev notice -->
+      <div class="alert alert-warning">
+        <span class="alert-icon">🚧</span>
+        <div class="alert-content">
+          <strong>API в активной разработке</strong>
+          <p>Эндпоинты и форматы ответов могут меняться. Подписывайтесь на обновления в Telegram.</p>
+        </div>
+      </div>
+
+      <!-- Introduction -->
+      <section class="docs-section" id="introduction">
+        <div class="docs-header">
+          <h1>API Документация</h1>
+          <p>REST API для интеграции системы верификации медиа в ваши приложения. Проверяйте фото, видео, аудио и текст на подлинность.</p>
+        </div>
+        
+        <h3>Возможности API</h3>
+        <ul>
+          <li><strong>Изображения</strong> — детекция AI-сгенерированных фото (Sightengine, 94.4% точность)</li>
+          <li><strong>Аудио</strong> — детекция синтетической речи и voice cloning (Resemble, 99.5%)</li>
+          <li><strong>Видео</strong> — покадровый анализ на deepfake (81%)</li>
+          <li><strong>Текст</strong> — детекция ChatGPT и AI-текстов (Sapling, 98%)</li>
+        </ul>
+        
+        <h3>Base URL</h3>
+        <div class="code-block">
+          <div class="code-content">
+            <pre>https://mediaverifybot-api.onrender.com</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Authentication -->
+      <section class="docs-section" id="authentication">
+        <h2>Аутентификация</h2>
+        <p>Все запросы к API требуют ключа аутентификации, который передаётся в заголовке <code>x-api-secret</code>.</p>
+        
+        <h3>Получение API ключа</h3>
+        <ol>
+          <li>Откройте Telegram бот <a href="https://t.me/MediaVerifyBot" target="_blank">@MediaVerifyBot</a></li>
+          <li>Отправьте команду <code>/api_key</code></li>
+          <li>Скопируйте полученный ключ</li>
+        </ol>
+        
+        <div class="alert alert-info">
+          <span class="alert-icon">ℹ️</span>
+          <div class="alert-content">
+            <strong>Безопасность</strong>
+            <p>Никогда не публикуйте API ключ в клиентском коде. Храните его только на серверной стороне.</p>
+          </div>
+        </div>
+        
+        <h3>Пример заголовка</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">HTTP Headers</span>
+          </div>
+          <div class="code-content">
+            <pre>x-api-secret: your_api_key_here
+Content-Type: multipart/form-data</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quickstart -->
+      <section class="docs-section" id="quickstart">
+        <h2>Быстрый старт</h2>
+        <p>Пример проверки изображения на AI-генерацию за 3 шага:</p>
+        
+        <h3>Python</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">Python</span>
+            <button class="code-copy" onclick="copyCode(this)">Копировать</button>
+          </div>
+          <div class="code-content">
+            <pre><span class="keyword">import</span> requests
+
+API_URL = <span class="string">"https://mediaverifybot-api.onrender.com/analyze"</span>
+API_KEY = <span class="string">"your_api_key_here"</span>
+
+<span class="keyword">def</span> <span class="function">check_image</span>(file_path):
+    <span class="keyword">with</span> <span class="function">open</span>(file_path, <span class="string">"rb"</span>) <span class="keyword">as</span> f:
+        response = requests.post(
+            API_URL,
+            headers={<span class="string">"x-api-secret"</span>: API_KEY},
+            files={<span class="string">"file"</span>: f},
+            data={<span class="string">"user_id"</span>: <span class="number">12345</span>}
+        )
+    <span class="keyword">return</span> response.json()
+
+result = check_image(<span class="string">"photo.jpg"</span>)
+<span class="function">print</span>(f<span class="string">"Вердикт: {result['verdict']}"</span>)
+<span class="function">print</span>(f<span class="string">"Уверенность: {result['confidence'] * 100:.1f}%"</span>)</pre>
+          </div>
+        </div>
+        
+        <h3>JavaScript (Node.js)</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">JavaScript</span>
+            <button class="code-copy" onclick="copyCode(this)">Копировать</button>
+          </div>
+          <div class="code-content">
+            <pre><span class="keyword">const</span> fs = <span class="function">require</span>(<span class="string">'fs'</span>);
+<span class="keyword">const</span> FormData = <span class="function">require</span>(<span class="string">'form-data'</span>);
+<span class="keyword">const</span> fetch = <span class="function">require</span>(<span class="string">'node-fetch'</span>);
+
+<span class="keyword">const</span> API_URL = <span class="string">'https://mediaverifybot-api.onrender.com/analyze'</span>;
+<span class="keyword">const</span> API_KEY = <span class="string">'your_api_key_here'</span>;
+
+<span class="keyword">async function</span> <span class="function">checkImage</span>(filePath) {
+  <span class="keyword">const</span> form = <span class="keyword">new</span> FormData();
+  form.append(<span class="string">'file'</span>, fs.createReadStream(filePath));
+  form.append(<span class="string">'user_id'</span>, <span class="string">'12345'</span>);
+
+  <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="function">fetch</span>(API_URL, {
+    method: <span class="string">'POST'</span>,
+    headers: { <span class="string">'x-api-secret'</span>: API_KEY },
+    body: form
+  });
+
+  <span class="keyword">return</span> response.json();
+}
+
+checkImage(<span class="string">'photo.jpg'</span>).then(console.log);</pre>
+          </div>
+        </div>
+
+        <h3>cURL</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">cURL</span>
+            <button class="code-copy" onclick="copyCode(this)">Копировать</button>
+          </div>
+          <div class="code-content">
+            <pre>curl -X POST https://mediaverifybot-api.onrender.com/analyze \
+  -H "x-api-secret: your_api_key_here" \
+  -F "file=@photo.jpg" \
+  -F "user_id=12345"</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- POST /analyze -->
+      <section class="docs-section" id="analyze">
+        <h2>POST /analyze</h2>
+        <p>Основной эндпоинт для анализа медиафайлов (изображения, аудио, видео).</p>
+        
+        <div class="endpoint-card">
+          <div class="endpoint-url">
+            <span class="method-badge post">POST</span>
+            <span>/analyze</span>
+          </div>
+        </div>
+        
+        <h3>Параметры запроса</h3>
+        <table class="docs-table">
+          <thead>
+            <tr>
+              <th>Параметр</th>
+              <th>Тип</th>
+              <th>Обязательный</th>
+              <th>Описание</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>file</code></td>
+              <td>File</td>
+              <td>Да</td>
+              <td>Медиафайл для анализа</td>
+            </tr>
+            <tr>
+              <td><code>user_id</code></td>
+              <td>Integer</td>
+              <td>Да</td>
+              <td>Уникальный ID пользователя</td>
+            </tr>
+            <tr>
+              <td><code>username</code></td>
+              <td>String</td>
+              <td>Нет</td>
+              <td>Имя пользователя</td>
+            </tr>
+            <tr>
+              <td><code>text_content</code></td>
+              <td>String</td>
+              <td>Нет</td>
+              <td>Текст для анализа (альтернатива файлу)</td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <h3>Пример ответа</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">JSON Response</span>
+          </div>
+          <div class="code-content">
+            <pre>{
+  <span class="string">"media_type"</span>: <span class="string">"image"</span>,
+  <span class="string">"verdict"</span>: <span class="string">"FAKE"</span>,
+  <span class="string">"confidence"</span>: <span class="number">0.87</span>,
+  <span class="string">"model_used"</span>: <span class="string">"sightengine"</span>,
+  <span class="string">"explanation"</span>: <span class="string">"Обнаружены признаки AI-генерации изображения."</span>,
+  <span class="string">"processing_ms"</span>: <span class="number">1250</span>
+}</pre>
+          </div>
+        </div>
+        
+        <h3>Возможные вердикты</h3>
+        <table class="docs-table">
+          <thead>
+            <tr>
+              <th>Вердикт</th>
+              <th>Описание</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>REAL</code></td>
+              <td>Контент определён как подлинный</td>
+            </tr>
+            <tr>
+              <td><code>FAKE</code></td>
+              <td>Обнаружены признаки AI-генерации</td>
+            </tr>
+            <tr>
+              <td><code>UNCERTAIN</code></td>
+              <td>Недостаточно данных для точного определения</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- POST /analyze/text/hybrid -->
+      <section class="docs-section" id="analyze-text">
+        <h2>POST /analyze/text/hybrid</h2>
+        <p>Эндпоинт для гибридного анализа текста на AI-генерацию.</p>
+        
+        <div class="endpoint-card">
+          <div class="endpoint-url">
+            <span class="method-badge post">POST</span>
+            <span>/analyze/text/hybrid</span>
+          </div>
+        </div>
+        
+        <h3>Тело запроса (JSON)</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">JSON</span>
+          </div>
+          <div class="code-content">
+            <pre>{
+  <span class="string">"text"</span>: <span class="string">"Ваш текст для проверки (минимум 50 символов)..."</span>
+}</pre>
+          </div>
+        </div>
+        
+        <h3>Пример ответа</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">JSON Response</span>
+          </div>
+          <div class="code-content">
+            <pre>{
+  <span class="string">"is_ai_generated"</span>: <span class="keyword">true</span>,
+  <span class="string">"ai_probability"</span>: <span class="number">0.82</span>,
+  <span class="string">"explanation"</span>: <span class="string">"Текст имеет характерные признаки AI-генерации."</span>,
+  <span class="string">"suspicious_sentences"</span>: [
+    {<span class="string">"text"</span>: <span class="string">"..."</span>, <span class="string">"score"</span>: <span class="number">0.95</span>}
+  ],
+  <span class="string">"processing_ms"</span>: <span class="number">890</span>
+}</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Rate Limits -->
+      <section class="docs-section" id="rate-limits">
+        <h2>Rate Limits</h2>
+        <p>Для обеспечения стабильности сервиса действуют ограничения на количество запросов.</p>
+        
+        <table class="docs-table">
+          <thead>
+            <tr>
+              <th>План</th>
+              <th>Лимит</th>
+              <th>Сброс</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Free</td>
+              <td>3 запроса</td>
+              <td>Ежедневно (00:00 UTC)</td>
+            </tr>
+            <tr>
+              <td>Premium</td>
+              <td>100 запросов</td>
+              <td>Ежемесячно</td>
+            </tr>
+            <tr>
+              <td>Enterprise</td>
+              <td>Без ограничений</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <h3>Заголовки ответа</h3>
+        <div class="code-block">
+          <div class="code-content">
+            <pre>X-RateLimit-Limit: 3
+X-RateLimit-Remaining: 2
+X-RateLimit-Reset: 1709683200</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Errors -->
+      <section class="docs-section" id="errors">
+        <h2>Обработка ошибок</h2>
+        <p>API возвращает стандартные HTTP коды ошибок с JSON телом.</p>
+        
+        <table class="docs-table">
+          <thead>
+            <tr>
+              <th>Код</th>
+              <th>Описание</th>
+              <th>Решение</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>400</code></td>
+              <td>Неверный запрос</td>
+              <td>Проверьте формат файла или параметры</td>
+            </tr>
+            <tr>
+              <td><code>403</code></td>
+              <td>Доступ запрещён</td>
+              <td>Проверьте API ключ</td>
+            </tr>
+            <tr>
+              <td><code>429</code></td>
+              <td>Превышен лимит</td>
+              <td>Дождитесь сброса лимита</td>
+            </tr>
+            <tr>
+              <td><code>500</code></td>
+              <td>Ошибка сервера</td>
+              <td>Повторите запрос позже</td>
+            </tr>
+            <tr>
+              <td><code>503</code></td>
+              <td>Сервис недоступен</td>
+              <td>AI-модель временно недоступна</td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <h3>Пример ошибки</h3>
+        <div class="code-block">
+          <div class="code-content">
+            <pre>{
+  <span class="string">"detail"</span>: <span class="string">"Дневной лимит проверок исчерпан"</span>
+}</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Examples -->
+      <section class="docs-section" id="examples">
+        <h2>Примеры интеграции</h2>
+        
+        <h3>Интеграция в новостной сайт</h3>
+        <p>Автоматическая проверка изображений перед публикацией статьи.</p>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">Python (Django)</span>
+          </div>
+          <div class="code-content">
+            <pre><span class="keyword">from</span> django.core.files.uploadedfile <span class="keyword">import</span> InMemoryUploadedFile
+<span class="keyword">import</span> requests
+
+<span class="keyword">def</span> <span class="function">verify_article_media</span>(article):
+    <span class="string">"""Проверяем все медиа в статье перед публикацией"""</span>
+    warnings = []
+    
+    <span class="keyword">for</span> image <span class="keyword">in</span> article.images.all():
+        result = check_with_istochnik(image.file)
+        <span class="keyword">if</span> result[<span class="string">'verdict'</span>] == <span class="string">'FAKE'</span>:
+            warnings.append(f<span class="string">"⚠️ {image.name}: возможный deepfake"</span>)
+    
+    <span class="keyword">return</span> warnings</pre>
+          </div>
+        </div>
+        
+        <h3>Discord бот для модерации</h3>
+        <p>Автоматическая проверка загружаемых медиа в Discord.</p>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="code-lang">Python (discord.py)</span>
+          </div>
+          <div class="code-content">
+            <pre><span class="keyword">import</span> discord
+
+@bot.event
+<span class="keyword">async def</span> <span class="function">on_message</span>(message):
+    <span class="keyword">for</span> attachment <span class="keyword">in</span> message.attachments:
+        <span class="keyword">if</span> attachment.content_type.startswith(<span class="string">'image/'</span>):
+            result = <span class="keyword">await</span> check_image_async(attachment.url)
+            <span class="keyword">if</span> result[<span class="string">'verdict'</span>] == <span class="string">'FAKE'</span>:
+                <span class="keyword">await</span> message.add_reaction(<span class="string">'⚠️'</span>)
+                <span class="keyword">await</span> message.reply(
+                    f<span class="string">"⚠️ Изображение может быть сгенерировано AI ({result['confidence']*100:.0f}%)"</span>
+                )</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Changelog -->
+      <section class="docs-section" id="changelog">
+        <h2>Changelog</h2>
+        
+        <h3>v0.4.0 (Март 2026) — Текущая</h3>
+        <ul>
+          <li>Новый эндпоинт <code>/analyze/text/hybrid</code> для гибридного анализа текста</li>
+          <li>Улучшена точность видео-анализа</li>
+          <li>Добавлены заголовки rate limit</li>
+        </ul>
+        
+        <h3>v0.3.0 (Февраль 2026)</h3>
+        <ul>
+          <li>Добавлен пакетный анализ (до 10 файлов)</li>
+          <li>Интеграция Resemble Detect для аудио</li>
+          <li>Улучшен формат ответа API</li>
+        </ul>
+        
+        <h3>v0.2.0 (Январь 2026)</h3>
+        <ul>
+          <li>Первый публичный релиз API</li>
+          <li>Поддержка изображений и текста</li>
+        </ul>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    // Mobile menu
+    document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+      this.classList.toggle('active');
+    });
+
+    // Sidebar active state
+    document.querySelectorAll('.sidebar-nav a').forEach(function(link) {
+      link.addEventListener('click', function() {
+        document.querySelectorAll('.sidebar-nav a').forEach(function(l) {
+          l.classList.remove('active');
+        });
+        this.classList.add('active');
+      });
+    });
+
+    // Scroll spy
+    window.addEventListener('scroll', function() {
+      var sections = document.querySelectorAll('.docs-section');
+      var scrollPos = window.scrollY + 100;
+      
+      sections.forEach(function(section) {
+        if (section.offsetTop <= scrollPos && section.offsetTop + section.offsetHeight > scrollPos) {
+          var id = section.getAttribute('id');
+          document.querySelectorAll('.sidebar-nav a').forEach(function(link) {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + id) {
+              link.classList.add('active');
+            }
+          });
+        }
+      });
+    });
+
+    // Copy code
+    function copyCode(btn) {
+      var code = btn.closest('.code-block').querySelector('pre').textContent;
+      navigator.clipboard.writeText(code).then(function() {
+        var original = btn.textContent;
+        btn.textContent = 'Скопировано!';
+        setTimeout(function() {
+          btn.textContent = original;
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>

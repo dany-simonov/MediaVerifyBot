@@ -2,7 +2,11 @@
 
 **Система верификации медиаконтента на основе ИИ.**
 
-Определяет, создан ли контент человеком или сгенерирован искусственным интеллектом. Работает с фото, аудио, видео и текстом. Доступна через Telegram-бота и веб-платформу.
+Определяет, создан ли контент человеком или сгенерирован искусственным интеллектом. Работает с фото, аудио и текстом. Доступна через Telegram-бота и веб-платформу.
+
+🌐 **Сайт:** [istochnik.appwrite.network](https://istochnik.appwrite.network)  
+📱 **Telegram-бот:** [@MediaVerifyBot](https://t.me/MediaVerifyBot)  
+📧 **Связаться:** [istochnik-media@yandex.com](mailto:istochnik-media@yandex.com)
 
 ---
 
@@ -18,7 +22,6 @@
 | --- | --- | --- |
 | **Фото** | Midjourney, DALL-E, Stable Diffusion, Adobe Firefly | 94.4% |
 | **Аудио / голос** | Синтетическая речь, клонирование голоса (ElevenLabs, XTTS) | 99.5% |
-| **Видео** | Deepfake, AI-генерация (покадровый разбор) | 81% |
 | **Текст** | ChatGPT, GPT-4, Claude и другие LLM | 98% |
 
 ### Индекс подлинности
@@ -35,7 +38,7 @@
 
 ### Telegram-бот
 
-Откройте бота и отправьте файл — фото, аудио, видео или документ. Результат придёт в чат за несколько секунд.
+Откройте бота [@MediaVerifyBot](https://t.me/MediaVerifyBot) и отправьте файл — фото, аудио или документ. Результат придёт в чат за несколько секунд.
 
 Текст можно проверить командой `/check` или просто отправив сообщение.
 
@@ -51,7 +54,7 @@
 
 ### Веб-платформа
 
-Лендинг с описанием продукта, Big Check для пакетной проверки файлов и личный кабинет с историей проверок, фильтрами и экспортом PDF-отчётов.
+Перейдите на [istochnik.appwrite.network](https://istochnik.appwrite.network) — лендинг с описанием продукта, Big Check для пакетной проверки файлов и личный кабинет с историей проверок.
 
 ---
 
@@ -69,55 +72,44 @@
 
 ## Архитектура
 
-Система состоит из четырёх компонентов:
+Система построена на облачной инфраструктуре Appwrite Cloud:
 
-- **Telegram-бот** — интерфейс пользователя, принимает файлы и выдаёт результат
-- **API-сервер** — FastAPI, маршрутизация по типу медиа, оркестрация адаптеров
-- **Адаптеры** — интеграции с ML-сервисами (Sightengine, Resemble, Sapling, HuggingFace)
-- **Веб-платформа** — статический сайт (HTML/CSS/JS) для GitHub Pages
+- **Веб-платформа** — React 18 + TypeScript + Tailwind CSS, хостинг на Appwrite Sites
+- **Telegram-бот** — Python + aiogram 3.7
+- **Бэкенд** — Appwrite Functions (serverless Python)
+- **База данных** — Appwrite Database
+- **Хранилище файлов** — Appwrite Storage (временное хранение для анализа)
+- **Авторизация** — Appwrite Auth (Telegram + Email)
 
 ### Модели и fallback-цепочки
 
 ```text
 Фото:   Sightengine  →  HuggingFace (fallback)
 Аудио:  Resemble      →  HuggingFace (fallback)
-Видео:  FFmpeg + Sightengine pipeline
 Текст:  Sapling AI
 ```
 
 Если основная модель недоступна или возвращает неуверенный результат — автоматически подключается резервная.
-
-### API endpoints
-
-| Метод | Путь | Описание |
-| --- | --- | --- |
-| `POST` | `/analyze` | Анализ одного файла |
-| `POST` | `/bigcheck` | Пакетный анализ (до 10 файлов) с кросс-анализом |
-| `GET` | `/health` | Статус сервиса и БД |
-| `GET` | `/user/{id}/stats` | Статистика пользователя |
-| `GET` | `/user/{id}/checks` | История проверок (фильтры: `media_type`, `verdict`, `offset`) |
-| `GET` | `/user/{id}/checks/{check_id}/report` | PDF-отчёт по проверке |
 
 ---
 
 ## Структура проекта
 
 ```text
+├── web/                  # React веб-платформа (Vite + TypeScript + Tailwind)
+│   ├── src/
+│   │   ├── components/   # UI компоненты
+│   │   ├── pages/        # Страницы (Home, About, FAQ, Docs, Privacy, Terms)
+│   │   ├── hooks/        # React хуки (useAuth, useAnalyze)
+│   │   └── lib/          # Appwrite SDK интеграция
+│   └── legacy/           # Старые HTML файлы (для референса)
 ├── bot/                  # Telegram-бот (aiogram 3.7)
 │   ├── handlers/         # Обработчики медиа и текста
 │   ├── middlewares/      # Rate-limiting
-│   ├── keyboards/        # Inline-кнопки (share, copy)
-│   └── utils/            # Форматирование результатов
-├── api/                  # FastAPI-сервер
-│   └── routers/          # analyze, bigcheck, user, health
+│   └── keyboards/        # Inline-кнопки
 ├── adapters/             # Интеграции с ML-сервисами
-├── router/               # Маршрутизация по типу медиа
-├── core/                 # Конфигурация, enums, exceptions
-├── db/                   # SQLAlchemy ORM + repository
-├── migrations/           # Alembic
-├── web/                  # Статический сайт (лендинг, дашборд, Big Check)
 ├── miniapp/              # Telegram Mini App (React + TypeScript)
-└── tests/                # Unit + integration + e2e (75 тестов)
+└── tests/                # Unit + integration тесты
 ```
 
 ---
@@ -126,24 +118,50 @@
 
 | Компонент | Технология |
 | --- | --- |
+| Веб | React 18, TypeScript, Tailwind CSS, Vite |
 | Бот | Python 3.11+, aiogram 3.7 |
-| API | FastAPI 0.111, Uvicorn, Pydantic v2 |
-| БД | PostgreSQL 15, SQLAlchemy async, Alembic |
-| Веб | Vanilla HTML/CSS/JS (GitHub Pages) |
+| Бэкенд | Appwrite Cloud (Functions, Database, Storage, Auth) |
 | Mini App | React 18, TypeScript, Tailwind, Vite |
-| Контейнеры | Docker, Docker Compose |
-| CI/CD | GitHub Actions (деплой web на Pages) |
+| Деплой | Appwrite Sites (автодеплой при git push) |
+
+---
+
+## Локальная разработка
+
+```bash
+# Веб-платформа
+cd web
+npm install
+npm run dev     # http://localhost:3001
+
+# Сборка для продакшена
+npm run build   # dist/
+```
 
 ---
 
 ## Версия
 
-**v0.5.0** — «Фирменный стиль»
+**v0.6.0** — «React + Appwrite»
 
-Полностью переработанная система SVG-иконок в фирменном стиле, исправление анимации спидометра, обновление навигации и футера, перенос API Docs в футер.
+Полная миграция веб-платформы на React 18 + TypeScript + Tailwind CSS. Переход на Appwrite Cloud инфраструктуру. Новый дизайн интерфейса, улучшенный UX компонентов.
 
-**Планы на v0.6.0:**
+**Планы на v0.7.0:**
 - Публичный REST API с полной документацией
 - Личный кабинет с историей проверок и статистикой  
 - Браузерное расширение для быстрой проверки
+
+---
+
+## Связаться
+
+📧 **Email:** [istochnik-media@yandex.com](mailto:istochnik-media@yandex.com)  
+📱 **Telegram:** [@MediaVerifyBot](https://t.me/MediaVerifyBot)  
+🌐 **Сайт:** [istochnik.appwrite.network](https://istochnik.appwrite.network)
+
+---
+
+## Лицензия
+
+© 2026 Источник. Все права защищены.
 

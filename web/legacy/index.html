@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Источник — Проверяй подлинность медиа за секунды</title>
+  <meta name="description" content="Система верификации фото, видео, аудио и текста на основе специализированных моделей ИИ" />
+  <meta property="og:title" content="Источник" />
+  <meta property="og:description" content="Проверяй подлинность медиа за секунды" />
+  <meta property="og:image" content="assets/img/logo.png" />
+  <link rel="icon" href="assets/img/logo.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/reset.css" />
+  <link rel="stylesheet" href="assets/css/tokens.css" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner container">
+      <a href="index.html" class="header-logo">
+        <img src="assets/img/logo.png" alt="Источник" />
+        <span>Источник</span>
+      </a>
+      <nav class="header-nav">
+        <a href="#features" data-i18n="nav.features">Возможности</a>
+        <a href="#bigcheck" data-i18n="nav.check">Проверка</a>
+        <a href="faq.html">FAQ</a>
+      </nav>
+      <div class="header-actions">
+        <button class="btn-login" id="login-btn" data-i18n="nav.login">Вход</button>
+      </div>
+      <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- AUTH MODAL -->
+  <div class="auth-modal-overlay" id="auth-modal">
+    <div class="auth-modal">
+      <button class="auth-close" id="auth-close">&times;</button>
+      <h2 data-i18n="auth.title">Вход в Источник</h2>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="telegram" data-i18n="auth.tab.telegram">Telegram</button>
+        <button class="auth-tab" data-tab="email" data-i18n="auth.tab.email">Email</button>
+      </div>
+      <div class="auth-content" id="auth-telegram">
+        <p class="auth-desc" data-i18n="auth.telegram.desc">Быстрый и безопасный вход через ваш аккаунт Telegram</p>
+        <div class="telegram-widget-placeholder" id="telegram-widget">
+          <div class="tg-icon-wrapper">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+          </div>
+          <button class="btn-telegram-login" type="button" data-i18n="auth.telegram.btn">Войти через Telegram</button>
+        </div>
+      </div>
+      <div class="auth-content" id="auth-email" style="display:none">
+        <form id="auth-form" autocomplete="on">
+          <div class="form-group">
+            <label for="auth-email-input" data-i18n="auth.email.label">Email</label>
+            <input type="email" id="auth-email-input" required placeholder="your@email.com" autocomplete="email" />
+          </div>
+          <div class="form-group">
+            <label for="auth-password-input" data-i18n="auth.password.label">Пароль</label>
+            <input type="password" id="auth-password-input" required placeholder="••••••••" minlength="6" autocomplete="current-password" />
+          </div>
+          <button type="submit" class="btn-primary auth-submit" data-i18n="auth.submit">Войти / Создать аккаунт</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile nav overlay -->
+  <nav class="mobile-nav" id="mobile-nav">
+    <a href="#features" data-i18n="nav.features">Возможности</a>
+    <a href="#bigcheck" data-i18n="nav.check">Проверка</a>
+    <a href="#pricing" data-i18n="nav.pricing">Тарифы</a>
+    <a href="#roadmap" data-i18n="nav.roadmap">Roadmap</a>
+    <button class="btn-primary mobile-login-btn" id="mobile-login-btn" data-i18n="nav.login">Вход</button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <h1 data-i18n="hero.title">Проверяй подлинность медиа<br>за секунды</h1>
+      <p class="subtitle" data-i18n="hero.subtitle">
+        Система верификации фото, видео, аудио и текста<br>
+        на основе специализированных моделей ИИ
+      </p>
+      <div class="hero-buttons">
+        <a href="https://t.me/MediaVerifyBot" class="btn-primary" target="_blank" rel="noopener" data-i18n="hero.cta">Попробовать бесплатно</a>
+        <a href="#bigcheck" class="btn-secondary" data-i18n="hero.demo">Смотреть демо</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="value">94.4%</div>
+          <div class="label" data-i18n="hero.stat.photo">Точность фото</div>
+        </div>
+        <div class="hero-stat">
+          <div class="value">99.5%</div>
+          <div class="label" data-i18n="hero.stat.audio">Точность аудио</div>
+        </div>
+        <div class="hero-stat">
+          <div class="value">81%</div>
+          <div class="label" data-i18n="hero.stat.video">Точность видео</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features" class="section">
+    <div class="container">
+      <h2 class="section-title" data-i18n="features.title">Возможности</h2>
+      <div class="features-grid">
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">
+            <svg class="feature-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+              <circle cx="12" cy="13" r="4"/>
+            </svg>
+          </div>
+          <h3 data-i18n="features.photo.title">Фото</h3>
+          <p data-i18n="features.photo.desc">Детекция AI-генерации<br>Sightengine genai, точность 94.4%</p>
+        </div>
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">
+            <svg class="feature-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+              <line x1="4" y1="9" x2="4" y2="15"/>
+              <line x1="8" y1="5" x2="8" y2="19"/>
+              <line x1="12" y1="2" x2="12" y2="22"/>
+              <line x1="16" y1="6" x2="16" y2="18"/>
+              <line x1="20" y1="9" x2="20" y2="15"/>
+            </svg>
+          </div>
+          <h3 data-i18n="features.audio.title">Аудио</h3>
+          <p data-i18n="features.audio.desc">Синтетическая речь и voice cloning<br>Resemble Detect, точность 99.5%</p>
+        </div>
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">
+            <svg class="feature-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <polygon points="10,8.5 10,15.5 16,12"/>
+            </svg>
+          </div>
+          <h3 data-i18n="features.video.title">Видео</h3>
+          <p data-i18n="features.video.desc">Покадровый анализ<br>FFmpeg + Sightengine pipeline, 81%</p>
+        </div>
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">
+            <svg class="feature-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14,2 14,8 20,8"/>
+              <line x1="8" y1="13" x2="16" y2="13"/>
+              <line x1="8" y1="17" x2="13" y2="17"/>
+            </svg>
+          </div>
+          <h3 data-i18n="features.text.title">Текст</h3>
+          <p data-i18n="features.text.desc">Написан ли ChatGPT?<br>Sapling AI, точность 98%</p>
+        </div>
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">
+            <svg class="feature-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+            </svg>
+          </div>
+          <h3 data-i18n="features.link.title">Проверка по ссылке</h3>
+          <p data-i18n="features.link.desc">Вставь ссылку на пост в Telegram, видео YouTube или картинку — бот скачает и проверит</p>
+        </div>
+        <div class="feature-card" data-animate>
+          <div class="feature-icon">
+            <svg class="feature-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <line x1="3" y1="9" x2="21" y2="9"/>
+              <line x1="3" y1="15" x2="21" y2="15"/>
+              <line x1="9" y1="3" x2="9" y2="21"/>
+              <line x1="15" y1="3" x2="15" y2="21"/>
+              <rect x="9" y="9" width="6" height="6" fill="currentColor" opacity="0.15"/>
+            </svg>
+          </div>
+          <h3 data-i18n="features.heatmap.title">Тепловые карты</h3>
+          <p data-i18n="features.heatmap.desc">Explainable AI — визуализация зон, где ИИ «спалился» на сгенерированном фото</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BIG CHECK -->
+  <section id="bigcheck" class="section">
+    <div class="container">
+      <h2 class="section-title" data-i18n="bigcheck.title">Попробуй прямо сейчас</h2>
+      <div id="bigcheck-container"></div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" class="section">
+    <div class="container">
+      <h2 class="section-title" data-i18n="pricing.title">Тарифы</h2>
+      <div class="pricing-grid">
+        <!-- FREE -->
+        <div class="pricing-card" data-animate>
+          <h3 data-i18n="pricing.free.name">FREE</h3>
+          <div class="pricing-price" data-i18n="pricing.free.price">0 ₽</div>
+          <ul class="pricing-features">
+            <li><span class="check">✓</span> <span data-i18n="pricing.free.f1">3 проверки/день</span></li>
+            <li><span class="check">✓</span> <span data-i18n="pricing.free.f2">Все форматы</span></li>
+            <li><span class="check">✓</span> <span data-i18n="pricing.free.f3">Базовый вердикт</span></li>
+          </ul>
+          <a href="https://t.me/MediaVerifyBot" class="pricing-btn active" target="_blank" rel="noopener">Открыть в Telegram</a>
+        </div>
+        <!-- PREMIUM -->
+        <div class="pricing-card premium" data-animate>
+          <span class="pricing-badge">СКОРО</span>
+          <h3>PREMIUM</h3>
+          <div class="pricing-price">199 ₽/мес</div>
+          <ul class="pricing-features">
+            <li><span class="check">✓</span> 100 проверок/мес</li>
+            <li><span class="check">✓</span> Приоритетная обработка</li>
+            <li><span class="check">✓</span> История 30 дней</li>
+            <li><span class="check">✓</span> Экспорт отчётов PDF</li>
+            <li><span class="check">✓</span> Поделиться результатом</li>
+          </ul>
+          <a href="https://t.me/MediaVerifyBot?start=waitlist_premium" class="pricing-btn waitlist" target="_blank" rel="noopener">
+            🔔 Встать в лист ожидания
+          </a>
+        </div>
+        <!-- ENTERPRISE -->
+        <div class="pricing-card enterprise" data-animate>
+          <span class="pricing-badge enterprise-badge">B2B</span>
+          <h3>ENTERPRISE</h3>
+          <div class="pricing-price">По запросу</div>
+          <ul class="pricing-features">
+            <li><span class="check">✓</span> REST API доступ</li>
+            <li><span class="check">✓</span> Безлимитные проверки</li>
+            <li><span class="check">✓</span> SLA и поддержка</li>
+            <li><span class="check">✓</span> Для СМИ, пабликов и форумов</li>
+            <li><span class="check">✓</span> Кастомные модели</li>
+          </ul>
+          <a href="https://t.me/MediaVerifyBot?start=enterprise_inquiry" class="pricing-btn waitlist" target="_blank" rel="noopener">
+            💼 Связаться
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP / CHANGELOG -->
+  <section id="roadmap" class="section">
+    <div class="container">
+      <h2 class="section-title" data-i18n="roadmap.title">История версий</h2>
+      <div class="timeline">
+        <div class="timeline-item" data-animate>
+          <div class="timeline-marker done"></div>
+          <div class="timeline-content">
+            <span class="timeline-tag released" data-i18n="roadmap.v01.tag">Выпущено</span>
+            <h3 data-i18n="roadmap.v01.title">v0.1.0 — Альфа-версия</h3>
+            <p data-i18n="roadmap.v01.desc">Базовый Telegram-бот, интеграция первых моделей детекции для фото и текста.</p>
+          </div>
+        </div>
+        <div class="timeline-item" data-animate>
+          <div class="timeline-marker done"></div>
+          <div class="timeline-content">
+            <span class="timeline-tag released" data-i18n="roadmap.v02.tag">Выпущено</span>
+            <h3 data-i18n="roadmap.v02.title">v0.2.0 — «Источник»</h3>
+            <p data-i18n="roadmap.v02.desc">Полный ребрендинг проекта и запуск функциональной веб-платформы. Внедрён интуитивный «Индекс подлинности», добавлена генерация детализированных PDF-отчётов.</p>
+          </div>
+        </div>
+        <div class="timeline-item" data-animate>
+          <div class="timeline-marker done"></div>
+          <div class="timeline-content">
+            <span class="timeline-tag released" data-i18n="roadmap.v03.tag">Выпущено</span>
+            <h3 data-i18n="roadmap.v03.title">v0.3.0 — Масштабирование</h3>
+            <p data-i18n="roadmap.v03.desc">Big Check (пакетный кросс-анализ), Drag&amp;Drop загрузчик, тариф Enterprise (B2B API) и тепловые карты (Explainable AI).</p>
+          </div>
+        </div>
+        <div class="timeline-item" data-animate>
+          <div class="timeline-marker done"></div>
+          <div class="timeline-content">
+            <span class="timeline-tag released" data-i18n="roadmap.v04.tag">Выпущено</span>
+            <h3 data-i18n="roadmap.v04.title">v0.4.0 — Глобальное обновление</h3>
+            <p data-i18n="roadmap.v04.desc">Внедрение системы авторизации (Telegram + Email), редизайн системы карточек и переработка архитектуры страниц.</p>
+          </div>
+        </div>
+        <div class="timeline-item" data-animate>
+          <div class="timeline-marker current"></div>
+          <div class="timeline-content">
+            <span class="timeline-tag current-tag" data-i18n="roadmap.v05.tag">Текущая</span>
+            <h3 data-i18n="roadmap.v05.title">v0.5.0 — Фирменный стиль</h3>
+            <p data-i18n="roadmap.v05.desc">Полностью переработанная система SVG-иконок в фирменном стиле, исправление анимации спидометра, обновление навигации и футера.</p>
+          </div>
+        </div>
+        <div class="timeline-item" data-animate>
+          <div class="timeline-marker upcoming"></div>
+          <div class="timeline-content">
+            <span class="timeline-tag upcoming-tag" data-i18n="roadmap.v06.tag">Скоро</span>
+            <h3 data-i18n="roadmap.v06.title">v0.6.0 — B2B &amp; API</h3>
+            <p data-i18n="roadmap.v06.desc">Полноценный релиз личного кабинета, запуск публичного REST API для интеграции с медиа-платформами и релиз расширения для браузера.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="footer-logo">
+            <img src="assets/img/logo.png" alt="" />
+            <span>Источник</span>
+          </div>
+          <p class="footer-desc" data-i18n="footer.desc">Система верификации медиа на основе ИИ</p>
+        </div>
+        <div class="footer-col">
+          <h4 data-i18n="footer.nav.title">Навигация</h4>
+          <a href="#features" data-i18n="nav.features">Возможности</a>
+          <a href="faq.html">FAQ</a>
+          <a href="docs.html">API Docs</a>
+          <a href="https://t.me/MediaVerifyBot" target="_blank" rel="noopener">Telegram-бот</a>
+        </div>
+        <div class="footer-col">
+          <h4 data-i18n="footer.legal.title">Документы</h4>
+          <a href="about.html" data-i18n="footer.about">О проекте</a>
+          <a href="privacy.html" data-i18n="footer.privacy">Политика конфиденциальности</a>
+          <a href="terms.html" data-i18n="footer.terms">Условия использования</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Источник. <span data-i18n="footer.rights">Все права защищены.</span></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- FLOATING TELEGRAM BUTTON -->
+  <a href="https://t.me/MediaVerifyBot" class="tg-float-btn" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+    </svg>
+    <span>Открыть бот</span>
+  </a>
+
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/bigcheck.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

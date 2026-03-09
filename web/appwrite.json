@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/appwrite",
+  "projectId": "69a9d60e00230f1aceb2",
+  "sites": [
+    {
+      "siteId": "istochnik",
+      "config": {
+        "buildCommand": "npm install && npm run build",
+        "outputDirectory": "dist",
+        "installCommand": "npm install"
+      }
+    }
+  ]
+}

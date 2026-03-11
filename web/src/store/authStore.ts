@@ -8,9 +8,11 @@
  * - User state
  * - Loading states
  * - Auth actions (login, register, logout)
+ * - Graceful error handling with Russian messages
  */
 
 import { create } from 'zustand';
+import { AppwriteException } from 'appwrite';
 import { account, ID, type Models } from '../lib/appwrite';
 
 // ============================================================================
@@ -88,25 +90,84 @@ const transformUser = (appwriteUser: Models.User<Models.Preferences>): User => (
 
 /**
  * Map Appwrite error codes to user-friendly messages
+ * Uses AppwriteException for type-safe error handling
  */
 const getErrorMessage = (error: unknown): string => {
+  // Handle Appwrite-specific exceptions
+  if (error instanceof AppwriteException) {
+    const { code, type, message } = error;
+    
+    // Log error details in development
+    if (import.meta.env.DEV) {
+      console.warn('[Auth Error]', { code, type, message });
+    }
+    
+    // Map by HTTP status code
+    switch (code) {
+      case 401:
+        // Unauthorized - wrong credentials or no session
+        if (type === 'user_invalid_credentials') {
+          return 'Неверный email или пароль';
+        }
+        if (type === 'user_session_not_found') {
+          return 'Сессия не найдена. Пожалуйста, войдите снова';
+        }
+        return 'Ошибка авторизации. Проверьте данные и попробуйте снова';
+        
+      case 404:
+        // User not found
+        if (type === 'user_not_found') {
+          return 'Пользователь с таким email не найден';
+        }
+        return 'Запрашиваемый ресурс не найден';
+        
+      case 409:
+        // Conflict - user already exists
+        if (type === 'user_already_exists') {
+          return 'Пользователь с таким email уже существует';
+        }
+        return 'Конфликт данных. Попробуйте другой email';
+        
+      case 429:
+        // Rate limit exceeded
+        return 'Слишком много попыток. Подождите несколько минут';
+        
+      case 500:
+      case 502:
+      case 503:
+        // Server errors
+        return 'Сервер временно недоступен. Попробуйте позже';
+        
+      default:
+        break;
+    }
+    
+    // Fallback: map by error type string
+    if (type?.includes('password')) {
+      return 'Пароль должен содержать минимум 8 символов';
+    }
+    if (type?.includes('email') && type?.includes('invalid')) {
+      return 'Некорректный формат email';
+    }
+    
+    // Return original message if nothing matched
+    return message || 'Произошла ошибка при авторизации';
+  }
+  
+  // Handle generic JavaScript errors
   if (error instanceof Error) {
     const message = error.message.toLowerCase();
     
-    if (message.includes('invalid credentials') || message.includes('invalid email')) {
-      return 'Неверный email или пароль';
-    }
-    if (message.includes('user already exists') || message.includes('already been registered')) {
-      return 'Пользователь с таким email уже существует';
-    }
-    if (message.includes('password')) {
-      return 'Пароль должен содержать минимум 8 символов';
-    }
-    if (message.includes('rate limit')) {
-      return 'Слишком много попыток. Попробуйте позже';
-    }
-    if (message.includes('network')) {
+    if (message.includes('network') || message.includes('fetch')) {
       return 'Ошибка сети. Проверьте подключение к интернету';
+    }
+    if (message.includes('timeout')) {
+      return 'Превышено время ожидания. Попробуйте снова';
+    }
+    
+    // Log unexpected errors in development
+    if (import.meta.env.DEV) {
+      console.error('[Auth Unexpected Error]', error);
     }
     
     return error.message;
@@ -156,15 +217,28 @@ export const useAuthStore = create<AuthStore>((set) => ({
     try {
       set({ isActionLoading: true, error: null });
       
+      if (import.meta.env.DEV) {
+        console.log('[Auth] Attempting login for:', email);
+      }
+      
       // Create email/password session
-      await account.createEmailPasswordSession(email, password);
+      const session = await account.createEmailPasswordSession(email, password);
+      
+      if (import.meta.env.DEV) {
+        console.log('[Auth] Session created:', session.$id);
+      }
       
       // Fetch user data
       const appwriteUser = await account.get();
       const user = transformUser(appwriteUser);
       
+      if (import.meta.env.DEV) {
+        console.log('[Auth] Login successful:', user.email);
+      }
+      
       set({ 
-        user, 
+        user,
+        session,
         isActionLoading: false 
       });
       
@@ -183,18 +257,35 @@ export const useAuthStore = create<AuthStore>((set) => ({
     try {
       set({ isActionLoading: true, error: null });
       
-      // Create new user account
-      await account.create(ID.unique(), email, password, name);
+      if (import.meta.env.DEV) {
+        console.log('[Auth] Attempting registration for:', email);
+      }
       
-      // Automatically log in after registration
-      await account.createEmailPasswordSession(email, password);
+      // Step 1: Create new user account
+      const newUser = await account.create(ID.unique(), email, password, name);
       
-      // Fetch user data
+      if (import.meta.env.DEV) {
+        console.log('[Auth] User created:', newUser.$id);
+      }
+      
+      // Step 2: Automatically log in after registration
+      const session = await account.createEmailPasswordSession(email, password);
+      
+      if (import.meta.env.DEV) {
+        console.log('[Auth] Auto-login session created:', session.$id);
+      }
+      
+      // Step 3: Fetch full user data
       const appwriteUser = await account.get();
       const user = transformUser(appwriteUser);
       
+      if (import.meta.env.DEV) {
+        console.log('[Auth] Registration complete:', user.email);
+      }
+      
       set({ 
-        user, 
+        user,
+        session,
         isActionLoading: false 
       });
       

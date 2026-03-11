@@ -63,10 +63,6 @@ function AppContent() {
             <AuthModal
               isOpen={authModalOpen}
               onClose={() => setAuthModalOpen(false)}
-              onLogin={async (email, password) => {
-                const { login } = useAuthStore.getState();
-                return login(email, password);
-              }}
             />
           </div>
         }
@@ -95,10 +91,6 @@ function AppContent() {
               <AuthModal
                 isOpen={authModalOpen}
                 onClose={() => setAuthModalOpen(false)}
-                onLogin={async (email, password) => {
-                  const { login } = useAuthStore.getState();
-                  return login(email, password);
-                }}
               />
             </div>
           }

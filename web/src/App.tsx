@@ -1,50 +1,146 @@
-import { useState } from 'react';
+/**
+ * App Root Component
+ * ==================
+ * Основной компонент приложения с роутингом.
+ */
+
+import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Header, Footer, AuthModal } from './components';
-import { Home, About, FAQ, Docs, Privacy, Terms, Dashboard, NotFound } from './pages';
-import { useAuth } from './hooks';
+import { Header, Footer, AuthModal, DashboardLayout, ProtectedRoute, PublicOnlyRoute } from './components';
+import { 
+  Home, 
+  About, 
+  FAQ, 
+  Docs, 
+  Privacy, 
+  Terms, 
+  NotFound,
+  LoginPage,
+  RegisterPage,
+  DashboardOverview,
+  NewCheckPage,
+  HistoryPage,
+  ApiSettingsPage
+} from './pages';
+import { useAuthStore } from './store';
 
 function AppContent() {
   const [authModalOpen, setAuthModalOpen] = useState(false);
-  const { user, loading, login, logout } = useAuth();
+  const { user, isLoading, initialize, logout } = useAuthStore();
 
-  if (loading) {
+  // Initialize auth on mount
+  useEffect(() => {
+    initialize();
+  }, [initialize]);
+
+  if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-mv-bg">
-        <div className="w-8 h-8 border-2 border-mv-accent border-t-transparent rounded-full animate-spin" />
+        <div className="text-center">
+          <div className="w-10 h-10 mx-auto border-2 border-mv-accent border-t-transparent rounded-full animate-spin mb-4" />
+          <p className="text-mv-text-secondary">Загрузка...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-mv-bg flex flex-col">
-      <Header
-        onLoginClick={() => setAuthModalOpen(true)}
-        isLoggedIn={!!user}
-        onLogout={logout}
+    <Routes>
+      {/* Public Routes with Header/Footer */}
+      <Route
+        path="/"
+        element={
+          <div className="min-h-screen bg-mv-bg flex flex-col">
+            <Header
+              onLoginClick={() => setAuthModalOpen(true)}
+              isLoggedIn={!!user}
+              onLogout={logout}
+            />
+            <main className="flex-1">
+              <Home />
+            </main>
+            <Footer />
+            <AuthModal
+              isOpen={authModalOpen}
+              onClose={() => setAuthModalOpen(false)}
+              onLogin={async (email, password) => {
+                const { login } = useAuthStore.getState();
+                return login(email, password);
+              }}
+            />
+          </div>
+        }
       />
 
-      <main className="flex-1">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/faq" element={<FAQ />} />
-          <Route path="/docs" element={<Docs />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </main>
+      {/* Public pages with Header/Footer */}
+      {[
+        { path: '/about', element: <About /> },
+        { path: '/faq', element: <FAQ /> },
+        { path: '/docs', element: <Docs /> },
+        { path: '/privacy', element: <Privacy /> },
+        { path: '/terms', element: <Terms /> },
+      ].map(({ path, element }) => (
+        <Route
+          key={path}
+          path={path}
+          element={
+            <div className="min-h-screen bg-mv-bg flex flex-col">
+              <Header
+                onLoginClick={() => setAuthModalOpen(true)}
+                isLoggedIn={!!user}
+                onLogout={logout}
+              />
+              <main className="flex-1">{element}</main>
+              <Footer />
+              <AuthModal
+                isOpen={authModalOpen}
+                onClose={() => setAuthModalOpen(false)}
+                onLogin={async (email, password) => {
+                  const { login } = useAuthStore.getState();
+                  return login(email, password);
+                }}
+              />
+            </div>
+          }
+        />
+      ))}
 
-      <Footer />
-
-      <AuthModal
-        isOpen={authModalOpen}
-        onClose={() => setAuthModalOpen(false)}
-        onLogin={login}
+      {/* Auth Routes (redirect if logged in) */}
+      <Route
+        path="/login"
+        element={
+          <PublicOnlyRoute>
+            <LoginPage />
+          </PublicOnlyRoute>
+        }
       />
-    </div>
+      <Route
+        path="/register"
+        element={
+          <PublicOnlyRoute>
+            <RegisterPage />
+          </PublicOnlyRoute>
+        }
+      />
+
+      {/* Protected Dashboard Routes */}
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<DashboardOverview />} />
+        <Route path="check" element={<NewCheckPage />} />
+        <Route path="history" element={<HistoryPage />} />
+        <Route path="api" element={<ApiSettingsPage />} />
+      </Route>
+
+      {/* 404 */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 }
 

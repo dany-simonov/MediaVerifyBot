@@ -1,0 +1,263 @@
+/**
+ * File Dropzone Component
+ * =======================
+ * Красивая зона для drag-and-drop загрузки файлов.
+ */
+
+import { useCallback, useState } from 'react';
+import { useDropzone, type FileRejection } from 'react-dropzone';
+import { Upload, X, FileImage, FileAudio, FileVideo, File, AlertCircle } from 'lucide-react';
+import { cn, formatFileSize } from '../../lib/utils';
+import type { UploadFile } from '../../types';
+
+interface FileDropzoneProps {
+  onFilesSelected: (files: UploadFile[]) => void;
+  files: UploadFile[];
+  onRemoveFile: (id: string) => void;
+  maxFiles?: number;
+  maxSize?: number; // in bytes
+  accept?: Record<string, string[]>;
+  disabled?: boolean;
+}
+
+const DEFAULT_ACCEPT = {
+  'image/*': ['.jpg', '.jpeg', '.png', '.webp', '.gif'],
+  'audio/*': ['.mp3', '.wav', '.ogg', '.m4a', '.flac'],
+  'video/*': ['.mp4', '.webm', '.mov', '.avi'],
+};
+
+const DEFAULT_MAX_SIZE = 50 * 1024 * 1024; // 50MB
+
+export function FileDropzone({
+  onFilesSelected,
+  files,
+  onRemoveFile,
+  maxFiles = 10,
+  maxSize = DEFAULT_MAX_SIZE,
+  accept = DEFAULT_ACCEPT,
+  disabled = false,
+}: FileDropzoneProps) {
+  const [errors, setErrors] = useState<string[]>([]);
+
+  const onDrop = useCallback(
+    (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
+      setErrors([]);
+
+      // Handle rejected files
+      if (rejectedFiles.length > 0) {
+        const newErrors: string[] = [];
+        rejectedFiles.forEach((rejection) => {
+          rejection.errors.forEach((error) => {
+            if (error.code === 'file-too-large') {
+              newErrors.push(`${rejection.file.name}: Файл слишком большой (макс. ${formatFileSize(maxSize)})`);
+            } else if (error.code === 'file-invalid-type') {
+              newErrors.push(`${rejection.file.name}: Неподдерживаемый формат`);
+            } else if (error.code === 'too-many-files') {
+              newErrors.push(`Максимум ${maxFiles} файлов`);
+            }
+          });
+        });
+        setErrors(newErrors);
+      }
+
+      // Convert accepted files to UploadFile format
+      if (acceptedFiles.length > 0) {
+        const newFiles: UploadFile[] = acceptedFiles.map((file) => ({
+          id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+          file,
+          preview: file.type.startsWith('image/') ? URL.createObjectURL(file) : undefined,
+          progress: 0,
+          status: 'pending',
+        }));
+        onFilesSelected(newFiles);
+      }
+    },
+    [onFilesSelected, maxSize, maxFiles]
+  );
+
+  const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
+    onDrop,
+    accept,
+    maxSize,
+    maxFiles: maxFiles - files.length,
+    disabled: disabled || files.length >= maxFiles,
+  });
+
+  // Get icon based on file type
+  const getFileIcon = (file: File) => {
+    if (file.type.startsWith('image/')) return <FileImage className="w-5 h-5" />;
+    if (file.type.startsWith('audio/')) return <FileAudio className="w-5 h-5" />;
+    if (file.type.startsWith('video/')) return <FileVideo className="w-5 h-5" />;
+    return <File className="w-5 h-5" />;
+  };
+
+  // Get status color
+  const getStatusClass = (status: UploadFile['status']) => {
+    switch (status) {
+      case 'uploading':
+      case 'analyzing':
+        return 'border-mv-accent';
+      case 'complete':
+        return 'border-mv-real';
+      case 'error':
+        return 'border-mv-fake';
+      default:
+        return 'border-mv-border';
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      {/* Dropzone Area */}
+      <div
+        {...getRootProps()}
+        className={cn(
+          'relative border-2 border-dashed rounded-xl p-8 lg:p-12 transition-all duration-200 cursor-pointer',
+          'flex flex-col items-center justify-center text-center',
+          isDragActive && !isDragReject && 'border-mv-accent bg-mv-accent/5 scale-[1.02]',
+          isDragReject && 'border-mv-fake bg-mv-fake/5',
+          !isDragActive && !disabled && 'border-mv-border hover:border-mv-text-muted hover:bg-mv-surface-2/50',
+          disabled && 'opacity-50 cursor-not-allowed',
+          files.length >= maxFiles && 'opacity-50 cursor-not-allowed'
+        )}
+      >
+        <input {...getInputProps()} />
+        
+        {/* Cloud Icon */}
+        <div
+          className={cn(
+            'w-16 h-16 rounded-2xl flex items-center justify-center mb-4 transition-colors',
+            isDragActive && !isDragReject ? 'bg-mv-accent/20' : 'bg-mv-surface-2',
+            isDragReject && 'bg-mv-fake/20'
+          )}
+        >
+          <Upload
+            className={cn(
+              'w-8 h-8 transition-colors',
+              isDragActive && !isDragReject ? 'text-mv-accent' : 'text-mv-text-muted',
+              isDragReject && 'text-mv-fake'
+            )}
+          />
+        </div>
+
+        {/* Text */}
+        <div className="space-y-2">
+          {isDragActive ? (
+            isDragReject ? (
+              <p className="text-mv-fake font-medium">Неподдерживаемый формат файла</p>
+            ) : (
+              <p className="text-mv-accent font-medium">Отпустите файлы для загрузки</p>
+            )
+          ) : (
+            <>
+              <p className="text-mv-text font-medium">
+                Перетащите файлы сюда или{' '}
+                <span className="text-mv-accent">выберите</span>
+              </p>
+              <p className="text-sm text-mv-text-muted">
+                Фото, аудио или видео • Макс. {formatFileSize(maxSize)} • До {maxFiles} файлов
+              </p>
+            </>
+          )}
+        </div>
+
+        {/* Supported formats */}
+        <div className="mt-6 flex flex-wrap gap-2 justify-center">
+          {['JPG', 'PNG', 'MP3', 'WAV', 'MP4'].map((format) => (
+            <span
+              key={format}
+              className="px-2 py-1 text-xs font-medium text-mv-text-muted bg-mv-surface-2 rounded"
+            >
+              {format}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Errors */}
+      {errors.length > 0 && (
+        <div className="space-y-2">
+          {errors.map((error, index) => (
+            <div
+              key={index}
+              className="flex items-center gap-2 p-3 bg-mv-fake/10 border border-mv-fake/20 rounded-lg text-sm text-mv-fake"
+            >
+              <AlertCircle className="w-4 h-4 flex-shrink-0" />
+              {error}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* File List */}
+      {files.length > 0 && (
+        <div className="space-y-2">
+          <p className="text-sm font-medium text-mv-text-secondary">
+            Выбрано файлов: {files.length} / {maxFiles}
+          </p>
+          <div className="grid gap-2">
+            {files.map((uploadFile) => (
+              <div
+                key={uploadFile.id}
+                className={cn(
+                  'flex items-center gap-3 p-3 bg-mv-surface rounded-lg border transition-colors',
+                  getStatusClass(uploadFile.status)
+                )}
+              >
+                {/* Preview or Icon */}
+                {uploadFile.preview ? (
+                  <img
+                    src={uploadFile.preview}
+                    alt=""
+                    className="w-10 h-10 rounded object-cover flex-shrink-0"
+                  />
+                ) : (
+                  <div className="w-10 h-10 rounded bg-mv-surface-2 flex items-center justify-center flex-shrink-0 text-mv-text-muted">
+                    {getFileIcon(uploadFile.file)}
+                  </div>
+                )}
+
+                {/* File Info */}
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-mv-text truncate">
+                    {uploadFile.file.name}
+                  </p>
+                  <p className="text-xs text-mv-text-muted">
+                    {formatFileSize(uploadFile.file.size)}
+                    {uploadFile.status === 'uploading' && ` • Загрузка ${uploadFile.progress}%`}
+                    {uploadFile.status === 'analyzing' && ' • Анализ...'}
+                    {uploadFile.status === 'complete' && ' • Готово'}
+                    {uploadFile.status === 'error' && ` • ${uploadFile.error || 'Ошибка'}`}
+                  </p>
+                </div>
+
+                {/* Progress Bar */}
+                {(uploadFile.status === 'uploading' || uploadFile.status === 'analyzing') && (
+                  <div className="w-20 h-1.5 bg-mv-surface-2 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-mv-accent rounded-full transition-all duration-300"
+                      style={{ width: `${uploadFile.progress}%` }}
+                    />
+                  </div>
+                )}
+
+                {/* Remove Button */}
+                {uploadFile.status === 'pending' && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onRemoveFile(uploadFile.id);
+                    }}
+                    className="p-1.5 rounded-md text-mv-text-muted hover:text-mv-fake hover:bg-mv-fake/10 transition-colors"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

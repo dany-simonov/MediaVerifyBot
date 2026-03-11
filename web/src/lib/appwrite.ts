@@ -12,8 +12,8 @@ import { Client, Account, Databases, Storage, Functions, type Models } from 'app
 // Environment Configuration
 // ============================================================================
 
-const APPWRITE_ENDPOINT = 'https://cloud.appwrite.io/v1';
-const APPWRITE_PROJECT_ID = '69a9d60e00230f1aceb2';
+const APPWRITE_ENDPOINT = import.meta.env.VITE_APPWRITE_ENDPOINT || 'https://cloud.appwrite.io/v1';
+const APPWRITE_PROJECT_ID = import.meta.env.VITE_APPWRITE_PROJECT_ID || '69a9d60e00230f1aceb2';
 
 // ============================================================================
 // Client Initialization

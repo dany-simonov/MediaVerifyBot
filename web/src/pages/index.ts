@@ -1,8 +1,24 @@
+/**
+ * Pages Exports
+ * =============
+ * Централизованный экспорт всех страниц.
+ */
+
+// Public pages
 export { Home } from './Home';
 export { About } from './About';
 export { FAQ } from './FAQ';
 export { Docs } from './Docs';
 export { Privacy } from './Privacy';
 export { Terms } from './Terms';
-export { Dashboard } from './Dashboard';
 export { NotFound } from './NotFound';
+export { Dashboard } from './Dashboard';
+
+// Auth pages
+export { LoginPage, RegisterPage } from './auth';
+
+// Dashboard pages (explicit paths to avoid casing issues)
+export { DashboardOverview } from './dashboard/DashboardOverview';
+export { NewCheckPage } from './dashboard/NewCheckPage';
+export { HistoryPage } from './dashboard/HistoryPage';
+export { ApiSettingsPage } from './dashboard/ApiSettingsPage';

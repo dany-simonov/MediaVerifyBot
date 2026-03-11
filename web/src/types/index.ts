@@ -1,5 +1,19 @@
+/**
+ * Type Definitions
+ * ================
+ * Централизованные типы для всего приложения.
+ */
+
+// ============================================================================
+// Enums
+// ============================================================================
+
 export type Verdict = 'REAL' | 'FAKE' | 'UNCERTAIN';
 export type MediaType = 'image' | 'audio' | 'video' | 'text';
+
+// ============================================================================
+// Analysis Types
+// ============================================================================
 
 export interface Check {
   id: string;
@@ -12,6 +26,28 @@ export interface Check {
   created_at: string;
 }
 
+export interface AnalyzeResult {
+  verdict: Verdict;
+  confidence: number;
+  model_used: string;
+  explanation: string;
+  processing_ms: number;
+}
+
+// ============================================================================
+// User Types
+// ============================================================================
+
+export interface User {
+  $id: string;
+  email: string;
+  name: string;
+  emailVerification?: boolean;
+  phone?: string;
+  phoneVerification?: boolean;
+  createdAt?: string;
+}
+
 export interface UserStats {
   user_id: string;
   is_premium: boolean;
@@ -21,16 +57,77 @@ export interface UserStats {
   created_at: string;
 }
 
-export interface User {
-  $id: string;
+// ============================================================================
+// Form Types
+// ============================================================================
+
+export interface LoginFormData {
   email: string;
-  name: string;
+  password: string;
 }
 
-export interface AnalyzeResult {
-  verdict: Verdict;
-  confidence: number;
-  model_used: string;
-  explanation: string;
-  processing_ms: number;
+export interface RegisterFormData {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+// ============================================================================
+// Validation Types
+// ============================================================================
+
+export interface ValidationError {
+  field: string;
+  message: string;
+}
+
+export interface FormState<T> {
+  data: T;
+  errors: ValidationError[];
+  isSubmitting: boolean;
+}
+
+// ============================================================================
+// Upload Types
+// ============================================================================
+
+export interface UploadFile {
+  id: string;
+  file: File;
+  preview?: string;
+  progress: number;
+  status: 'pending' | 'uploading' | 'analyzing' | 'complete' | 'error';
+  result?: AnalyzeResult;
+  error?: string;
+}
+
+// ============================================================================
+// UI Types
+// ============================================================================
+
+export type TabType = 'media' | 'text';
+
+export interface Tab {
+  id: TabType;
+  label: string;
+  icon: React.ReactNode;
+}
+
+// ============================================================================
+// API Response Types
+// ============================================================================
+
+export interface ApiResponse<T> {
+  success: boolean;
+  data?: T;
+  error?: string;
+}
+
+export interface PaginatedResponse<T> {
+  items: T[];
+  total: number;
+  page: number;
+  limit: number;
+  hasMore: boolean;
 }

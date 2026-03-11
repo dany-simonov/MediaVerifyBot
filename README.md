@@ -74,12 +74,12 @@
 
 Система построена на облачной инфраструктуре Appwrite Cloud:
 
-- **Веб-платформа** — React 18 + TypeScript + Tailwind CSS, хостинг на Appwrite Sites
+- **Веб-платформа** — React 18 + TypeScript + Tailwind CSS + Zustand + React Router, хостинг на Appwrite Sites
 - **Telegram-бот** — Python + aiogram 3.7
 - **Бэкенд** — Appwrite Functions (serverless Python)
 - **База данных** — Appwrite Database
 - **Хранилище файлов** — Appwrite Storage (временное хранение для анализа)
-- **Авторизация** — Appwrite Auth (Telegram + Email)
+- **Авторизация** — Appwrite Auth (Email/Password, JWT)
 
 ### Модели и fallback-цепочки
 
@@ -96,20 +96,29 @@
 ## Структура проекта
 
 ```text
-├── web/                  # React веб-платформа (Vite + TypeScript + Tailwind)
+├── web/                      # React веб-платформа (Vite + TypeScript + Tailwind)
 │   ├── src/
-│   │   ├── components/   # UI компоненты
-│   │   ├── pages/        # Страницы (Home, About, FAQ, Docs, Privacy, Terms)
-│   │   ├── hooks/        # React хуки (useAuth, useAnalyze)
-│   │   └── lib/          # Appwrite SDK интеграция
-│   └── legacy/           # Старые HTML файлы (для референса)
-├── bot/                  # Telegram-бот (aiogram 3.7)
-│   ├── handlers/         # Обработчики медиа и текста
-│   ├── middlewares/      # Rate-limiting
-│   └── keyboards/        # Inline-кнопки
-├── adapters/             # Интеграции с ML-сервисами
-├── miniapp/              # Telegram Mini App (React + TypeScript)
-└── tests/                # Unit + integration тесты
+│   │   ├── components/       # UI компоненты
+│   │   │   ├── ui/           # Базовые UI (Button, Input, Card, Alert, Spinner)
+│   │   │   ├── layout/       # Layout (DashboardLayout, Sidebar)
+│   │   │   ├── forms/        # Формы (LoginForm, RegisterForm)
+│   │   │   ├── router/       # ProtectedRoute, PublicOnlyRoute
+│   │   │   └── upload/       # FileDropzone, TextInput
+│   │   ├── pages/            # Страницы
+│   │   │   ├── auth/         # LoginPage, RegisterPage
+│   │   │   └── dashboard/    # DashboardOverview, NewCheckPage, HistoryPage, ApiSettingsPage
+│   │   ├── store/            # Zustand stores (authStore)
+│   │   ├── hooks/            # React хуки
+│   │   ├── lib/              # Appwrite SDK, утилиты
+│   │   └── types/            # TypeScript типы
+│   └── assets/               # Статические ресурсы (изображения)
+├── bot/                      # Telegram-бот (aiogram 3.7)
+│   ├── handlers/             # Обработчики медиа и текста
+│   ├── middlewares/          # Rate-limiting
+│   └── keyboards/            # Inline-кнопки
+├── adapters/                 # Интеграции с ML-сервисами
+├── miniapp/                  # Telegram Mini App (React + TypeScript)
+└── tests/                    # Unit + integration тесты
 ```
 
 ---
@@ -118,7 +127,7 @@
 
 | Компонент | Технология |
 | --- | --- |
-| Веб | React 18, TypeScript, Tailwind CSS, Vite |
+| Веб | React 18, TypeScript, Tailwind CSS, Zustand, React Router, Vite |
 | Бот | Python 3.11+, aiogram 3.7 |
 | Бэкенд | Appwrite Cloud (Functions, Database, Storage, Auth) |
 | Mini App | React 18, TypeScript, Tailwind, Vite |
@@ -142,11 +151,20 @@ npm run build   # dist/
 
 ## Версия
 
-**v0.6.0** — «React + Appwrite»
+**v0.7.0** — «Enterprise Dashboard»
 
-Полная миграция веб-платформы на React 18 + TypeScript + Tailwind CSS. Переход на Appwrite Cloud инфраструктуру. Новый дизайн интерфейса, улучшенный UX компонентов.
+- Полный рефакторинг веб-платформы с enterprise-grade архитектурой
+- Zustand для state management
+- Новые страницы: Login, Register, Dashboard с Sidebar
+- Drag & Drop загрузка файлов (react-dropzone)
+- Защищённые маршруты (ProtectedRoute)
+- UI Kit: Button, Input, Card, Alert, Spinner с поддержкой темы
+- Удалены legacy HTML/CSS/JS файлы
+- Верификация через Telegram — скоро
 
-**Планы на v0.7.0:**
+**Планы на v0.8.0:**
+- Интеграция анализа с бэкендом
+- История проверок из Appwrite Database
 - Публичный REST API с полной документацией
 - Личный кабинет с историей проверок и статистикой  
 - Браузерное расширение для быстрой проверки

@@ -20,14 +20,14 @@ export function useAnalyze() {
     try {
       // Upload file to Storage
       const uploaded = await storage.createFile(
-        APPWRITE_CONFIG.uploadsBucketId,
+        APPWRITE_CONFIG.buckets.uploads,
         ID.unique(),
         file
       );
 
       // Call analyze function
       const result = await functions.createExecution(
-        APPWRITE_CONFIG.analyzeFunctionId,
+        APPWRITE_CONFIG.functions.analyze,
         JSON.stringify({
           fileId: uploaded.$id,
           mediaType: detectMediaType(file),
@@ -39,7 +39,7 @@ export function useAnalyze() {
       
       // Clean up uploaded file
       try {
-        await storage.deleteFile(APPWRITE_CONFIG.uploadsBucketId, uploaded.$id);
+        await storage.deleteFile(APPWRITE_CONFIG.buckets.uploads, uploaded.$id);
       } catch {
         // Ignore cleanup errors
       }
@@ -60,7 +60,7 @@ export function useAnalyze() {
 
     try {
       const result = await functions.createExecution(
-        APPWRITE_CONFIG.analyzeFunctionId,
+        APPWRITE_CONFIG.functions.analyze,
         JSON.stringify({
           text,
           mediaType: 'text',

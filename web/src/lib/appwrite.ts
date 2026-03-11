@@ -51,7 +51,7 @@ export const functions = new Functions(client);
  */
 export const APPWRITE_CONFIG = {
   /** Main database ID */
-  databaseId: 'istochnik',
+  databaseId: '69af34d60006b11ddee4',
   
   /** Collections */
   collections: {

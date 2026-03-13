@@ -16,6 +16,7 @@ import { FileDropzone, TextInput } from '../../components/upload';
 import { CheckResultCard } from '../../components/CheckResultCard';
 import { cn } from '../../lib/utils';
 import { functions, storage, ID, APPWRITE_CONFIG } from '../../lib/appwrite';
+import { saveCheckToHistory } from '../../lib/checkHistory';
 import { useAuthStore } from '../../store';
 import type { UploadFile, TabType, CheckResult } from '../../types';
 
@@ -106,7 +107,12 @@ export function NewCheckPage() {
   };
 
   const handleFilesSelected = useCallback((newFiles: UploadFile[]) => {
-    setFiles((prev) => [...prev, ...newFiles].slice(0, 1)); // Allow only one file for now
+    setFiles((prev) => {
+      prev.forEach((file) => {
+        if (file.preview) URL.revokeObjectURL(file.preview);
+      });
+      return newFiles.slice(0, 1);
+    }); // Keep only one file and allow replacing the current one.
     resetState();
   }, []);
 
@@ -124,7 +130,7 @@ export function NewCheckPage() {
   }, []);
 
   const canSubmit = activeTab === 'media' 
-    ? files.length > 0 && files.every((f) => f.status === 'pending')
+    ? files.length > 0 && files.every((f) => f.status !== 'uploading' && f.status !== 'analyzing')
     : text.length >= 50;
 
   const handleSubmit = async () => {
@@ -188,6 +194,14 @@ export function NewCheckPage() {
 
       const normalizedResult = normalizeFunctionResult(resultData, mediaType);
       setResult(normalizedResult);
+
+      if (user?.$id) {
+        const sourceLabel =
+          activeTab === 'media' && files[0]?.file?.name
+            ? files[0].file.name
+            : text.slice(0, 120);
+        saveCheckToHistory(user.$id, normalizedResult, mediaType, sourceLabel);
+      }
 
       if (activeTab === 'media' && files.length > 0) {
         setFileStatus(files[0].id, 'complete', 100);

@@ -4,7 +4,7 @@
  * Страница истории проверок пользователя.
  */
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Search, 
@@ -19,10 +19,9 @@ import {
 } from 'lucide-react';
 import { Card, CardHeader, Button, Input } from '../../components/ui';
 import { cn } from '../../lib/utils';
+import { loadChecksHistory } from '../../lib/checkHistory';
+import { useAuthStore } from '../../store';
 import type { Check, Verdict, MediaType } from '../../types';
-
-// Mock data for demonstration
-const mockChecks: Check[] = [];
 
 const verdictConfig: Record<Verdict, { label: string; color: string; bgColor: string }> = {
   REAL: { label: 'Реальный', color: 'text-mv-real', bgColor: 'bg-mv-real/10' },
@@ -40,9 +39,15 @@ const mediaTypeConfig: Record<MediaType, { icon: React.ReactNode; label: string 
 export function HistoryPage() {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<MediaType | 'all'>('all');
+  const { user } = useAuthStore();
+
+  const checks = useMemo<Check[]>(() => {
+    if (!user?.$id) return [];
+    return loadChecksHistory(user.$id);
+  }, [user?.$id]);
 
   // Filter checks
-  const filteredChecks = mockChecks.filter((check) => {
+  const filteredChecks = checks.filter((check) => {
     if (filter !== 'all' && check.media_type !== filter) return false;
     if (search && !check.explanation.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
@@ -176,7 +181,7 @@ export function HistoryPage() {
       )}
 
       {/* Stats Summary */}
-      {mockChecks.length > 0 && (
+      {checks.length > 0 && (
         <Card>
           <CardHeader
             title="Сводка"
@@ -185,24 +190,24 @@ export function HistoryPage() {
           
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div className="p-4 rounded-lg bg-mv-surface-2 text-center">
-              <div className="text-2xl font-bold text-mv-text">{mockChecks.length}</div>
+              <div className="text-2xl font-bold text-mv-text">{checks.length}</div>
               <div className="text-sm text-mv-text-muted">Всего</div>
             </div>
             <div className="p-4 rounded-lg bg-mv-real/10 text-center">
               <div className="text-2xl font-bold text-mv-real">
-                {mockChecks.filter((c) => c.verdict === 'REAL').length}
+                {checks.filter((c) => c.verdict === 'REAL').length}
               </div>
               <div className="text-sm text-mv-text-muted">Реальных</div>
             </div>
             <div className="p-4 rounded-lg bg-mv-fake/10 text-center">
               <div className="text-2xl font-bold text-mv-fake">
-                {mockChecks.filter((c) => c.verdict === 'FAKE').length}
+                {checks.filter((c) => c.verdict === 'FAKE').length}
               </div>
               <div className="text-sm text-mv-text-muted">ИИ</div>
             </div>
             <div className="p-4 rounded-lg bg-mv-uncertain/10 text-center">
               <div className="text-2xl font-bold text-mv-uncertain">
-                {mockChecks.filter((c) => c.verdict === 'UNCERTAIN').length}
+                {checks.filter((c) => c.verdict === 'UNCERTAIN').length}
               </div>
               <div className="text-sm text-mv-text-muted">Неопределено</div>
             </div>

@@ -10,7 +10,7 @@ export function Footer() {
           {/* Logo & Description */}
           <div className="md:col-span-1">
             <Link to="/" className="flex items-center gap-3 mb-4">
-              <img src="./assets/img/logo.png" alt="" className="w-8 h-8" />
+              <img src="/assets/img/logo.png" alt="" className="w-8 h-8" />
               <span className="font-semibold text-mv-text">Источник</span>
             </Link>
             <p className="text-sm text-mv-text-secondary leading-relaxed">

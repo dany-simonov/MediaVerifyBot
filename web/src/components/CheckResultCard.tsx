@@ -12,8 +12,6 @@ interface CheckResultCardProps {
 }
 
 export function CheckResultCard({ result }: CheckResultCardProps) {
-  const isFake = result.verdict === 'FAKE';
-  
   return (
     <Card>
       <div className="flex flex-col md:flex-row md:items-center gap-6">

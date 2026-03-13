@@ -54,13 +54,17 @@ interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {
   title: string;
   description?: string;
   action?: ReactNode;
+  icon?: ReactNode;
 }
 
-export function CardHeader({ title, description, action, className, ...props }: CardHeaderProps) {
+export function CardHeader({ title, description, action, icon, className, ...props }: CardHeaderProps) {
   return (
     <div className={cn('flex items-start justify-between mb-6', className)} {...props}>
       <div>
-        <h3 className="text-lg font-semibold text-mv-text">{title}</h3>
+        <h3 className="text-lg font-semibold text-mv-text flex items-center gap-2">
+          {icon && <span className="flex-shrink-0">{icon}</span>}
+          <span>{title}</span>
+        </h3>
         {description && (
           <p className="mt-1 text-sm text-mv-text-secondary">{description}</p>
         )}

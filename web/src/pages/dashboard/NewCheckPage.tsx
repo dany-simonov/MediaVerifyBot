@@ -6,6 +6,7 @@
 
 import { useState, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { AppwriteException } from 'appwrite';
 import {
   FileImage, FileText, Send, Loader2, Lightbulb, UploadCloud, Cpu, ClipboardCheck
 } from 'lucide-react';
@@ -42,6 +43,47 @@ export function NewCheckPage() {
   const [result, setResult] = useState<CheckResult | null>(null);
   
   const { user } = useAuthStore();
+
+  const detectMediaType = (file: File): CheckResult['media_type'] => {
+    if (file.type.startsWith('image/')) return 'image';
+    if (file.type.startsWith('audio/')) return 'audio';
+    if (file.type.startsWith('video/')) return 'video';
+    return 'image';
+  };
+
+  const setFileStatus = (
+    id: string,
+    status: UploadFile['status'],
+    progress: number,
+    fileError?: string
+  ) => {
+    setFiles((prev) =>
+      prev.map((f) => (f.id === id ? { ...f, status, progress, error: fileError } : f))
+    );
+  };
+
+  const normalizeFunctionResult = (data: any, mediaType: CheckResult['media_type']): CheckResult => {
+    const source = data?.result ?? data;
+    return {
+      verdict: source?.verdict ?? 'UNCERTAIN',
+      confidence: Number(source?.confidence ?? 0),
+      model_used: source?.model_used ?? source?.model ?? 'Unknown model',
+      explanation: source?.explanation ?? source?.reason ?? 'Результат получен без пояснения',
+      processing_ms: Number(source?.processing_ms ?? source?.processingTime ?? 0),
+      media_type: source?.media_type ?? mediaType,
+    };
+  };
+
+  const mapAnalyzeError = (err: unknown): string => {
+    if (err instanceof AppwriteException) {
+      if (err.code === 401) return 'Нет доступа к функции анализа. Выполните вход снова.';
+      if (err.code === 404) return 'Функция анализа или bucket не найдены в Appwrite.';
+      if (err.code === 429) return 'Слишком много запросов. Подождите и повторите.';
+      return err.message || 'Ошибка Appwrite при анализе.';
+    }
+    if (err instanceof Error) return err.message;
+    return 'Произошла неизвестная ошибка анализа.';
+  };
 
   const resetState = () => {
     setError(null);
@@ -84,8 +126,15 @@ export function NewCheckPage() {
 
     try {
       let execution;
+      let mediaType: CheckResult['media_type'] = 'text';
+      let uploadedFileId: string | null = null;
+
       if (activeTab === 'media' && files.length > 0) {
-        const fileToUpload = files[0].file;
+        const fileRef = files[0];
+        const fileToUpload = fileRef.file;
+        mediaType = detectMediaType(fileToUpload);
+
+        setFileStatus(fileRef.id, 'uploading', 35);
         
         // 1. Upload to Storage
         const uploadedFile = await storage.createFile(
@@ -93,6 +142,8 @@ export function NewCheckPage() {
           ID.unique(),
           fileToUpload
         );
+        uploadedFileId = uploadedFile.$id;
+        setFileStatus(fileRef.id, 'analyzing', 70);
 
         // 2. Call analyze function
         const payload = {
@@ -100,38 +151,54 @@ export function NewCheckPage() {
           userId: user.$id,
           username: user.name,
           firstName: user.name.split(' ')[0] || '',
-          mediaType: 'auto'
+          mediaType,
         };
         execution = await functions.createExecution(APPWRITE_CONFIG.functions.analyze, JSON.stringify(payload));
-        
       } else if (activeTab === 'text') {
+        mediaType = 'text';
         const payload = {
-          text: text,
+          text,
           userId: user.$id,
           username: user.name,
           firstName: user.name.split(' ')[0] || '',
-          mediaType: 'text'
+          mediaType,
         };
         execution = await functions.createExecution(APPWRITE_CONFIG.functions.analyze, JSON.stringify(payload));
       } else {
         throw new Error('Нет данных для анализа');
       }
 
-      if (execution.status === 'failed' || !execution.responseBody) {
-        throw new Error(execution.responseBody || 'Ошибка выполнения функции анализа.');
+      if (!execution.responseBody) {
+        throw new Error('Функция не вернула ответ. Проверьте логи Appwrite Function.');
       }
-      
+
       const resultData = JSON.parse(execution.responseBody);
-      
       if (resultData.detail) {
         throw new Error(resultData.detail);
       }
-      
-      setResult(resultData as CheckResult);
 
-    } catch (e: any) {
-      console.error('Analysis error:', e);
-      setError(e.message || 'Произошла неизвестная ошибка. Попробуйте снова.');
+      const normalizedResult = normalizeFunctionResult(resultData, mediaType);
+      setResult(normalizedResult);
+
+      if (activeTab === 'media' && files.length > 0) {
+        setFileStatus(files[0].id, 'complete', 100);
+      }
+
+      // Best effort cleanup after successful analyze.
+      if (uploadedFileId) {
+        try {
+          await storage.deleteFile(APPWRITE_CONFIG.buckets.uploads, uploadedFileId);
+        } catch {
+          // Ignore cleanup errors.
+        }
+      }
+
+    } catch (e) {
+      const message = mapAnalyzeError(e);
+      setError(message);
+      if (activeTab === 'media' && files.length > 0) {
+        setFileStatus(files[0].id, 'error', 0, message);
+      }
     } finally {
       setIsAnalyzing(false);
     }
@@ -197,7 +264,7 @@ export function NewCheckPage() {
       <Card variant="outlined" className="bg-mv-surface-2/30">
         <CardHeader
           title="Как работает проверка"
-          icon={<Lightbulb className="w-5 h-5 text-yellow-400" />}
+          icon={<Lightbulb className="w-5 h-5" />}
           description="Наши ИИ-модели анализируют контент и определяют вероятность его создания нейросетью"
         />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-6 pt-0">

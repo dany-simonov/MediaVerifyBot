@@ -72,14 +72,14 @@ export function Sidebar({ collapsed = false, onToggle }: SidebarProps) {
     >
       {/* Logo */}
       <div className="h-16 flex items-center justify-between px-4 border-b border-mv-border">
-        {!collapsed && (
-          <NavLink to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-mv-accent to-teal-400 flex items-center justify-center">
-              <span className="text-white font-bold text-sm">И</span>
-            </div>
-            <span className="font-semibold text-mv-text">Источник</span>
-          </NavLink>
-        )}
+        <NavLink to="/" className={cn('flex items-center gap-2', collapsed && 'mx-auto')}>
+          <img
+            src="/assets/img/logo.png"
+            alt="Источник"
+            className="w-8 h-8 rounded-lg object-cover"
+          />
+          {!collapsed && <span className="font-semibold text-mv-text">Источник</span>}
+        </NavLink>
         <button 
           onClick={onToggle}
           className={cn(

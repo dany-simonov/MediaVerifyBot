@@ -26,12 +26,13 @@ export interface Check {
   created_at: string;
 }
 
-export interface AnalyzeResult {
+export interface CheckResult {
   verdict: Verdict;
   confidence: number;
   model_used: string;
   explanation: string;
   processing_ms: number;
+  media_type: MediaType;
 }
 
 // ============================================================================
@@ -98,7 +99,7 @@ export interface UploadFile {
   preview?: string;
   progress: number;
   status: 'pending' | 'uploading' | 'analyzing' | 'complete' | 'error';
-  result?: AnalyzeResult;
+  result?: CheckResult;
   error?: string;
 }
 

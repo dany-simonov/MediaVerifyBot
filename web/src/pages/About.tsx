@@ -1,12 +1,14 @@
+import { Shield, Lock, Bot, Unlock, Rocket, Handshake, Plus } from 'lucide-react';
+
 const CONTACT_EMAIL = 'istochnik-media@yandex.com';
 
 const values = [
-  { icon: '🛡️', title: 'Борьба с фейками', description: 'Мы создаём инструменты, которые помогают людям отличать настоящий контент от сгенерированного ИИ.' },
-  { icon: '🔒', title: 'Защита от манипуляций', description: 'Противодействие социальной инженерии и дипфейкам — наш вклад в безопасность цифровой среды.' },
-  { icon: '🤖', title: 'ИИ на страже правды', description: 'Используем передовые модели машинного обучения для анализа медиа с точностью свыше 94%.' },
-  { icon: '🔓', title: 'Открытость', description: 'Прозрачность методов анализа и открытая архитектура — фундамент доверия к нашим результатам.' },
-  { icon: '🚀', title: 'Инновации', description: 'Постоянное обновление моделей и технологий для опережения генеративных инструментов.' },
-  { icon: '🤝', title: 'Доступность', description: 'Бесплатный доступ к базовым проверкам — каждый человек заслуживает инструмент верификации.' },
+  { icon: Shield, title: 'Борьба с фейками', description: 'Мы создаём инструменты, которые помогают людям отличать настоящий контент от сгенерированного ИИ.' },
+  { icon: Lock, title: 'Защита от манипуляций', description: 'Противодействие социальной инженерии и дипфейкам — наш вклад в безопасность цифровой среды.' },
+  { icon: Bot, title: 'ИИ на страже правды', description: 'Используем передовые модели машинного обучения для анализа медиа с точностью свыше 94%.' },
+  { icon: Unlock, title: 'Открытость', description: 'Прозрачность методов анализа и открытая архитектура — фундамент доверия к нашим результатам.' },
+  { icon: Rocket, title: 'Инновации', description: 'Постоянное обновление моделей и технологий для опережения генеративных инструментов.' },
+  { icon: Handshake, title: 'Доступность', description: 'Бесплатный доступ к базовым проверкам — каждый человек заслуживает инструмент верификации.' },
 ];
 
 const badges = [
@@ -77,7 +79,9 @@ export function About() {
                 key={index}
                 className="bg-mv-surface border border-mv-border rounded-xl p-6 text-center hover:border-mv-accent/50 hover:-translate-y-1 transition-all"
               >
-                <span className="text-3xl mb-4 block">{value.icon}</span>
+                <div className="w-12 h-12 mx-auto mb-4 rounded-lg bg-mv-accent/10 flex items-center justify-center text-mv-accent">
+                  <value.icon className="w-6 h-6" />
+                </div>
                 <h3 className="text-lg font-semibold text-mv-text mb-2">{value.title}</h3>
                 <p className="text-sm text-mv-text-secondary">{value.description}</p>
               </div>
@@ -90,8 +94,8 @@ export function About() {
           <h2 className="text-2xl font-bold text-mv-accent mb-6">Присоединяйся к команде</h2>
           <div className="max-w-xl mx-auto">
             <div className="bg-mv-surface border border-mv-border rounded-xl p-8 text-center hover:border-mv-accent transition-all">
-              <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-mv-surface-2 border-2 border-dashed border-mv-border flex items-center justify-center text-3xl text-mv-text-muted">
-                +
+              <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-mv-surface-2 border-2 border-dashed border-mv-border flex items-center justify-center text-mv-text-muted">
+                <Plus className="w-8 h-8" />
               </div>
               <h3 className="text-xl font-semibold text-mv-text mb-2">Открытые позиции</h3>
               <p className="text-mv-accent mb-4">ML-инженеры • Фронтенд-разработчики • Дизайнеры</p>

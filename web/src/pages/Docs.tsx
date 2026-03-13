@@ -1,3 +1,5 @@
+import { AlertTriangle } from 'lucide-react';
+
 const CONTACT_EMAIL = 'istochnik-media@yandex.com';
 
 const endpoints = [
@@ -92,7 +94,7 @@ export function Docs() {
             REST API для интеграции системы Источник в ваши проекты
           </p>
           <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-mv-uncertain/20 text-mv-uncertain rounded-lg text-sm">
-            ⚠️ API находится в разработке. Свяжитесь с нами для раннего доступа.
+            <AlertTriangle className="w-4 h-4" /> API находится в разработке. Свяжитесь с нами для раннего доступа.
           </div>
         </div>
 

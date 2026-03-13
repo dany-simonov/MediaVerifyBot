@@ -5,9 +5,7 @@ export function About() {
     <div className="min-h-screen bg-mv-bg p-4 pb-24">
       {/* Logo & Title */}
       <div className="flex flex-col items-center text-center mb-8">
-        <svg className="w-16 h-16 text-mv-accent mb-4" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-        </svg>
+        <img src="/logo.png" alt="Источник" className="w-16 h-16" />
         <h1 className="text-2xl font-bold text-mv-text">Источник</h1>
         <p className="text-mv-text-secondary">Верификация медиаконтента</p>
       </div>

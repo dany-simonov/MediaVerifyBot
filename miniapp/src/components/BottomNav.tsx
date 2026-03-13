@@ -1,10 +1,11 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom';
+import { Home, History, Diamond, Info } from 'lucide-react';
 
 const navItems = [
-  { path: '/', icon: '🏠', label: 'Главная' },
-  { path: '/history', icon: '📋', label: 'История' },
-  { path: '/pricing', icon: '💎', label: 'Тарифы' },
-  { path: '/about', icon: 'ℹ️', label: 'О нас' },
+  { path: '/', icon: Home, label: 'Главная' },
+  { path: '/history', icon: History, label: 'История' },
+  { path: '/pricing', icon: Diamond, label: 'Тарифы' },
+  { path: '/about', icon: Info, label: 'О нас' },
 ]
 
 export function BottomNav() {
@@ -21,7 +22,7 @@ export function BottomNav() {
               }`
             }
           >
-            <span className="text-xl">{item.icon}</span>
+            <item.icon className="w-6 h-6" />
             <span className="text-xs">{item.label}</span>
           </NavLink>
         ))}

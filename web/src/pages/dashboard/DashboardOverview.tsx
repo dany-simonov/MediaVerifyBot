@@ -5,7 +5,7 @@
  */
 
 import { Link } from 'react-router-dom';
-import { Plus, ArrowRight, ArrowUp, Shield, Clock, CheckCircle } from 'lucide-react';
+import { Plus, ArrowRight, ArrowUp, Shield, Clock, CheckCircle, FileText, Image, AudioWaveform, Video, Hand } from 'lucide-react';
 import { Card, CardHeader, Button } from '../../components/ui';
 import { useAuthStore } from '../../store';
 
@@ -25,8 +25,8 @@ export function DashboardOverview() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-mv-text">
-            Добро пожаловать, {user?.name?.split(' ')[0] || 'Пользователь'}! 👋
+          <h1 className="text-2xl font-bold text-mv-text flex items-center gap-2">
+            Добро пожаловать, {user?.name?.split(' ')[0] || 'Пользователь'}! <Hand className="w-6 h-6 text-yellow-400" />
           </h1>
           <p className="mt-1 text-mv-text-secondary">
             Вот обзор вашей активности за сегодня
@@ -147,12 +147,7 @@ export function DashboardOverview() {
             className="p-4 rounded-lg bg-mv-surface-2 border border-mv-border hover:border-mv-accent hover:bg-mv-accent/5 transition-all group"
           >
             <div className="w-10 h-10 rounded-lg bg-mv-accent/10 flex items-center justify-center mb-3 group-hover:bg-mv-accent/20 transition-colors">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5 text-mv-accent">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                <polyline points="14,2 14,8 20,8"/>
-                <line x1="8" y1="13" x2="16" y2="13"/>
-                <line x1="8" y1="17" x2="13" y2="17"/>
-              </svg>
+              <FileText className="w-5 h-5 text-mv-accent" />
             </div>
             <h3 className="font-medium text-mv-text">Проверить текст</h3>
             <p className="text-sm text-mv-text-muted mt-1">
@@ -195,7 +190,7 @@ export function DashboardOverview() {
               <tr className="border-b border-mv-border">
                 <td className="py-3 px-4">
                   <span className="flex items-center gap-2">
-                    <span>🖼️</span>
+                    <Image className="w-5 h-5 text-mv-text-secondary" />
                     <span className="text-mv-text">Фото</span>
                   </span>
                 </td>
@@ -207,7 +202,7 @@ export function DashboardOverview() {
               <tr className="border-b border-mv-border">
                 <td className="py-3 px-4">
                   <span className="flex items-center gap-2">
-                    <span>🎵</span>
+                    <AudioWaveform className="w-5 h-5 text-mv-text-secondary" />
                     <span className="text-mv-text">Аудио</span>
                   </span>
                 </td>
@@ -219,7 +214,7 @@ export function DashboardOverview() {
               <tr className="border-b border-mv-border">
                 <td className="py-3 px-4">
                   <span className="flex items-center gap-2">
-                    <span>🎬</span>
+                    <Video className="w-5 h-5 text-mv-text-secondary" />
                     <span className="text-mv-text">Видео</span>
                   </span>
                 </td>
@@ -231,7 +226,7 @@ export function DashboardOverview() {
               <tr>
                 <td className="py-3 px-4">
                   <span className="flex items-center gap-2">
-                    <span>📄</span>
+                    <FileText className="w-5 h-5 text-mv-text-secondary" />
                     <span className="text-mv-text">Текст</span>
                   </span>
                 </td>

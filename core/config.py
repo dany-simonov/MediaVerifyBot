@@ -6,7 +6,7 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     # Telegram
-    bot_token: str
+    bot_token: str = ""
     webhook_url: str = ""
 
     # FastAPI internal

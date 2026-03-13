@@ -5,20 +5,36 @@
  */
 
 import { Link } from 'react-router-dom';
+import { useMemo } from 'react';
 import { Plus, ArrowRight, ArrowUp, Shield, Clock, CheckCircle, FileText, Image, AudioWaveform, Video, Hand } from 'lucide-react';
 import { Card, CardHeader, Button } from '../../components/ui';
+import { getHistoryStats } from '../../lib/checkHistory';
 import { useAuthStore } from '../../store';
 
 export function DashboardOverview() {
   const { user } = useAuthStore();
+  const dailyLimit = 3;
 
-  // Mock stats (replace with real data later)
-  const stats = {
-    checksToday: 0,
-    dailyLimit: 3,
-    totalChecks: 0,
-    averageIndex: null as number | null,
-  };
+  const stats = useMemo(() => {
+    if (!user?.$id) {
+      return {
+        checksToday: 0,
+        dailyLimit,
+        totalChecks: 0,
+        averageIndex: null as number | null,
+        checksThisWeek: 0,
+      };
+    }
+
+    const historyStats = getHistoryStats(user.$id);
+    return {
+      checksToday: historyStats.checksToday,
+      dailyLimit,
+      totalChecks: historyStats.totalChecks,
+      averageIndex: historyStats.averageIndex,
+      checksThisWeek: historyStats.checksThisWeek,
+    };
+  }, [user?.$id]);
 
   return (
     <div className="max-w-6xl mx-auto space-y-8">
@@ -58,7 +74,7 @@ export function DashboardOverview() {
           <div className="mt-4 h-2 bg-mv-surface-2 rounded-full overflow-hidden">
             <div
               className="h-full bg-mv-accent rounded-full transition-all duration-500"
-              style={{ width: `${(stats.checksToday / stats.dailyLimit) * 100}%` }}
+              style={{ width: `${Math.min((stats.checksToday / stats.dailyLimit) * 100, 100)}%` }}
             />
           </div>
         </Card>
@@ -77,7 +93,7 @@ export function DashboardOverview() {
           {stats.totalChecks > 0 && (
             <p className="mt-4 text-sm text-mv-real flex items-center gap-1">
               <ArrowUp className="w-4 h-4" />
-              +3 на этой неделе
+              {stats.checksThisWeek} за эту неделю
             </p>
           )}
         </Card>

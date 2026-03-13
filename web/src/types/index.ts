@@ -35,6 +35,15 @@ export interface CheckResult {
   media_type: MediaType;
 }
 
+// Backward-compatible type for older components/hooks.
+export interface AnalyzeResult {
+  verdict: Verdict;
+  confidence: number;
+  model_used: string;
+  explanation: string;
+  processing_ms: number;
+}
+
 // ============================================================================
 // User Types
 // ============================================================================

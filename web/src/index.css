@@ -20,6 +20,12 @@ body {
   min-height: 100vh;
 }
 
+/* Global icon color */
+.lucide {
+  color: #0D9488;
+  stroke: currentColor;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

@@ -5,16 +5,20 @@
  */
 
 import { NavLink, useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
 import { 
   Plus, 
   History, 
   Key, 
   LogOut, 
   User,
+  Camera,
+  Trash2,
   ChevronLeft,
   LayoutDashboard
 } from 'lucide-react';
 import { useAuthStore } from '../../store';
+import { clearUserAvatar, fileToAvatarDataUrl, loadUserProfile, saveUserAvatar } from '../../lib/userProfile';
 import { cn } from '../../lib/utils';
 
 interface SidebarProps {
@@ -56,10 +60,50 @@ const navItems: NavItem[] = [
 export function Sidebar({ collapsed = false, onToggle }: SidebarProps) {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
+  const [avatarDataUrl, setAvatarDataUrl] = useState<string | null>(null);
+  const [profileError, setProfileError] = useState<string | null>(null);
+  const avatarInputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (!user?.$id) {
+      setAvatarDataUrl(null);
+      return;
+    }
+    const prefs = loadUserProfile(user.$id);
+    setAvatarDataUrl(prefs.avatarDataUrl);
+  }, [user?.$id]);
 
   const handleLogout = async () => {
     await logout();
     navigate('/');
+  };
+
+  const triggerAvatarPicker = () => {
+    setProfileError(null);
+    avatarInputRef.current?.click();
+  };
+
+  const handleAvatarChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file || !user?.$id) return;
+
+    try {
+      const dataUrl = await fileToAvatarDataUrl(file);
+      saveUserAvatar(user.$id, dataUrl);
+      setAvatarDataUrl(dataUrl);
+      setProfileError(null);
+    } catch (error) {
+      setProfileError(error instanceof Error ? error.message : 'Не удалось обновить фото');
+    } finally {
+      event.target.value = '';
+    }
+  };
+
+  const handleAvatarRemove = () => {
+    if (!user?.$id) return;
+    clearUserAvatar(user.$id);
+    setAvatarDataUrl(null);
+    setProfileError(null);
   };
 
   return (
@@ -113,18 +157,30 @@ export function Sidebar({ collapsed = false, onToggle }: SidebarProps) {
 
       {/* User Section */}
       <div className="p-2 border-t border-mv-border">
+        <input
+          ref={avatarInputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={handleAvatarChange}
+        />
+
         {/* User Info */}
         <div className={cn(
           'flex items-center gap-3 px-3 py-3 rounded-lg mb-2',
           collapsed && 'justify-center px-2'
         )}>
-          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-mv-accent to-teal-400 flex items-center justify-center flex-shrink-0">
-            {user?.name ? (
-              <span className="text-white font-semibold text-sm">
-                {user.name.charAt(0).toUpperCase()}
-              </span>
+          <div className="w-9 h-9 rounded-full bg-mv-surface-2 border border-mv-accent/40 flex items-center justify-center flex-shrink-0 overflow-hidden">
+            {avatarDataUrl ? (
+              <img src={avatarDataUrl} alt="Фото профиля" className="w-full h-full object-cover" />
             ) : (
-              <User className="w-5 h-5 text-white" />
+              user?.name ? (
+                <span className="text-mv-accent font-semibold text-sm">
+                  {user.name.charAt(0).toUpperCase()}
+                </span>
+              ) : (
+                <User className="w-5 h-5 text-mv-accent" />
+              )
             )}
           </div>
           {!collapsed && (
@@ -138,6 +194,45 @@ export function Sidebar({ collapsed = false, onToggle }: SidebarProps) {
             </div>
           )}
         </div>
+
+        {!collapsed && (
+          <div className="space-y-2 mb-2">
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                onClick={triggerAvatarPicker}
+                className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs text-mv-text-secondary bg-mv-surface-2 hover:bg-mv-accent/10 hover:text-mv-accent transition-colors"
+              >
+                <Camera className="w-4 h-4" />
+                Сменить
+              </button>
+              <button
+                onClick={handleAvatarRemove}
+                disabled={!avatarDataUrl}
+                className={cn(
+                  'flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs transition-colors',
+                  avatarDataUrl
+                    ? 'text-mv-text-secondary bg-mv-surface-2 hover:bg-mv-fake/10 hover:text-mv-fake'
+                    : 'text-mv-text-muted bg-mv-surface-2 cursor-not-allowed opacity-60'
+                )}
+              >
+                <Trash2 className="w-4 h-4" />
+                Удалить
+              </button>
+            </div>
+
+            <button
+              onClick={() => navigate('/dashboard/history')}
+              className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-xs text-mv-text-secondary bg-mv-surface-2 hover:bg-mv-accent/10 hover:text-mv-accent transition-colors"
+            >
+              <History className="w-4 h-4" />
+              Профиль: история проверок
+            </button>
+
+            {profileError && (
+              <p className="text-xs text-mv-fake px-1">{profileError}</p>
+            )}
+          </div>
+        )}
 
         {/* Logout Button */}
         <button

@@ -5,7 +5,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import { Header, Footer, AuthModal, DashboardLayout, ProtectedRoute, PublicOnlyRoute } from './components';
 import { 
   Home, 
@@ -138,8 +138,8 @@ function AppContent() {
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <AppContent />
-    </BrowserRouter>
+    </HashRouter>
   );
 }

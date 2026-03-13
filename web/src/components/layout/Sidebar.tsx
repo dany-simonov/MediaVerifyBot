@@ -76,7 +76,7 @@ export function Sidebar({ collapsed = false, onToggle }: SidebarProps) {
           <img
             src="/assets/img/logo.png"
             alt="Источник"
-            className="w-8 h-8 rounded-lg object-cover"
+            className="w-8 h-8 object-contain"
           />
           {!collapsed && <span className="font-semibold text-mv-text">Источник</span>}
         </NavLink>

@@ -242,7 +242,7 @@ export function FileDropzone({
                 )}
 
                 {/* Remove Button */}
-                {uploadFile.status === 'pending' && (
+                {uploadFile.status !== 'uploading' && uploadFile.status !== 'analyzing' && !disabled && (
                   <button
                     onClick={(e) => {
                       e.stopPropagation();

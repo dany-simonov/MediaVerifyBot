@@ -3,6 +3,14 @@ import WebApp from '@twa-dev/sdk'
 import { useTelegramUser } from '../hooks/useTelegramUser'
 import { getUserStats } from '../api/client'
 import type { UserStats } from '../types'
+import { Image, AudioWaveform, Video, FileText } from 'lucide-react'
+
+const howToUse = [
+  { icon: Image, text: 'Фото — детекция AI-генерации (94.4%)' },
+  { icon: AudioWaveform, text: 'Аудио — синтетическая речь (99.5%)' },
+  { icon: Video, text: 'Видео — покадровый анализ (81%)' },
+  { icon: FileText, text: 'Текст — написан ИИ (98%)' },
+]
 
 export function Dashboard() {
   const { id, firstName, photoUrl } = useTelegramUser()
@@ -34,9 +42,7 @@ export function Dashboard() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
-          <svg className="w-8 h-8 text-mv-accent" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-          </svg>
+          <img src="/logo.png" alt="Источник" className="w-8 h-8" />
           <span className="text-lg font-semibold text-mv-text">Источник</span>
         </div>
         <div className="flex items-center gap-2">
@@ -98,14 +104,9 @@ export function Dashboard() {
       <div className="bg-mv-card rounded-2xl p-5 mb-6">
         <h3 className="text-mv-text font-medium mb-4">Как использовать</h3>
         <div className="space-y-3">
-          {[
-            { icon: '🖼', text: 'Фото — детекция AI-генерации (94.4%)' },
-            { icon: '🎵', text: 'Аудио — синтетическая речь (99.5%)' },
-            { icon: '🎥', text: 'Видео — покадровый анализ (81%)' },
-            { icon: '📝', text: 'Текст — написан ИИ (98%)' },
-          ].map((item, i) => (
+          {howToUse.map((item, i) => (
             <div key={i} className="flex items-center gap-3">
-              <span className="text-xl">{item.icon}</span>
+              <item.icon className="w-6 h-6 text-mv-text-secondary" />
               <span className="text-mv-text-secondary text-sm">{item.text}</span>
             </div>
           ))}

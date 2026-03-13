@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ChevronDown } from 'lucide-react';
 
 const CONTACT_EMAIL = 'istochnik-media@yandex.com';
 
@@ -125,9 +126,7 @@ export function FAQ() {
                         className="w-full flex items-center justify-between p-4 text-left hover:bg-mv-surface-2 transition-colors"
                       >
                         <span className="font-medium text-mv-text pr-4">{item.question}</span>
-                        <span className={`text-mv-accent transition-transform ${isOpen ? 'rotate-180' : ''}`}>
-                          ▼
-                        </span>
+                        <ChevronDown className={`w-5 h-5 text-mv-accent transition-transform ${isOpen ? 'rotate-180' : ''}`} />
                       </button>
                       {isOpen && (
                         <div className="px-4 pb-4">

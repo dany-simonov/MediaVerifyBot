@@ -19,7 +19,7 @@ export function Header({ onLoginClick, isLoggedIn, onLogout }: HeaderProps) {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-            <img src="./assets/img/logo.png" alt="Источник" className="w-8 h-8" />
+            <img src="/assets/img/logo.png" alt="Источник" className="w-8 h-8" />
             <span className="font-semibold text-lg text-mv-text">Источник</span>
           </Link>
 

@@ -13,6 +13,7 @@ import json
 import os
 import sys
 import time
+import threading
 from pathlib import Path
 from typing import Any
 
@@ -117,7 +118,7 @@ async def _analyze(payload: dict[str, Any]) -> dict[str, Any]:
         bucket_id = (
             os.getenv("VITE_APPWRITE_UPLOADS_BUCKET_ID")
             or os.getenv("UPLOADS_BUCKET_ID")
-            or "uploads"
+            or "69af36f900139c5afe5b"
         )
         file_bytes = await _download_file_bytes(file_id, bucket_id)
 
@@ -133,11 +134,36 @@ async def _analyze(payload: dict[str, Any]) -> dict[str, Any]:
     return body
 
 
+def _run_coro_sync(coro: Any) -> Any:
+    """Run coroutine from sync code even when an event loop is already running."""
+    try:
+        asyncio.get_running_loop()
+    except RuntimeError:
+        return asyncio.run(coro)
+
+    result_holder: dict[str, Any] = {}
+    error_holder: dict[str, BaseException] = {}
+
+    def _runner() -> None:
+        try:
+            result_holder["result"] = asyncio.run(coro)
+        except BaseException as exc:  # pragma: no cover
+            error_holder["error"] = exc
+
+    thread = threading.Thread(target=_runner, daemon=True)
+    thread.start()
+    thread.join()
+
+    if "error" in error_holder:
+        raise error_holder["error"]
+    return result_holder.get("result")
+
+
 def main(context: Any):
     """Appwrite function handler."""
     try:
         payload = _extract_payload(context.req)
-        result = asyncio.run(_analyze(payload))
+        result = _run_coro_sync(_analyze(payload))
         return _response_json(context, result, 200)
     except Exception as exc:
         return _response_json(context, {"detail": str(exc)}, 400)

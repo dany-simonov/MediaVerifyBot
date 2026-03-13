@@ -77,7 +77,16 @@ export function NewCheckPage() {
   const mapAnalyzeError = (err: unknown): string => {
     if (err instanceof AppwriteException) {
       if (err.code === 401) return 'Нет доступа к функции анализа. Выполните вход снова.';
-      if (err.code === 404) return 'Функция анализа или bucket не найдены в Appwrite.';
+      if (err.code === 404) {
+        const type = (err.type || '').toLowerCase();
+        if (type.includes('bucket')) {
+          return `Bucket не найден: ${APPWRITE_CONFIG.buckets.uploads}. Проверьте Storage -> Buckets в Appwrite.`;
+        }
+        if (type.includes('function')) {
+          return `Function не найдена: ${APPWRITE_CONFIG.functions.analyze}. Проверьте Functions в Appwrite.`;
+        }
+        return 'Ресурс не найден в Appwrite (function или bucket).';
+      }
       if (err.code === 429) return 'Слишком много запросов. Подождите и повторите.';
       return err.message || 'Ошибка Appwrite при анализе.';
     }

@@ -65,9 +65,13 @@ export function NewCheckPage() {
 
   const normalizeFunctionResult = (data: any, mediaType: CheckResult['media_type']): CheckResult => {
     const source = data?.result ?? data;
+    const rawConfidence = Number(source?.confidence ?? 0);
+    const aiProbability = rawConfidence <= 1 ? rawConfidence * 100 : rawConfidence;
+    const authenticityIndex = Math.max(0, Math.min(100, Math.round(100 - aiProbability)));
+
     return {
       verdict: source?.verdict ?? 'UNCERTAIN',
-      confidence: Number(source?.confidence ?? 0),
+      confidence: authenticityIndex,
       model_used: source?.model_used ?? source?.model ?? 'Unknown model',
       explanation: source?.explanation ?? source?.reason ?? 'Результат получен без пояснения',
       processing_ms: Number(source?.processing_ms ?? source?.processingTime ?? 0),

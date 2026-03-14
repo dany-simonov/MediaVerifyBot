@@ -65,7 +65,7 @@ export function HistoryPage() {
         </div>
         
         <Link to="/dashboard/check">
-          <Button leftIcon={<Plus className="w-4 h-4" />}>
+          <Button className="text-white" leftIcon={<Plus className="w-4 h-4" />}>
             Новая проверка
           </Button>
         </Link>

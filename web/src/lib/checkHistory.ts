@@ -29,8 +29,20 @@ export function loadChecksHistory(userId: string): Check[] {
     if (!Array.isArray(parsed)) return [];
 
     return parsed
-      .filter((item): item is Check => {
+      .filter((item): item is Check & { index_type?: string } => {
         return !!item && typeof item === 'object' && typeof item.id === 'string';
+      })
+      .map((item) => {
+        const confidence = clampConfidence(item.confidence);
+        // Legacy entries stored AI probability; new ones store authenticity index.
+        const normalizedConfidence = item.index_type === 'authenticity'
+          ? confidence
+          : Math.max(0, Math.min(100, 100 - confidence));
+
+        return {
+          ...item,
+          confidence: normalizedConfidence,
+        };
       })
       .slice(0, MAX_ITEMS);
   } catch {
@@ -44,7 +56,7 @@ export function saveCheckToHistory(
   mediaType: MediaType,
   sourceLabel: string
 ): Check {
-  const item: Check = {
+  const item: Check & { index_type: 'authenticity' } = {
     id: `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`,
     media_type: mediaType,
     verdict: result.verdict,
@@ -53,6 +65,7 @@ export function saveCheckToHistory(
     explanation: sourceLabel || result.explanation,
     processing_ms: result.processing_ms,
     created_at: new Date().toISOString(),
+    index_type: 'authenticity',
   };
 
   const current = loadChecksHistory(userId);

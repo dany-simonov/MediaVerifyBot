@@ -1,15 +1,15 @@
 import type { Verdict } from '../types';
 
 interface ConfidenceGaugeProps {
-  value: number; // 0 to 1
+  value: number; // 0..100 (legacy 0..1 is also supported)
   verdict: Verdict;
   size?: number;
 }
 
 export function ConfidenceGauge({ value, verdict, size = 120 }: ConfidenceGaugeProps) {
-  // For FAKE verdict, show authenticity index (inverse)
-  const displayValue = verdict === 'FAKE' ? 1 - value : value;
-  const percentage = Math.round(displayValue * 100);
+  const percentage = value <= 1 ? Math.round(value * 100) : Math.round(value);
+  const safePercentage = Math.max(0, Math.min(100, percentage));
+  const displayValue = safePercentage / 100;
   
   const radius = (size - 12) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -56,7 +56,7 @@ export function ConfidenceGauge({ value, verdict, size = 120 }: ConfidenceGaugeP
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <span className="text-2xl font-bold" style={{ color }}>
-          {percentage}%
+          {safePercentage}%
         </span>
         <span className="text-xs text-mv-text-secondary">Индекс</span>
       </div>

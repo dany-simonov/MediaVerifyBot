@@ -195,4 +195,3 @@ class HybridTextAnalyzer:
             result["factcheck_error"] = fc_model
 
         return result
-*** End Patch

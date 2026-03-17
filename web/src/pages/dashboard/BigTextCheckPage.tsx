@@ -103,7 +103,7 @@ export function BigTextCheckPage() {
       const execution = await functions.createExecution(
         APPWRITE_CONFIG.functions.analyze,
         JSON.stringify(payload),
-        true
+        false
       );
 
       let responseBody = execution.responseBody || '';

@@ -60,7 +60,6 @@ function AppContent() {
             <main className="flex-1">
               <Home />
             </main>
-              { path: '/history', element: <ProductHistory /> },
             <Footer />
             <AuthModal
               isOpen={authModalOpen}
@@ -75,6 +74,7 @@ function AppContent() {
         { path: '/about', element: <About /> },
         { path: '/faq', element: <FAQ /> },
         { path: '/docs', element: <Docs /> },
+        { path: '/history', element: <ProductHistory /> },
         { path: '/privacy', element: <Privacy /> },
         { path: '/terms', element: <Terms /> },
       ].map(({ path, element }) => (

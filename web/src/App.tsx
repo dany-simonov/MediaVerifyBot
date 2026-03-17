@@ -46,7 +46,6 @@ function AppContent() {
   }
 
   return (
-        { path: '/history', element: <ProductHistory /> },
     <Routes>
       {/* Public Routes with Header/Footer */}
       <Route
@@ -61,6 +60,7 @@ function AppContent() {
             <main className="flex-1">
               <Home />
             </main>
+              { path: '/history', element: <ProductHistory /> },
             <Footer />
             <AuthModal
               isOpen={authModalOpen}

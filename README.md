@@ -2,7 +2,7 @@
 
 **Платформа верификации медиаконтента на основе ИИ.**
 
-Источник определяет, создан ли контент человеком или сгенерирован искусственным интеллектом. Поддерживает фото, аудио, видео и текст, давая вероятностный вердикт, индекс подлинности и объяснение результата.
+Источник определяет, создан ли контент человеком или сгенерирован искусственным интеллектом. Поддерживает фото, аудио, видео и текст, дает вероятностный вердикт, индекс подлинности и объяснение результата.
 
 🌐 **Сайт:** [istochnik.appwrite.network](https://istochnik.appwrite.network)  
 📧 **Связаться:** [istochnik-media@yandex.com](mailto:istochnik-media@yandex.com)
@@ -28,14 +28,41 @@
 
 ---
 
-## Архитектура
+## Ключевые возможности
 
-Сервис состоит из веб-платформы, API и подсистем анализа:
+- **Мультиформатная верификация**: фото, аудио, видео, текст
+- **Explainable AI**: понятные объяснения результата и источники сомнений
+- **Фактчек текста**: выделение фрагментов с ошибками и ссылка на первоисточник
+- **История проверок**: личный кабинет и экспорт результатов
+- **Big Check**: кросс-анализ нескольких файлов за один проход
+- **B2B-режим**: Enterprise сценарии и API-интеграции
+
+---
+
+## Как пользоваться
+
+1. Откройте сайт: [istochnik.appwrite.network](https://istochnik.appwrite.network)
+2. Загрузите файл или вставьте текст
+3. Получите вердикт, индекс подлинности и объяснение
+
+Если вам нужна интеграция или расширенные лимиты, напишите нам на почту.
+
+---
+
+## API и интеграции
+
+Источник доступен как API для партнеров и медиа-платформ. Поддерживаются анализ медиа, гибридный анализ текста и health-check сервиса.
+
+Для доступа и ключей напишите нам: [istochnik-media@yandex.com](mailto:istochnik-media@yandex.com)
+
+---
+
+## Архитектура (кратко)
 
 - **Web** — React 18 + TypeScript + Tailwind CSS + Zustand + React Router (Vite)
 - **API** — FastAPI + SQLAlchemy (async) + PostgreSQL + Alembic
 - **Анализ** — адаптеры внешних моделей + fallback-цепочки
-- **Хранилище/логика** — Appwrite SDK для клиентской части (auth, storage, функции)
+- **Клиентские сервисы** — Appwrite SDK (auth, storage, функции)
 
 ### Модели и fallback-цепочки
 
@@ -54,7 +81,7 @@
 ```text
 ├── api/                      # FastAPI API
 ├── adapters/                 # Интеграции с ML-сервисами
-├── bot/                      # Telegram-бот (опциональный канал)
+├── bot/                      # Telegram-бот (отдельный канал)
 ├── core/                     # Анализ, конфиги, исключения
 ├── db/                       # SQLAlchemy модели и репозиторий
 ├── router/                   # MediaRouter для выбора адаптера
@@ -62,93 +89,6 @@
 ├── web/                      # React веб-платформа (Vite + TS + Tailwind)
 ├── miniapp/                  # Telegram Mini App (отдельный фронт)
 └── migrations/               # Alembic
-```
-
----
-
-## API (основные эндпоинты)
-
-- `POST /analyze` — анализ файла (multipart), поддержка текста через `text_content`
-- `POST /analyze/text/hybrid` — гибридный анализ текста (AI + фактчек)
-- `GET /health` — статус сервиса
-
-API ожидает заголовок `x-api-secret` и использует лимиты из настроек.
-
----
-
-## Переменные окружения
-
-Создайте `.env` в корне проекта (или задайте переменные окружения):
-
-```env
-# FastAPI
-API_BASE_URL=http://api:8000
-API_SECRET_KEY=change_me
-
-# Database
-DATABASE_URL=postgresql+asyncpg://user:password@db:5432/mediaverifybot
-
-# External APIs
-SIGHTENGINE_API_USER=
-SIGHTENGINE_API_SECRET=
-SAPLING_API_KEY=
-RESEMBLE_API_KEY=
-HF_API_TOKEN=
-
-# Limits
-FREE_DAILY_LIMIT=3
-PREMIUM_MONTHLY_LIMIT=100
-
-# Video
-MAX_VIDEO_DURATION_SECONDS=60
-VIDEO_FRAME_SAMPLE_RATE=1
-
-# Bot (если используете)
-BOT_TOKEN=
-WEBHOOK_URL=
-```
-
----
-
-## Локальная разработка
-
-### Web
-
-```bash
-cd web
-npm install
-npm run dev   # http://localhost:3001
-```
-
-### API
-
-```bash
-python -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
-python -m uvicorn api.main:app --reload --host 127.0.0.1 --port 8000
-```
-
-### Бот (опционально)
-
-```bash
-python -m bot.main
-```
-
-### Mini App (опционально)
-
-```bash
-cd miniapp
-npm install
-npm run dev
-```
-
----
-
-## Тесты
-
-```bash
-pytest
 ```
 
 ---

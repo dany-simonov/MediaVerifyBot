@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 interface PricingCardProps {
   name: string;
   price: string;
@@ -19,6 +21,9 @@ export function PricingCard({
   highlighted = false,
   disabled = false,
 }: PricingCardProps) {
+  const isInternalLink = buttonLink.startsWith('/');
+  const isExternalLink = !isInternalLink;
+
   return (
     <div
       className={`relative bg-mv-surface border rounded-xl p-6 transition-all duration-300 ${
@@ -51,20 +56,35 @@ export function PricingCard({
         ))}
       </ul>
 
-      <a
-        href={buttonLink}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={`block w-full py-3 text-center rounded-lg font-medium transition-all ${
-          disabled
-            ? 'bg-mv-surface-2 text-mv-text-muted cursor-not-allowed'
-            : highlighted
-            ? 'bg-mv-accent text-white hover:bg-mv-accent-hover'
-            : 'bg-mv-surface-2 border border-mv-border text-mv-text hover:border-mv-accent'
-        }`}
-      >
-        {buttonText}
-      </a>
+      {isInternalLink ? (
+        <Link
+          to={buttonLink}
+          className={`block w-full py-3 text-center rounded-lg font-medium transition-all ${
+            disabled
+              ? 'bg-mv-surface-2 text-mv-text-muted cursor-not-allowed'
+              : highlighted
+              ? 'bg-mv-accent text-white hover:bg-mv-accent-hover'
+              : 'bg-mv-surface-2 border border-mv-border text-mv-text hover:border-mv-accent'
+          }`}
+        >
+          {buttonText}
+        </Link>
+      ) : (
+        <a
+          href={buttonLink}
+          target={isExternalLink ? '_blank' : undefined}
+          rel={isExternalLink ? 'noopener noreferrer' : undefined}
+          className={`block w-full py-3 text-center rounded-lg font-medium transition-all ${
+            disabled
+              ? 'bg-mv-surface-2 text-mv-text-muted cursor-not-allowed'
+              : highlighted
+              ? 'bg-mv-accent text-white hover:bg-mv-accent-hover'
+              : 'bg-mv-surface-2 border border-mv-border text-mv-text hover:border-mv-accent'
+          }`}
+        >
+          {buttonText}
+        </a>
+      )}
     </div>
   );
 }

@@ -1,5 +1,8 @@
-import { FeatureCard, PricingCard, TimelineItem, BigCheck } from '../components';
-import { Image, AudioWaveform, Video, FileText, Link as LinkIconLucide, Grid, Send } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { FeatureCard, PricingCard, BigCheck } from '../components';
+import { Image, AudioWaveform, Video, FileText, Link as LinkIconLucide, Grid } from 'lucide-react';
+
+const CONTACT_EMAIL = 'istochnik-media@yandex.com';
 
 const features = [
   {
@@ -26,7 +29,7 @@ const features = [
   {
     icon: <LinkIconLucide />,
     title: 'Проверка по ссылке',
-    description: 'Вставь ссылку на пост в Telegram, видео YouTube или картинку — бот скачает и проверит',
+    description: 'Вставь ссылку на пост в соцсетях, видео YouTube или картинку — сервис скачает и проверит',
   },
   {
     icon: <Grid />,
@@ -40,8 +43,8 @@ const pricingPlans = [
     name: 'FREE',
     price: '0 ₽',
     features: ['3 проверки/день', 'Все форматы', 'Базовый вердикт'],
-    buttonText: 'Открыть в Telegram',
-    buttonLink: 'https://t.me/MediaVerifyBot',
+    buttonText: 'Начать бесплатно',
+    buttonLink: '/register',
     highlighted: true,
   },
   {
@@ -55,7 +58,7 @@ const pricingPlans = [
       'Поделиться результатом',
     ],
     buttonText: '🔔 Встать в лист ожидания',
-    buttonLink: 'https://t.me/MediaVerifyBot?start=waitlist_premium',
+    buttonLink: `mailto:${CONTACT_EMAIL}?subject=Premium%20waitlist`,
     badge: 'СКОРО',
   },
   {
@@ -69,53 +72,8 @@ const pricingPlans = [
       'Кастомные модели',
     ],
     buttonText: '💼 Связаться',
-    buttonLink: 'https://t.me/MediaVerifyBot?start=enterprise_inquiry',
+    buttonLink: `mailto:${CONTACT_EMAIL}?subject=Enterprise%20inquiry`,
     badge: 'B2B',
-  },
-];
-
-const roadmapItems = [
-  {
-    version: 'v0.1.0',
-    title: 'Альфа-версия',
-    description: 'Базовый Telegram-бот, интеграция первых моделей детекции для фото и текста.',
-    status: 'released' as const,
-  },
-  {
-    version: 'v0.2.0',
-    title: '«Источник»',
-    description: 'Полный ребрендинг проекта и запуск функциональной веб-платформы. Внедрён интуитивный «Индекс подлинности», добавлена генерация детализированных PDF-отчётов.',
-    status: 'released' as const,
-  },
-  {
-    version: 'v0.3.0',
-    title: 'Масштабирование',
-    description: 'Big Check (пакетный кросс-анализ), Drag&Drop загрузчик, тариф Enterprise (B2B API) и тепловые карты (Explainable AI).',
-    status: 'released' as const,
-  },
-  {
-    version: 'v0.4.0',
-    title: 'Глобальное обновление',
-    description: 'Внедрение системы авторизации (Telegram + Email), редизайн системы карточек и переработка архитектуры страниц.',
-    status: 'released' as const,
-  },
-  {
-    version: 'v0.5.0',
-    title: 'Фирменный стиль',
-    description: 'Полностью переработанная система SVG-иконок в фирменном стиле, исправление анимации спидометра, обновление навигации и футера.',
-    status: 'released' as const,
-  },
-  {
-    version: 'v0.6.0',
-    title: 'React + Appwrite',
-    description: 'Полная миграция на React 18 + TypeScript + Tailwind. Переход на Appwrite Cloud для бэкенда. Новый дизайн интерфейса.',
-    status: 'current' as const,
-  },
-  {
-    version: 'v0.7.0',
-    title: 'B2B & API',
-    description: 'Полноценный релиз личного кабинета, запуск публичного REST API для интеграции с медиа-платформами и релиз расширения для браузера.',
-    status: 'upcoming' as const,
   },
 ];
 
@@ -133,14 +91,12 @@ export function Home() {
             на основе специализированных моделей ИИ
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <a
-              href="https://t.me/MediaVerifyBot"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              to="/register"
               className="px-8 py-3 bg-mv-accent text-white rounded-lg font-semibold hover:bg-mv-accent-hover transition-colors"
             >
               Попробовать бесплатно
-            </a>
+            </Link>
             <a
               href="#bigcheck"
               className="px-8 py-3 bg-mv-surface border border-mv-border text-mv-text rounded-lg font-semibold hover:border-mv-accent transition-colors"
@@ -201,28 +157,6 @@ export function Home() {
         </div>
       </section>
 
-      {/* Roadmap */}
-      <section id="roadmap" className="py-16">
-        <div className="container">
-          <h2 className="text-3xl font-bold text-mv-text text-center mb-12">История версий</h2>
-          <div className="max-w-2xl mx-auto">
-            {roadmapItems.map((item, index) => (
-              <TimelineItem key={index} {...item} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Floating Telegram Button */}
-      <a
-        href="https://t.me/MediaVerifyBot"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 flex items-center gap-2 px-4 py-3 bg-[#229ED9] text-white rounded-full shadow-lg hover:bg-[#1E8BC3] transition-all z-40"
-      >
-        <Send className="w-5 h-5" />
-        <span className="hidden sm:inline font-medium">Открыть бот</span>
-      </a>
     </div>
   );
 }

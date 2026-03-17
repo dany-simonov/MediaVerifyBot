@@ -59,13 +59,14 @@ def _extract_payload(req: Any) -> dict[str, Any]:
 
 def _response_json(context: Any, payload: dict[str, Any], status: int = 200):
     """Return JSON response compatible with Appwrite runtime variants."""
+    safe_payload = json.loads(json.dumps(payload, default=str))
     try:
-        return context.res.json(payload, status)
+        return context.res.json(safe_payload, status)
     except TypeError:
         try:
-            return context.res.json(payload)
+            return context.res.json(safe_payload)
         except Exception:
-            return payload
+            return safe_payload
 
 
 def _detect_media_type_from_payload(payload: dict[str, Any]) -> MediaType:

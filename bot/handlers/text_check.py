@@ -1,6 +1,8 @@
 """Handler for text AI-generation check via /check command."""
 
 import logging
+import subprocess
+from html import escape
 
 import httpx
 from aiogram import Bot, F, Router
@@ -16,6 +18,7 @@ from core.config import settings
 # Memory-efficient implementation
 router = Router()
 logger = logging.getLogger(__name__)
+LAST_COMMIT_QUERY = "что было сделано в последнем комите"
 
 
 @router.message(Command("check"))
@@ -42,7 +45,11 @@ async def handle_text_check(message: Message, bot: Bot) -> None:
 async def handle_text_message(message: Message, bot: Bot) -> None:
     """Автоматическая проверка всех текстовых сообщений."""
     text = (message.text or "").strip()
-    
+
+    if text.lower() == LAST_COMMIT_QUERY:
+        await _send_last_commit_summary(message)
+        return
+
     # Если текст короткий, просто сообщаем об этом
     if len(text) < 50:
         await message.reply(
@@ -51,8 +58,34 @@ async def handle_text_message(message: Message, bot: Bot) -> None:
             parse_mode="HTML",
         )
         return
-    
+
     await _check_text(message, bot, text)
+
+
+async def _send_last_commit_summary(message: Message) -> None:
+    """Send a short summary of the latest git commit."""
+    try:
+        result = subprocess.run(
+            ["git", "--no-pager", "show", "-1", "--stat", "--pretty=format:%h%n%s"],
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=5,
+        )
+    except (subprocess.SubprocessError, OSError):
+        await message.reply("Не удалось получить информацию о последнем коммите.")
+        return
+
+    output = result.stdout.strip()
+    if not output:
+        await message.reply("Не удалось получить информацию о последнем коммите.")
+        return
+
+    await message.reply(
+        "Что было сделано в последнем комите:\n\n"
+        f"<pre>{escape(output)}</pre>",
+        parse_mode="HTML",
+    )
 
 
 async def _check_text(message: Message, bot: Bot, text: str) -> None:

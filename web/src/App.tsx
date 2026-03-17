@@ -20,6 +20,7 @@ import {
   RegisterPage,
   DashboardOverview,
   NewCheckPage,
+  BigTextCheckPage,
   HistoryPage,
   ApiSettingsPage
 } from './pages';
@@ -128,6 +129,7 @@ function AppContent() {
       >
         <Route index element={<DashboardOverview />} />
         <Route path="check" element={<NewCheckPage />} />
+        <Route path="big-text" element={<BigTextCheckPage />} />
         <Route path="history" element={<HistoryPage />} />
         <Route path="api" element={<ApiSettingsPage />} />
       </Route>

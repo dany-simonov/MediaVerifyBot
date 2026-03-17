@@ -44,6 +44,36 @@ export interface AnalyzeResult {
   processing_ms: number;
 }
 
+// Hybrid text analysis
+export type HybridTokenType = 'normal' | 'manipulation' | 'fake' | 'plagiarism';
+
+export interface FactCheckItem {
+  exact_quote: string;
+  status: string;
+  truth: string;
+  source_url: string;
+}
+
+export interface HybridToken {
+  text: string;
+  type: HybridTokenType;
+  details?: {
+    truth?: string;
+    source_url?: string;
+  };
+}
+
+export interface HybridTextResult {
+  verdict: string;
+  ai_verdict: string;
+  ai_confidence: number;
+  model_used: string;
+  processing_ms: number;
+  fact_checks: FactCheckItem[];
+  tokens: HybridToken[];
+  truncated?: boolean;
+}
+
 // ============================================================================
 // User Types
 // ============================================================================

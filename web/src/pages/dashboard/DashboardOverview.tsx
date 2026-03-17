@@ -186,6 +186,31 @@ export function DashboardOverview() {
         </div>
       </Card>
 
+      {/* Big Text Check Callout */}
+      <Card className="border-mv-accent/30 bg-gradient-to-br from-mv-accent/10 to-teal-500/10">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-xl bg-mv-accent/20 flex items-center justify-center">
+              <img src="/assets/img/logo.png" alt="" className="w-7 h-7" />
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-mv-text">Большая проверка текста</h3>
+              <p className="text-sm text-mv-text-secondary mt-1">
+                Двойная проверка: детектор ИИ + фактчек/заимствования с пословной подсветкой.
+              </p>
+              <p className="text-xs text-mv-text-muted mt-2">
+                Рекомендуем 200-2000 символов. Чем больше текст, тем точнее проверка.
+              </p>
+            </div>
+          </div>
+          <Link to="/dashboard/big-text">
+            <Button className="text-white" leftIcon={<FileText className="w-4 h-4" />}>
+              Открыть проверку
+            </Button>
+          </Link>
+        </div>
+      </Card>
+
       {/* Model Accuracy Table */}
       <Card>
         <CardHeader

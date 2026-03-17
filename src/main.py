@@ -25,6 +25,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from core.enums import MediaType  # noqa: E402
+from core.analyzer import HybridTextAnalyzer  # noqa: E402
 from router.media_router import MediaRouter  # noqa: E402
 
 
@@ -101,15 +102,29 @@ async def _download_file_bytes(file_id: str, bucket_id: str) -> bytes:
         return response.content
 
 
+HYBRID_MIN_TEXT_LENGTH = 200
+HYBRID_MAX_TEXT_LENGTH = 10_000
+hybrid_analyzer = HybridTextAnalyzer()
+
+
 async def _analyze(payload: dict[str, Any]) -> dict[str, Any]:
     router = MediaRouter()
     started = time.perf_counter()
 
     text = str(payload.get("text") or "").strip()
+    mode = str(payload.get("mode") or payload.get("analysisType") or "").strip().lower()
     media_type = _detect_media_type_from_payload(payload)
 
     if text:
-        result = await router.route(MediaType.TEXT, b"", text)
+        if mode in {"hybrid_text", "big_text", "factcheck"}:
+            if len(text) < HYBRID_MIN_TEXT_LENGTH:
+                raise ValueError(f"Минимум {HYBRID_MIN_TEXT_LENGTH} символов для глубокой проверки.")
+            if len(text) > HYBRID_MAX_TEXT_LENGTH:
+                text = text[:HYBRID_MAX_TEXT_LENGTH]
+            result = await hybrid_analyzer.analyze(text)
+            result["truncated"] = len(payload.get("text", "")) > HYBRID_MAX_TEXT_LENGTH
+        else:
+            result = await router.route(MediaType.TEXT, b"", text)
     else:
         file_id = str(payload.get("fileId") or "").strip()
         if not file_id:
@@ -129,6 +144,10 @@ async def _analyze(payload: dict[str, Any]) -> dict[str, Any]:
         result = await router.route(media_type, file_bytes, "")
 
     processing_ms = int((time.perf_counter() - started) * 1000)
+    if isinstance(result, dict):
+        result["processing_ms"] = processing_ms
+        return result
+
     body = result.model_dump()
     body["processing_ms"] = processing_ms
     return body

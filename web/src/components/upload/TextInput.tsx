@@ -14,6 +14,7 @@ interface TextInputProps {
   minLength?: number;
   maxLength?: number;
   disabled?: boolean;
+  recommendedRange?: { min: number; max: number };
 }
 
 export function TextInput({
@@ -22,6 +23,7 @@ export function TextInput({
   minLength = 50,
   maxLength = 10000,
   disabled = false,
+  recommendedRange,
 }: TextInputProps) {
   const [isFocused, setIsFocused] = useState(false);
   
@@ -52,9 +54,9 @@ export function TextInput({
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           disabled={disabled}
-          placeholder="Вставьте текст для проверки на ИИ-генерацию...
+          placeholder={`Вставьте текст для проверки...
 
-Минимум 50 символов для точного анализа. Чем больше текста, тем выше точность определения."
+Минимум ${minLength} символов для точного анализа. Чем больше текста, тем выше точность.`}
           className={cn(
             'w-full h-64 p-4 bg-transparent text-mv-text placeholder-mv-text-muted resize-none',
             'focus:outline-none',
@@ -108,7 +110,12 @@ export function TextInput({
         <ul className="text-xs text-mv-text-muted space-y-1">
           <li>• Используйте полные абзацы, а не отдельные предложения</li>
           <li>• Не редактируйте текст перед проверкой</li>
-          <li>• Оптимальный объем: 200-2000 символов</li>
+          {recommendedRange ? (
+            <li>• Оптимальный объем: {recommendedRange.min}-{recommendedRange.max} символов</li>
+          ) : (
+            <li>• Чем больше текста, тем выше точность анализа</li>
+          )}
+          <li>• Максимум: {maxLength.toLocaleString()} символов</li>
         </ul>
       </div>
     </div>

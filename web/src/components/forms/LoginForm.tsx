@@ -6,7 +6,7 @@
 
 import { useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, Lock, LogIn, Send } from 'lucide-react';
+import { Mail, Lock, LogIn } from 'lucide-react';
 import { Button, Input, Alert, Card } from '../ui';
 import { useAuthStore } from '../../store';
 import { isValidEmail } from '../../lib/utils';
@@ -122,32 +122,6 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
           Войти
         </Button>
       </form>
-
-      {/* Divider */}
-      <div className="relative my-8">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-mv-border" />
-        </div>
-        <div className="relative flex justify-center">
-          <span className="px-4 text-sm text-mv-text-muted bg-mv-surface">
-            или
-          </span>
-        </div>
-      </div>
-
-      {/* Telegram Login */}
-      <div className="text-center">
-        <a
-          href="https://t.me/MediaVerifyBot?start=auth"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-[#229ED9] text-white rounded-lg font-medium hover:bg-[#1E8BC3] transition-colors"
-        >
-          <Send className="w-5 h-5" />
-          Войти через Telegram
-          <span className="text-xs opacity-75">(скоро)</span>
-        </a>
-      </div>
 
       {/* Footer Links */}
       <div className="mt-8 text-center text-sm">

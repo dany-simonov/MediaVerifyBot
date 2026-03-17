@@ -11,7 +11,7 @@ export function Privacy() {
           <section>
             <h2 className="text-2xl font-semibold text-mv-accent mb-4">1. Общие положения</h2>
             <p className="text-mv-text-secondary leading-relaxed">
-              Настоящая Политика конфиденциальности описывает, как платформа «Источник» (далее — «Сервис», «мы») собирает, использует и защищает информацию пользователей при использовании веб-сайта, Telegram-бота и API.
+              Настоящая Политика конфиденциальности описывает, как платформа «Источник» (далее — «Сервис», «мы») собирает, использует и защищает информацию пользователей при использовании веб-сайта и API.
             </p>
           </section>
 
@@ -19,7 +19,6 @@ export function Privacy() {
             <h2 className="text-2xl font-semibold text-mv-accent mb-4">2. Какие данные мы собираем</h2>
             <ul className="list-disc list-inside text-mv-text-secondary space-y-2">
               <li><strong className="text-mv-text">Данные аккаунта:</strong> email, имя пользователя (при регистрации через email)</li>
-              <li><strong className="text-mv-text">Telegram ID:</strong> при авторизации через Telegram</li>
               <li><strong className="text-mv-text">История проверок:</strong> тип файла, вердикт, время проверки</li>
               <li><strong className="text-mv-text">Техническая информация:</strong> IP-адрес, тип браузера, время доступа</li>
             </ul>

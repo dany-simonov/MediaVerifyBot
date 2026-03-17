@@ -7,7 +7,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
-import { X, Send, XCircle, Loader2 } from 'lucide-react';
+import { X, XCircle, Loader2 } from 'lucide-react';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -23,7 +23,6 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
   // ============================================================================
   // Local State
   // ============================================================================
-  const [activeTab, setActiveTab] = useState<'telegram' | 'email'>('telegram');
   /** true = Login mode, false = Register mode */
   const [isLoginMode, setIsLoginMode] = useState(true);
   
@@ -44,7 +43,6 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
       setPassword('');
       clearError();
       setIsLoginMode(true);
-      setActiveTab('telegram');
     }
   }, [isOpen, clearError]);
 
@@ -118,68 +116,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
         <h2 className="text-xl font-semibold text-mv-text mb-6">{modalTitle}</h2>
 
-        {/* Tabs: Telegram / Email */}
-        <div className="flex gap-2 mb-6">
-          <button
-            type="button"
-            onClick={() => {
-              setActiveTab('telegram');
-              clearError();
-            }}
-            className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all ${
-              activeTab === 'telegram'
-                ? 'bg-mv-accent text-white'
-                : 'bg-mv-surface-2 text-mv-text-secondary hover:text-mv-text'
-            }`}
-          >
-            Telegram
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setActiveTab('email');
-              clearError();
-            }}
-            className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-all ${
-              activeTab === 'email'
-                ? 'bg-mv-accent text-white'
-                : 'bg-mv-surface-2 text-mv-text-secondary hover:text-mv-text'
-            }`}
-          >
-            Email
-          </button>
-        </div>
-
-        {/* ================================================================== */}
-        {/* Telegram Tab */}
-        {/* ================================================================== */}
-        {activeTab === 'telegram' && (
-          <div className="text-center">
-            <p className="text-mv-text-secondary mb-6">
-              Быстрый и безопасный вход через ваш аккаунт Telegram
-            </p>
-            <div className="bg-mv-surface-2 rounded-xl p-8 border border-mv-border">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#229ED9] flex items-center justify-center">
-                <Send className="w-8 h-8 text-white" />
-              </div>
-              <a
-                href="https://t.me/MediaVerifyBot?start=auth"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block w-full py-3 bg-[#229ED9] text-white rounded-lg font-medium hover:bg-[#1E8BC3] transition-colors"
-              >
-                Войти через Telegram
-              </a>
-              <p className="mt-3 text-xs text-mv-text-muted">Скоро</p>
-            </div>
-          </div>
-        )}
-
-        {/* ================================================================== */}
-        {/* Email Tab - Login / Register Form */}
-        {/* ================================================================== */}
-        {activeTab === 'email' && (
-          <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
             {/* Error Alert */}
             {error && (
               <div className="p-3 bg-mv-fake/10 border border-mv-fake/20 rounded-lg text-sm text-mv-fake flex items-start gap-2">
@@ -272,8 +209,7 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
                 {toggleText}
               </button>
             </div>
-          </form>
-        )}
+        </form>
       </div>
     </div>
   );

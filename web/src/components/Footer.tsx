@@ -37,14 +37,9 @@ export function Footer() {
               <Link to="/faq" className="text-sm text-mv-text-secondary hover:text-mv-accent transition-colors">
                 FAQ
               </Link>
-              <a
-                href="https://t.me/MediaVerifyBot"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-mv-text-secondary hover:text-mv-accent transition-colors"
-              >
-                Telegram-бот
-              </a>
+              <Link to="/history" className="text-sm text-mv-text-secondary hover:text-mv-accent transition-colors">
+                История продукта
+              </Link>
             </nav>
           </div>
 
@@ -76,14 +71,6 @@ export function Footer() {
                 className="text-sm text-mv-text-secondary hover:text-mv-accent transition-colors"
               >
                 Написать на почту
-              </a>
-              <a
-                href="https://t.me/MediaVerifyBot"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-mv-text-secondary hover:text-mv-accent transition-colors"
-              >
-                Telegram
               </a>
             </nav>
           </div>

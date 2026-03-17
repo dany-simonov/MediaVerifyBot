@@ -70,7 +70,7 @@ const faqData: FAQCategory[] = [
       },
       {
         question: 'Когда будет доступен Premium?',
-        answer: 'Premium-тариф находится в разработке. Вы можете встать в лист ожидания через Telegram-бот командой /start waitlist_premium.',
+        answer: 'Premium-тариф находится в разработке. Вы можете встать в лист ожидания, написав нам на почту.',
       },
       {
         question: 'Есть ли API для интеграции?',

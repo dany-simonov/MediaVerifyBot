@@ -12,6 +12,7 @@ import {
   About, 
   FAQ, 
   Docs, 
+  ProductHistory,
   Privacy, 
   Terms, 
   NotFound,
@@ -45,6 +46,7 @@ function AppContent() {
   }
 
   return (
+        { path: '/history', element: <ProductHistory /> },
     <Routes>
       {/* Public Routes with Header/Footer */}
       <Route

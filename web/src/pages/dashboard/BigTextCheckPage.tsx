@@ -103,14 +103,30 @@ export function BigTextCheckPage() {
 
       const execution = await functions.createExecution(
         APPWRITE_CONFIG.functions.analyze,
-        JSON.stringify(payload)
+        JSON.stringify(payload),
+        false
       );
 
-      if (!execution.responseBody) {
+      let responseBody = execution.responseBody || '';
+      if (!responseBody && execution.$id) {
+        for (let i = 0; i < 6; i += 1) {
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          const refreshed = await functions.getExecution(
+            APPWRITE_CONFIG.functions.analyze,
+            execution.$id
+          );
+          if (refreshed.responseBody) {
+            responseBody = refreshed.responseBody;
+            break;
+          }
+        }
+      }
+
+      if (!responseBody) {
         throw new Error('Функция не вернула ответ. Проверьте логи Appwrite Function.');
       }
 
-      const data = JSON.parse(execution.responseBody);
+      const data = JSON.parse(responseBody);
       if (data?.detail) {
         throw new Error(data.detail);
       }

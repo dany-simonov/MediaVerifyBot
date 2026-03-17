@@ -32,6 +32,8 @@ class HybridTextAnalyzer:
         "command-r",     # fallback 2
     ]
 
+    FACTCHECK_TIMEOUT_S = 12
+
     def __init__(self) -> None:
         self.sapling = SaplingAdapter()
 
@@ -45,7 +47,7 @@ class HybridTextAnalyzer:
             return g4f.ChatCompletion.create(
                 model=model_name,
                 messages=messages,
-                timeout=90,
+                timeout=self.FACTCHECK_TIMEOUT_S,
             )
 
         raw = await asyncio.to_thread(_run)
@@ -145,9 +147,19 @@ class HybridTextAnalyzer:
         start_ts = time.monotonic()
 
         sapling_task = asyncio.create_task(self.sapling.analyze(text.encode("utf-8")))
-        factcheck_task = asyncio.create_task(self.fact_check(text))
 
-        sapling_res, (fc_parsed, fc_model) = await asyncio.gather(sapling_task, factcheck_task)
+        fc_parsed: Dict[str, Any] = {"fact_checks": []}
+        fc_model = "g4f_timeout"
+        try:
+            fc_parsed, fc_model = await asyncio.wait_for(
+                self.fact_check(text),
+                timeout=self.FACTCHECK_TIMEOUT_S,
+            )
+        except Exception:
+            fc_parsed = {"fact_checks": []}
+            fc_model = "g4f_unavailable"
+
+        sapling_res = await sapling_task
 
         raw_checks = fc_parsed.get("fact_checks", []) if isinstance(fc_parsed, dict) else []
         fact_checks = []
@@ -169,7 +181,7 @@ class HybridTextAnalyzer:
             else "clean"
         )
 
-        return {
+        result = {
             "verdict": verdict,
             "ai_confidence": sapling_res.confidence,
             "ai_verdict": sapling_res.verdict.value,
@@ -179,4 +191,8 @@ class HybridTextAnalyzer:
             "processing_ms": int((time.monotonic() - start_ts) * 1000),
             "model_used_enum": ModelUsed.HYBRID_G4F,
         }
+        if fc_model in {"g4f_timeout", "g4f_unavailable"}:
+            result["factcheck_error"] = fc_model
+
+        return result
 *** End Patch

@@ -15,7 +15,8 @@ import {
   Camera,
   Trash2,
   ChevronLeft,
-  LayoutDashboard
+  LayoutDashboard,
+  Sparkles
 } from 'lucide-react';
 import { useAuthStore } from '../../store';
 import { clearUserAvatar, fileToAvatarDataUrl, loadUserProfile, saveUserAvatar } from '../../lib/userProfile';
@@ -44,6 +45,11 @@ const navItems: NavItem[] = [
     to: '/dashboard/check',
     icon: <Plus className="w-5 h-5" />,
     label: 'Новая проверка',
+  },
+  {
+    to: '/dashboard/big-text',
+    icon: <Sparkles className="w-5 h-5" />,
+    label: 'Большая проверка',
   },
   {
     to: '/dashboard/history',

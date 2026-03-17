@@ -21,5 +21,6 @@ export { LoginPage, RegisterPage } from './auth';
 // Dashboard pages (explicit paths to avoid casing issues)
 export { DashboardOverview } from './dashboard/DashboardOverview';
 export { NewCheckPage } from './dashboard/NewCheckPage';
+export { BigTextCheckPage } from './dashboard/BigTextCheckPage';
 export { HistoryPage } from './dashboard/HistoryPage';
 export { ApiSettingsPage } from './dashboard/ApiSettingsPage';

@@ -15,10 +15,11 @@ FACTCHECK_SYSTEM_PROMPT = (
     "Ты — профессиональный фактчекер с доступом к веб-поиску. "
     "Проверяй утверждения, находи первоисточники, используй свежие данные. "
     "Отвечай СТРОГО валидным JSON без каких-либо обёрток, markdown, комментариев. "
-    "Структура ответа: {\"fact_checks\": [{\"exact_quote\": \"цитата с ошибкой\", "
-    "\"status\": \"fake\" или \"manipulation\", \"truth\": \"корректный факт\", "
-    "\"source_url\": \"https://...\"}]} "
-    "Не добавляй лишних полей. \"exact_quote\" должен быть точной подстрокой исходного текста."
+    "Структура ответа: {\"fact_checks\": [{\"exact_quote\": \"точный фрагмент\", "
+    "\"status\": \"fake\"|\"manipulation\"|\"plagiarism\"|\"ok\", "
+    "\"truth\": \"корректный факт или объяснение\", \"source_url\": \"https://...\"}]} "
+    "Не добавляй лишних полей. \"exact_quote\" должен быть точной подстрокой исходного текста, "
+    "по возможности минимальной длины (слово или короткая фраза), чтобы подсветка была пословной."
 )
 
 
@@ -115,10 +116,20 @@ class HybridTextAnalyzer:
         for start, end, fc in spans:
             if start > cursor:
                 tokens.append({"text": text[cursor:start], "type": "normal"})
+            status = (fc.get("status") or "").lower()
+            if status == "fake":
+                token_type = "fake"
+            elif status == "plagiarism":
+                token_type = "plagiarism"
+            elif status == "ok":
+                token_type = "normal"
+            else:
+                token_type = "manipulation"
+
             tokens.append(
                 {
                     "text": text[start:end],
-                    "type": "fake" if fc.get("status") == "fake" else "manipulation",
+                    "type": token_type,
                     "details": {
                         "truth": fc.get("truth", ""),
                         "source_url": fc.get("source_url", ""),
@@ -138,10 +149,25 @@ class HybridTextAnalyzer:
 
         sapling_res, (fc_parsed, fc_model) = await asyncio.gather(sapling_task, factcheck_task)
 
-        fact_checks = fc_parsed.get("fact_checks", []) if isinstance(fc_parsed, dict) else []
+        raw_checks = fc_parsed.get("fact_checks", []) if isinstance(fc_parsed, dict) else []
+        fact_checks = []
+        for item in raw_checks:
+            if not isinstance(item, dict):
+                continue
+            source_url = item.get("source_url") or item.get("source") or ""
+            fact_checks.append(
+                {
+                    **item,
+                    "source_url": source_url,
+                }
+            )
         tokens = self.merge_results(text, fact_checks)
 
-        verdict = "contains_fakes" if any(t.get("type") in {"fake", "manipulation"} for t in tokens) else "clean"
+        verdict = (
+            "contains_fakes"
+            if any(t.get("type") in {"fake", "manipulation", "plagiarism"} for t in tokens)
+            else "clean"
+        )
 
         return {
             "verdict": verdict,

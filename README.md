@@ -78,7 +78,7 @@
 
 ## Лицензия
 
-# Istочник
+# Istochnik
 
 **AI-powered media verification platform**
 

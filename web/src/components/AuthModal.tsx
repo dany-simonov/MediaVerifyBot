@@ -8,7 +8,6 @@
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
 import { X, XCircle, Loader2 } from 'lucide-react';
-
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;

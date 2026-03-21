@@ -39,3 +39,6 @@ Thumbs.db
 
 # Docker volumes
 postgres_data/
+
+# Local accidental clones
+starter-for-react/

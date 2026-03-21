@@ -1,4 +1,4 @@
-import { Shield, Lock, Bot, Unlock, Rocket, Handshake, Plus } from 'lucide-react';
+import { Shield, Lock, Bot, Unlock, Rocket, Handshake, Plus, Video, Link as LinkIconLucide, Grid } from 'lucide-react';
 
 const CONTACT_EMAIL = 'istochnik-media@yandex.com';
 
@@ -17,6 +17,24 @@ const badges = [
   'Хакатоны',
   'Акселераторы',
   'Open Source',
+];
+
+const roadmapPlans = [
+  {
+    icon: <Video className="w-5 h-5" />,
+    title: 'Видео (скоро)',
+    description: 'Покадровый анализ FFmpeg + Sightengine pipeline, 81%.',
+  },
+  {
+    icon: <LinkIconLucide className="w-5 h-5" />,
+    title: 'Проверка по ссылке',
+    description: 'Вставь ссылку на пост в соцсетях, видео YouTube или картинку — сервис скачает и проверит.',
+  },
+  {
+    icon: <Grid className="w-5 h-5" />,
+    title: 'Тепловые карты',
+    description: 'Explainable AI — визуализация зон, где ИИ «ошибся» на сгенерированном фото.',
+  },
 ];
 
 export function About() {
@@ -84,6 +102,25 @@ export function About() {
                 </div>
                 <h3 className="text-lg font-semibold text-mv-text mb-2">{value.title}</h3>
                 <p className="text-sm text-mv-text-secondary">{value.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Plans */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-mv-accent mb-6">Наши планы</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {roadmapPlans.map((item, index) => (
+              <div
+                key={index}
+                className="bg-mv-surface border border-mv-border rounded-xl p-6 hover:border-mv-accent/50 hover:-translate-y-1 transition-all"
+              >
+                <div className="w-11 h-11 mb-4 rounded-lg bg-mv-accent/10 flex items-center justify-center text-mv-accent">
+                  {item.icon}
+                </div>
+                <h3 className="text-lg font-semibold text-mv-text mb-2">{item.title}</h3>
+                <p className="text-sm text-mv-text-secondary">{item.description}</p>
               </div>
             ))}
           </div>

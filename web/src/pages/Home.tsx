@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { FeatureCard, PricingCard, BigCheck } from '../components';
-import { Image, AudioWaveform, Video, FileText, Link as LinkIconLucide, Grid } from 'lucide-react';
+import { Image, AudioWaveform, FileText, Layers } from 'lucide-react';
 
 const CONTACT_EMAIL = 'istochnik-media@yandex.com';
 
@@ -16,25 +16,14 @@ const features = [
     description: 'Синтетическая речь и voice cloning\nResemble Detect, точность 99.5%',
   },
   {
-    icon: <Video />,
-    title: 'Видео',
-    description: 'Покадровый анализ\nFFmpeg + Sightengine pipeline, 81%',
-    badge: 'Скоро',
-  },
-  {
     icon: <FileText />,
     title: 'Текст',
     description: 'Написан ли ChatGPT?\nSapling AI, точность 98%',
   },
   {
-    icon: <LinkIconLucide />,
-    title: 'Проверка по ссылке',
-    description: 'Вставь ссылку на пост в соцсетях, видео YouTube или картинку — сервис скачает и проверит',
-  },
-  {
-    icon: <Grid />,
-    title: 'Тепловые карты',
-    description: 'Explainable AI — визуализация зон, где ИИ «спалился» на сгенерированном фото',
+    icon: <Layers />,
+    title: 'Большая проверка',
+    description: 'Двойная проверка текста: детекция ИИ + фактчек/заимствования с пословной подсветкой',
   },
 ];
 
@@ -58,7 +47,7 @@ const pricingPlans = [
       'Поделиться результатом',
     ],
     buttonText: '🔔 Встать в лист ожидания',
-    buttonLink: `mailto:${CONTACT_EMAIL}?subject=Premium%20waitlist`,
+    buttonLink: `mailto:${CONTACT_EMAIL}?subject=%D0%92%D1%81%D1%82%D0%B0%D1%82%D1%8C%20%D0%B2%20%D0%BB%D0%B8%D1%81%D1%82%20%D0%BE%D0%B6%D0%B8%D0%B4%D0%B0%D0%BD%D0%B8%D1%8F`,
     badge: 'СКОРО',
   },
   {

@@ -62,6 +62,7 @@ export function Footer() {
             </nav>
           </div>
 
+
           {/* Contact */}
           <div>
             <h4 className="font-semibold text-mv-text mb-4">Связаться</h4>

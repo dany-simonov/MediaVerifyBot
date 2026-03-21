@@ -66,7 +66,7 @@
 
 ---
 
-## Технологии, которые используются в репозитории
+## Технологии, которые используются в проекте
 
 - **Python**: FastAPI, SQLAlchemy (async), Alembic, httpx, ffmpeg-python
 - **ML-интеграции**: Sightengine, Resemble Detect, Sapling AI, HuggingFace
@@ -75,8 +75,6 @@
 - **Appwrite**: Auth, Storage, Functions, Sites
 
 ---
-
-## Лицензия
 
 # Istochnik
 
@@ -150,7 +148,7 @@ The Appwrite migration unified deployment, storage, and auth without a custom pr
 
 ---
 
-## Technologies in this repository
+## Technologies in this project
 
 - Python: FastAPI, httpx, ffmpeg-python
 - ML integrations: Sightengine, Resemble Detect, Sapling AI, HuggingFace

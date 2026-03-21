@@ -116,7 +116,7 @@ export function Home() {
       <section id="features" className="py-16 bg-mv-surface/50">
         <div className="mx-auto max-w-[1400px] px-6 md:px-8">
           <h2 className="text-3xl font-bold text-mv-text text-center mb-12">Возможности</h2>
-          <div className="flex gap-5 overflow-x-auto pb-3 snap-x snap-mandatory scroll-smooth [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex gap-5 overflow-x-auto px-2 pt-2 pb-3 md:px-3 snap-x snap-mandatory scroll-smooth [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
             {features.map((feature, index) => (
               <div key={index} className="w-[290px] md:w-[300px] lg:w-[320px] snap-start flex-shrink-0">
                 <FeatureCard {...feature} />

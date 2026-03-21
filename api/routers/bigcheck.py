@@ -3,22 +3,13 @@
 import logging
 import time
 
-from fastapi import APIRouter, Depends, File, Form, Header, HTTPException, UploadFile
+from fastapi import APIRouter, File, Form, Header, HTTPException, UploadFile
 from pydantic import BaseModel
-from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.dependencies import get_db_session
 from api.schemas import AnalysisResult
 from core.config import settings
 from core.enums import MediaType, Verdict
 from core.exceptions import ExternalAPIError, UnsupportedMediaType
-from db.repository import (
-    check_rate_limit,
-    get_or_create_user,
-    increment_daily_check,
-    reset_daily_check_if_needed,
-    save_check,
-)
 from router.media_router import MediaRouter
 
 # Following best practices
@@ -111,7 +102,6 @@ async def bigcheck(
     first_name: str = Form(""),
     text_content: str = Form(""),
     x_api_secret: str = Header(..., alias="x-api-secret"),
-    session: AsyncSession = Depends(get_db_session),
 ) -> BigCheckResponse:
     """
     Big Check: analyze multiple files + optional text in a single request.
@@ -121,22 +111,14 @@ async def bigcheck(
     if x_api_secret != settings.api_secret_key:
         raise HTTPException(status_code=403, detail="Invalid API secret")
 
-    # 2. User management
-    await get_or_create_user(session, user_id, username, first_name)
-    await reset_daily_check_if_needed(session, user_id)
-
-    # 3. Rate limit — each file counts as one check
+    # 2. Rate limit — each file counts as one check
     total_items = len(files) + (1 if text_content and text_content.strip() else 0)
     if total_items == 0:
         raise HTTPException(status_code=400, detail="Загрузите хотя бы один файл или введите текст")
     if total_items > 10:
         raise HTTPException(status_code=400, detail="Максимум 10 элементов за раз")
 
-    allowed = await check_rate_limit(session, user_id, settings.free_daily_limit)
-    if not allowed:
-        raise HTTPException(status_code=429, detail="Дневной лимит проверок исчерпан")
-
-    # 4. Process each file
+    # 3. Process each file
     individual_results: list[AnalysisResult] = []
     file_results: list[BigCheckFileResult] = []
     total_start = time.monotonic()
@@ -185,10 +167,6 @@ async def bigcheck(
         elapsed_ms = int((time.monotonic() - start_time) * 1000)
         result.processing_ms = elapsed_ms
 
-        # Save individual check
-        await save_check(session, user_id, result, len(file_bytes))
-        await increment_daily_check(session, user_id)
-
         individual_results.append(result)
         file_results.append(
             BigCheckFileResult(
@@ -202,7 +180,7 @@ async def bigcheck(
             )
         )
 
-    # 5. Process text if provided
+    # 4. Process text if provided
     if text_content and text_content.strip():
         start_time = time.monotonic()
         try:
@@ -211,9 +189,6 @@ async def bigcheck(
             )
             elapsed_ms = int((time.monotonic() - start_time) * 1000)
             text_result.processing_ms = elapsed_ms
-
-            await save_check(session, user_id, text_result, len(text_content.encode("utf-8")))
-            await increment_daily_check(session, user_id)
 
             individual_results.append(text_result)
             file_results.append(
@@ -241,7 +216,7 @@ async def bigcheck(
                 )
             )
 
-    # 6. Cross-analysis
+    # 5. Cross-analysis
     overall_verdict, overall_confidence, summary = _cross_analysis(individual_results)
 
     # Calculate authenticity index

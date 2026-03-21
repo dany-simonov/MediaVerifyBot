@@ -116,9 +116,11 @@ export function Home() {
       <section id="features" className="py-16 bg-mv-surface/50">
         <div className="container">
           <h2 className="text-3xl font-bold text-mv-text text-center mb-12">Возможности</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="flex gap-6 overflow-x-auto pb-2 snap-x snap-mandatory scroll-smooth [scrollbar-width:thin]">
             {features.map((feature, index) => (
-              <FeatureCard key={index} {...feature} />
+              <div key={index} className="min-w-[280px] md:min-w-[320px] lg:min-w-[340px] snap-start flex-shrink-0">
+                <FeatureCard {...feature} />
+              </div>
             ))}
           </div>
         </div>

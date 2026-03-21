@@ -3,10 +3,7 @@
 import logging
 import time
 
-from fastapi import APIRouter, Body, Depends, File, Form, Header, HTTPException, UploadFile
-from sqlalchemy.ext.asyncio import AsyncSession
-
-from api.dependencies import get_db_session
+from fastapi import APIRouter, Body, File, Form, Header, HTTPException, UploadFile
 from api.schemas import AnalysisResult, HybridAnalysisResponse
 from core.analyzer import HybridTextAnalyzer
 from core.config import settings
@@ -15,13 +12,6 @@ from core.exceptions import (
     FileTooLarge,
     UnsupportedMediaType,
     VideoTooLong,
-)
-from db.repository import (
-    check_rate_limit,
-    get_or_create_user,
-    increment_daily_check,
-    reset_daily_check_if_needed,
-    save_check,
 )
 from router.media_router import MediaRouter
 
@@ -66,31 +56,21 @@ async def analyze(
     first_name: str = Form(""),
     text_content: str = Form(""),
     x_api_secret: str = Header(..., alias="x-api-secret"),
-    session: AsyncSession = Depends(get_db_session),
 ) -> AnalysisResult:
     # 1. Auth check
     if x_api_secret != settings.api_secret_key:
         raise HTTPException(status_code=403, detail="Invalid API secret")
 
-    # 2. User management
-    await get_or_create_user(session, user_id, username, first_name)
-    await reset_daily_check_if_needed(session, user_id)
-
-    # 3. Rate limit
-    allowed = await check_rate_limit(session, user_id, settings.free_daily_limit)
-    if not allowed:
-        raise HTTPException(status_code=429, detail="Дневной лимит проверок исчерпан")
-
-    # 4. Read file
+    # 2. Read file
     file_bytes = await file.read()
 
-    # 5. Detect media type
+    # 3. Detect media type
     try:
         media_type = media_router.detect_type(file.content_type, file.filename, text_content)
     except UnsupportedMediaType:
         raise HTTPException(status_code=400, detail="Неподдерживаемый тип файла")
 
-    # 6. Analyze
+    # 4. Analyze
     start_time = time.monotonic()
     try:
         result = await media_router.route(media_type, file_bytes, text_content)
@@ -105,9 +85,5 @@ async def analyze(
         raise HTTPException(status_code=503, detail=f"Сервис {exc.service} недоступен: {exc.detail}")
 
     result.processing_ms = int((time.monotonic() - start_time) * 1000)
-
-    # 7. Persist
-    await save_check(session, user_id, result, len(file_bytes))
-    await increment_daily_check(session, user_id)
 
     return result
